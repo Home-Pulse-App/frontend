@@ -11,7 +11,7 @@ function ImmersiveViewPage() {
         </div>
       </div>
 
-      <div className='w-full h-screen fixed inset-0 z-0 bg-gray-400 dark:bg-[rgb(43,41,40)]'>
+      <div className='w-full h-screen fixed inset-0 z-0 bg-[rgb(43,41,40)]'>
 
       </div>
     </>

@@ -9,9 +9,10 @@ type SplatSceneProps = {
   splatURL: string
   setProgress: React.Dispatch<React.SetStateAction<number>>
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
+  setSplatCenter: React.Dispatch<React.SetStateAction<{x: number, y: number, z: number}>>
 };
 
-function SplatScene_Reveal({splatURL, setLoading, setProgress}: SplatSceneProps) {
+function SplatScene_Reveal({splatURL, setLoading, setProgress, setSplatCenter}: SplatSceneProps) {
 
   //* I need a reference to the splat so I keep the splat constant between frames
   const splatRef = useRef <SplatMesh | null> (null);
@@ -115,6 +116,12 @@ function SplatScene_Reveal({splatURL, setLoading, setProgress}: SplatSceneProps)
         splatMesh.quaternion.set(1, 0, 0, 0);
         scene.add(splatMesh);
         splatRef.current = splatMesh;
+
+        //* Calculate splat bounding box center
+        const bbox = splatMesh.getBoundingBox(true);
+        const center = bbox.getCenter(new THREE.Vector3());
+        setSplatCenter(center);
+        console.log('Splat center 🎯:', center);
 
         setSplatLoaded(true);
         baseTime.current = 0;
