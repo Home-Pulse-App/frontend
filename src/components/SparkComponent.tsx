@@ -1,14 +1,15 @@
-import {useState, useEffect, Suspense} from 'react';
+import { useEffect, useState, Suspense, useRef } from 'react';
 import {Canvas, useThree} from '@react-three/fiber';
 import { Progress } from './ui/Progress';
 import { useLocation } from 'react-router';
 import SplatScene_Reveal from './SplatScene_Reveal';
 import Dock from './ui/Dock';
-import { FaHome, FaKeyboard } from 'react-icons/fa';
+import { FaHome, FaKeyboard, FaLightbulb } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import Instructions from './ui/Instructions/Instructions';
 import { TransformControls, useGLTF, useCursor } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
+import * as THREE from 'three';
 
 //* Device state management using Valtio
 const modes = ['translate', 'rotate', 'scale'] as const;
@@ -25,6 +26,7 @@ const deviceState = proxy<DeviceState>({ current: null, mode: 0, transforming: f
 export { deviceState };
 
 interface DeviceProps {
+  id: string;
   name: string;
   position?: [number, number, number];
   rotation?: [number, number, number];
@@ -32,56 +34,73 @@ interface DeviceProps {
 }
 
 //* Device component, renders a GLTF model with transform capabilities
-function Device({ name, ...props }: DeviceProps) {
+function Device({ id, name, ...props }: DeviceProps) {
   const snap = useSnapshot(deviceState);
   const { nodes } = useGLTF('./models/devices/LightBulb.gltf') as any;
   const [hovered, setHovered] = useState(false);
+  const meshRef = useRef<THREE.Mesh>(null!);
   useCursor(hovered);
 
   return (
-    <mesh
-      onClick={(e) => (e.stopPropagation(), (deviceState.current = name))}
-      onPointerMissed={(e) => e.type === 'click' && (deviceState.current = null)}
-      onContextMenu={(e) => snap.current === name && (e.stopPropagation(), (deviceState.mode = (snap.mode + 1) % modes.length))}
-      onPointerOver={(e) => (e.stopPropagation(), setHovered(true))}
-      onPointerOut={(e) => (e.stopPropagation(), setHovered(false))}
-      name={name}
-      geometry={nodes[name].geometry}
-      {...props}
-      dispose={null}
-    >
-      <meshStandardMaterial
-        color={snap.current === name ? '#ff6080' : '#ffffff'}
-        metalness={0.2}
-        roughness={0.4}
-        emissive={snap.current === name ? '#ff6080' : '#000000'}
-        emissiveIntensity={snap.current === name ? 0.3 : 0}
-      />
-    </mesh>
-  );
-}
-
-//* Device controls, handles transform controls for selected devices
-function DeviceControls() {
-  const snap = useSnapshot(deviceState);
-  const scene = useThree((state) => state.scene);
-
-  return (
     <>
-      {snap.current && (
+      <mesh
+        ref={meshRef}
+        onClick={(e) => (e.stopPropagation(), (deviceState.current = id))}
+        onPointerMissed={(e) => e.type === 'click' && (deviceState.current = null)}
+        onContextMenu={(e) => snap.current === id && (e.stopPropagation(), (deviceState.mode = (snap.mode + 1) % modes.length))}
+        onPointerOver={(e) => (e.stopPropagation(), setHovered(true))}
+        onPointerOut={(e) => (e.stopPropagation(), setHovered(false))}
+        name={id}
+        geometry={nodes[name].geometry}
+        {...props}
+        dispose={null}
+      >
+        <meshStandardMaterial
+          color={snap.current === id ? '#ff6080' : '#ffffff'}
+          metalness={0.3}
+          roughness={0.5}
+          emissive={snap.current === id ? '#ff6080' : '#000000'}
+          emissiveIntensity={snap.current === id ? 0.3 : 0}
+        />
+      </mesh>
+      {snap.current === id && (
         <TransformControls
-          object={scene.getObjectByName(snap.current)!}
+          object={meshRef.current!}
           mode={modes[snap.mode] as any}
-          onMouseDown={() => {
-            deviceState.transforming = true;
-          }}
-          onMouseUp={() => {
-            deviceState.transforming = false;
-          }}
+          onMouseDown={() => { deviceState.transforming = true; }}
+          onMouseUp={() => { deviceState.transforming = false; }}
         />
       )}
     </>
   );
+}
+
+// DeviceControls component removed – TransformControls are now handled inside each Device.
+//* Device spawner, handles spawning devices in front of camera
+interface DeviceSpawnerProps {
+  onSpawn: (position: [number, number, number]) => void;
+  shouldSpawn: boolean;
+  onSpawned: () => void;
+}
+
+function DeviceSpawner({ onSpawn, shouldSpawn, onSpawned }: DeviceSpawnerProps) {
+  const camera = useThree((state) => state.camera);
+
+  useEffect(() => {
+    if (shouldSpawn) {
+      const forward = new THREE.Vector3();
+      camera.getWorldDirection(forward);
+
+      const camPos = camera.position.clone();
+      const distance = 1.5;
+      const spawnPos = camPos.add(forward.multiplyScalar(distance));
+
+      onSpawn([spawnPos.x, spawnPos.y, spawnPos.z]);
+      onSpawned();
+    }
+  }, [shouldSpawn, camera, onSpawn, onSpawned]);
+
+  return null;
 }
 
 //* Spark component, handles the main canvas and device placement
@@ -92,18 +111,23 @@ function SparkComponent() {
   const [splatURL, setSplatURL] = useState('');
   const [displayInstruction, setDisplayInstructions] = useState(false);
   const [splatCenter, setSplatCenter] = useState({x: 0, y: 0, z: 0});
-  const [devicePosition, setDevicePosition] = useState<[number, number, number] | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  //* Set device position once when splat center is calculated
-  useEffect(() => {
-    if (!devicePosition) {
-      setDevicePosition([splatCenter.x, splatCenter.y, splatCenter.z]);
-      console.log('Device position set ⌖:', [splatCenter.x, splatCenter.y, splatCenter.z]);
-    }
-  }, [splatCenter, devicePosition]);
+  const [devices, setDevices] = useState<Array<{ id: string, position: [number,number,number] }>>([]);
+  const [shouldSpawnDevice, setShouldSpawnDevice] = useState(false);
+
+  //* Handle spawning a new device
+  const handleSpawnDevice = (position: [number, number, number]) => {
+    setDevices((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        position,
+      }
+    ]);
+  };
 
   //* Redirect to splash screen if no file data is available (e.g., direct navigation or page reload)
   useEffect(() => {
@@ -139,6 +163,7 @@ function SparkComponent() {
   const items = [
     { icon: <FaHome className='fill-white' size={18} />, label: 'Home', onClick: () => navigate('/', { replace: true }) },
     { icon: <FaKeyboard className='fill-white' size={18} />, label: 'Controls', onClick: () => setDisplayInstructions(!displayInstruction) },
+    { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Spawn Device', onClick: () => setShouldSpawnDevice(true) },
   ];
 
   //* Splats do not need the light component as it is 'embedded' into them so we do not add it to the canvas
@@ -196,18 +221,27 @@ function SparkComponent() {
             setSplatCenter = {setSplatCenter}
           />
 
-          {/* Device model - positioned in front of camera */}
-          {devicePosition && (
+           {/* Device models - rendered from devices array */}
             <Suspense fallback={null}>
-              <Device
-                name="LightBulb"
-                position={devicePosition}
-              />
+              {devices.map((device) => (
+                <Device
+                  key={device.id}
+                  id={device.id}
+                  name="LightBulb"
+                  position={device.position}
+                />
+              ))}
             </Suspense>
-          )}
+
+          {/* Device spawner - handles spawning logic */}
+          <DeviceSpawner
+            shouldSpawn={shouldSpawnDevice}
+            onSpawn={handleSpawnDevice}
+            onSpawned={() => setShouldSpawnDevice(false)}
+          />
 
           {/* Transform controls for device manipulation */}
-          <DeviceControls />
+          {/* DeviceControls removed – controls are now per device */}
         </Canvas>
       </div>
     </>
