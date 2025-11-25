@@ -8,8 +8,8 @@ import DevicePlacer from './components/DevicePlacer.tsx';
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HashRouter>
-      {/* <App /> */}
-      <DevicePlacer />
+      <App />
+      {/* <DevicePlacer /> */}
     </HashRouter>
   </StrictMode>,
 )

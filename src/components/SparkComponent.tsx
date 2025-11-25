@@ -1,5 +1,5 @@
-import {useState, useEffect} from 'react';
-import {Canvas} from '@react-three/fiber';
+import {useState, useEffect, Suspense} from 'react';
+import {Canvas, useThree} from '@react-three/fiber';
 import { Progress } from './ui/Progress';
 import { useLocation } from 'react-router';
 import SplatScene_Reveal from './SplatScene_Reveal';
@@ -7,6 +7,73 @@ import Dock from './ui/Dock';
 import { FaHome, FaKeyboard } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import Instructions from './ui/Instructions/Instructions';
+import { TransformControls, useGLTF, useCursor } from '@react-three/drei';
+import { proxy, useSnapshot } from 'valtio';
+
+// Device state management using Valtio
+const modes = ['translate', 'rotate', 'scale'] as const;
+
+type DeviceState = {
+  current: string | null;
+  mode: number;
+};
+
+const deviceState = proxy<DeviceState>({ current: null, mode: 0 });
+
+interface DeviceProps {
+  name: string;
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  scale?: number;
+}
+
+// Device component - renders a GLTF model with transform capabilities
+function Device({ name, ...props }: DeviceProps) {
+  const snap = useSnapshot(deviceState);
+  const { nodes } = useGLTF('./models/devices/LightBulb.gltf') as any;
+  const [hovered, setHovered] = useState(false);
+  useCursor(hovered);
+
+  return (
+    <mesh
+      onClick={(e) => (e.stopPropagation(), (deviceState.current = name))}
+      onPointerMissed={(e) => e.type === 'click' && (deviceState.current = null)}
+      onContextMenu={(e) => snap.current === name && (e.stopPropagation(), (deviceState.mode = (snap.mode + 1) % modes.length))}
+      onPointerOver={(e) => (e.stopPropagation(), setHovered(true))}
+      onPointerOut={(e) => (e.stopPropagation(), setHovered(false))}
+      name={name}
+      geometry={nodes[name].geometry}
+      {...props}
+      dispose={null}
+    >
+      <meshStandardMaterial
+        color={snap.current === name ? '#ff6080' : '#ffffff'}
+        metalness={0.2}
+        roughness={0.4}
+        emissive={snap.current === name ? '#ff6080' : '#000000'}
+        emissiveIntensity={snap.current === name ? 0.3 : 0}
+      />
+    </mesh>
+  );
+}
+
+// Device controls - handles transform controls for selected devices
+function DeviceControls() {
+  const snap = useSnapshot(deviceState);
+  const scene = useThree((state) => state.scene);
+
+  return (
+    <>
+      {snap.current && (
+        <TransformControls
+          object={scene.getObjectByName(snap.current)!}
+          mode={modes[snap.mode] as any}
+        />
+      )}
+    </>
+  );
+}
+
 
 function SparkComponent() {
   //* I need to keep track of the loading progress with these states
@@ -98,12 +165,29 @@ function SparkComponent() {
             powerPreference: 'high-performance',
           }}
         >
+          {/* Lighting for device models - doesn't affect splat rendering */}
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} intensity={1.2} />
+          <pointLight position={[-10, -10, -10]} intensity={0.5} />
+
+          {/* Gaussian splat scene */}
           <SplatScene_Reveal
             splatURL = {splatURL}
             setLoading = {setLoading}
             setProgress = {setProgress}
             setSplatCenter = {setSplatCenter}
           />
+
+          {/* Device model - positioned at splat center */}
+          <Suspense fallback={null}>
+            <Device
+              name="LightBulb"
+              position={[splatCenter.x, splatCenter.y, splatCenter.z]}
+            />
+          </Suspense>
+
+          {/* Transform controls for device manipulation */}
+          <DeviceControls />
         </Canvas>
       </div>
     </>
