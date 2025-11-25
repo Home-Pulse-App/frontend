@@ -166,9 +166,8 @@ function SparkComponent() {
           }}
         >
           {/* Lighting for device models - doesn't affect splat rendering */}
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={1.2} />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} />
+          <ambientLight intensity={3} />
+          <pointLight position={[10, 10, 10]} intensity={1000} />
 
           {/* Gaussian splat scene */}
           <SplatScene_Reveal
