@@ -10,15 +10,19 @@ import Instructions from './ui/Instructions/Instructions';
 import { TransformControls, useGLTF, useCursor } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 
-// Device state management using Valtio
+//* Device state management using Valtio
 const modes = ['translate', 'rotate', 'scale'] as const;
 
 type DeviceState = {
   current: string | null;
   mode: number;
+  transforming: boolean;
 };
 
-const deviceState = proxy<DeviceState>({ current: null, mode: 0 });
+const deviceState = proxy<DeviceState>({ current: null, mode: 0, transforming: false });
+
+//* Export deviceState so other components can check transformation status
+export { deviceState };
 
 interface DeviceProps {
   name: string;
@@ -27,7 +31,7 @@ interface DeviceProps {
   scale?: number;
 }
 
-// Device component - renders a GLTF model with transform capabilities
+//* Device component, renders a GLTF model with transform capabilities
 function Device({ name, ...props }: DeviceProps) {
   const snap = useSnapshot(deviceState);
   const { nodes } = useGLTF('./models/devices/LightBulb.gltf') as any;
@@ -57,7 +61,7 @@ function Device({ name, ...props }: DeviceProps) {
   );
 }
 
-// Device controls - handles transform controls for selected devices
+//* Device controls, handles transform controls for selected devices
 function DeviceControls() {
   const snap = useSnapshot(deviceState);
   const scene = useThree((state) => state.scene);
@@ -68,13 +72,19 @@ function DeviceControls() {
         <TransformControls
           object={scene.getObjectByName(snap.current)!}
           mode={modes[snap.mode] as any}
+          onMouseDown={() => {
+            deviceState.transforming = true;
+          }}
+          onMouseUp={() => {
+            deviceState.transforming = false;
+          }}
         />
       )}
     </>
   );
 }
 
-
+//* Spark component, handles the main canvas and device placement
 function SparkComponent() {
   //* I need to keep track of the loading progress with these states
   const [progress, setProgress] = useState(0);
@@ -82,9 +92,18 @@ function SparkComponent() {
   const [splatURL, setSplatURL] = useState('');
   const [displayInstruction, setDisplayInstructions] = useState(false);
   const [splatCenter, setSplatCenter] = useState({x: 0, y: 0, z: 0});
+  const [devicePosition, setDevicePosition] = useState<[number, number, number] | null>(null);
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  //* Set device position once when splat center is calculated
+  useEffect(() => {
+    if (!devicePosition) {
+      setDevicePosition([splatCenter.x, splatCenter.y, splatCenter.z]);
+      console.log('Device position set ⌖:', [splatCenter.x, splatCenter.y, splatCenter.z]);
+    }
+  }, [splatCenter, devicePosition]);
 
   //* Redirect to splash screen if no file data is available (e.g., direct navigation or page reload)
   useEffect(() => {
@@ -177,13 +196,15 @@ function SparkComponent() {
             setSplatCenter = {setSplatCenter}
           />
 
-          {/* Device model - positioned at splat center */}
-          <Suspense fallback={null}>
-            <Device
-              name="LightBulb"
-              position={[splatCenter.x, splatCenter.y, splatCenter.z]}
-            />
-          </Suspense>
+          {/* Device model - positioned in front of camera */}
+          {devicePosition && (
+            <Suspense fallback={null}>
+              <Device
+                name="LightBulb"
+                position={devicePosition}
+              />
+            </Suspense>
+          )}
 
           {/* Transform controls for device manipulation */}
           <DeviceControls />
