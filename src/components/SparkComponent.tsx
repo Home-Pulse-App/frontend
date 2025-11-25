@@ -4,7 +4,7 @@ import { Progress } from './ui/Progress';
 import { useLocation } from 'react-router';
 import SplatScene from './SplatScene';
 import Dock from './ui/Dock';
-import { FaHome, FaKeyboard, FaLightbulb } from 'react-icons/fa';
+import { FaHome, FaKeyboard, FaLightbulb, FaThermometerHalf, FaWater } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import Instructions from './ui/Instructions/Instructions';
 import { TransformControls, useGLTF, useCursor } from '@react-three/drei';
@@ -159,8 +159,11 @@ function SparkComponent() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Backspace' && deviceState.current) {
-        console.log('Removing device ❌:' + deviceState.current);
-        setDevices((prev) => prev.filter((d) => d.id !== deviceState.current));
+        const idToRemove = deviceState.current;
+        console.log('Removing device ❌:' + idToRemove);
+        setDevices((prev) => prev.filter((d) => d.id !== idToRemove));
+        //! Reset device state
+        deviceState.current = null;
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -176,6 +179,8 @@ function SparkComponent() {
     { icon: <FaHome className='fill-white' size={18} />, label: 'Home', onClick: () => navigate('/', { replace: true }) },
     { icon: <FaKeyboard className='fill-white' size={18} />, label: 'Controls', onClick: () => setDisplayInstructions(!displayInstruction) },
     { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Add Light', onClick: () => setShouldSpawnDevice(true) },
+    { icon: <FaThermometerHalf className='fill-white' size={18} />, label: 'Add Thermometer', onClick: () => setShouldSpawnDevice(true) },
+    { icon: <FaWater className='fill-white' size={18} />, label: 'Add Hygrometer', onClick: () => setShouldSpawnDevice(true) },
   ];
 
   //* Splats do not need the light component as it is 'embedded' into them so we do not add it to the canvas
