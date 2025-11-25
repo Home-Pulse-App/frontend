@@ -12,7 +12,7 @@ type SplatSceneProps = {
   setSplatCenter: React.Dispatch<React.SetStateAction<{x: number, y: number, z: number}>>
 };
 
-function SplatScene_Reveal({splatURL, setLoading, setProgress, setSplatCenter}: SplatSceneProps) {
+function SplatScene({splatURL, setLoading, setProgress, setSplatCenter}: SplatSceneProps) {
 
   //* I need a reference to the splat so I keep the splat constant between frames
   const splatRef = useRef <SplatMesh | null> (null);
@@ -199,4 +199,4 @@ function SplatScene_Reveal({splatURL, setLoading, setProgress, setSplatCenter}: 
   return null;
 }
 
-export default SplatScene_Reveal;
+export default SplatScene;

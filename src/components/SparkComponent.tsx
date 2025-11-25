@@ -2,7 +2,7 @@ import { useEffect, useState, Suspense, useRef } from 'react';
 import {Canvas, useThree} from '@react-three/fiber';
 import { Progress } from './ui/Progress';
 import { useLocation } from 'react-router';
-import SplatScene_Reveal from './SplatScene_Reveal';
+import SplatScene from './SplatScene';
 import Dock from './ui/Dock';
 import { FaHome, FaKeyboard, FaLightbulb } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
@@ -57,8 +57,8 @@ function Device({ id, name, ...props }: DeviceProps) {
       >
         <meshStandardMaterial
           color={snap.current === id ? '#ff6080' : '#ffffff'}
-          metalness={0.3}
-          roughness={0.5}
+          metalness={0.5}
+          roughness={0.2}
           emissive={snap.current === id ? '#ff6080' : '#000000'}
           emissiveIntensity={snap.current === id ? 0.3 : 0}
         />
@@ -163,7 +163,7 @@ function SparkComponent() {
   const items = [
     { icon: <FaHome className='fill-white' size={18} />, label: 'Home', onClick: () => navigate('/', { replace: true }) },
     { icon: <FaKeyboard className='fill-white' size={18} />, label: 'Controls', onClick: () => setDisplayInstructions(!displayInstruction) },
-    { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Spawn Device', onClick: () => setShouldSpawnDevice(true) },
+    { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Add Light', onClick: () => setShouldSpawnDevice(true) },
   ];
 
   //* Splats do not need the light component as it is 'embedded' into them so we do not add it to the canvas
@@ -214,7 +214,7 @@ function SparkComponent() {
           <pointLight position={[10, 10, 10]} intensity={1000} />
 
           {/* Gaussian splat scene */}
-          <SplatScene_Reveal
+          <SplatScene
             splatURL = {splatURL}
             setLoading = {setLoading}
             setProgress = {setProgress}
