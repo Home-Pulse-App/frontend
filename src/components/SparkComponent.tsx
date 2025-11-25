@@ -155,6 +155,18 @@ function SparkComponent() {
     return () => window.removeEventListener('keydown', handleEscape);
   }, []);
 
+  //* Handle Backspace to remove selected device
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Backspace' && deviceState.current) {
+        console.log('Removing device ❌:' + deviceState.current);
+        setDevices((prev) => prev.filter((d) => d.id !== deviceState.current));
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   //* Don't render if no file data is available (redirect will happen)
   if (!location.state?.file?.url) {
     return null;
@@ -209,7 +221,7 @@ function SparkComponent() {
             powerPreference: 'high-performance',
           }}
         >
-          {/* Lighting for device models - doesn't affect splat rendering */}
+          {/* Lighting for device models, doesn't affect splat rendering */}
           <ambientLight intensity={3} />
           <pointLight position={[10, 10, 10]} intensity={1000} />
 
@@ -221,7 +233,7 @@ function SparkComponent() {
             setSplatCenter = {setSplatCenter}
           />
 
-           {/* Device models - rendered from devices array */}
+           {/* Device models, rendered from devices array */}
             <Suspense fallback={null}>
               {devices.map((device) => (
                 <Device
@@ -233,15 +245,12 @@ function SparkComponent() {
               ))}
             </Suspense>
 
-          {/* Device spawner - handles spawning logic */}
+          {/* Device spawner, handles spawning logic */}
           <DeviceSpawner
             shouldSpawn={shouldSpawnDevice}
             onSpawn={handleSpawnDevice}
             onSpawned={() => setShouldSpawnDevice(false)}
           />
-
-          {/* Transform controls for device manipulation */}
-          {/* DeviceControls removed – controls are now per device */}
         </Canvas>
       </div>
     </>
