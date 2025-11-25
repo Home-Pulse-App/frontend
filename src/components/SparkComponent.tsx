@@ -27,16 +27,16 @@ export { deviceState };
 
 interface DeviceProps {
   id: string;
-  name: string;
+  model: string;
   position?: [number, number, number];
   rotation?: [number, number, number];
   scale?: number;
 }
 
 //* Device component, renders a GLTF model with transform capabilities
-function Device({ id, name, ...props }: DeviceProps) {
+function Device({ id, model, ...props }: DeviceProps) {
   const snap = useSnapshot(deviceState);
-  const { nodes } = useGLTF('./models/devices/LightBulb.gltf') as any;
+  const { nodes } = useGLTF(`./models/devices/${model}.gltf`) as any;
   const [hovered, setHovered] = useState(false);
   const meshRef = useRef<THREE.Mesh>(null!);
   useCursor(hovered);
@@ -51,7 +51,7 @@ function Device({ id, name, ...props }: DeviceProps) {
         onPointerOver={(e) => (e.stopPropagation(), setHovered(true))}
         onPointerOut={(e) => (e.stopPropagation(), setHovered(false))}
         name={id}
-        geometry={nodes[name].geometry}
+        geometry={nodes[model].geometry}
         {...props}
         dispose={null}
       >
@@ -61,6 +61,8 @@ function Device({ id, name, ...props }: DeviceProps) {
           roughness={0.2}
           emissive={snap.current === id ? '#ff6080' : '#000000'}
           emissiveIntensity={snap.current === id ? 0.3 : 0}
+          transparent={true}
+          opacity={0.9}
         />
       </mesh>
       {snap.current === id && (
@@ -78,16 +80,16 @@ function Device({ id, name, ...props }: DeviceProps) {
 // DeviceControls component removed – TransformControls are now handled inside each Device.
 //* Device spawner, handles spawning devices in front of camera
 interface DeviceSpawnerProps {
-  onSpawn: (position: [number, number, number]) => void;
-  shouldSpawn: boolean;
+  onSpawn: (position: [number, number, number], model: string) => void;
+  deviceToSpawn: string | null;
   onSpawned: () => void;
 }
 
-function DeviceSpawner({ onSpawn, shouldSpawn, onSpawned }: DeviceSpawnerProps) {
+function DeviceSpawner({ onSpawn, deviceToSpawn, onSpawned }: DeviceSpawnerProps) {
   const camera = useThree((state) => state.camera);
 
   useEffect(() => {
-    if (shouldSpawn) {
+    if (deviceToSpawn) {
       const forward = new THREE.Vector3();
       camera.getWorldDirection(forward);
 
@@ -95,10 +97,10 @@ function DeviceSpawner({ onSpawn, shouldSpawn, onSpawned }: DeviceSpawnerProps) 
       const distance = 1.5;
       const spawnPos = camPos.add(forward.multiplyScalar(distance));
 
-      onSpawn([spawnPos.x, spawnPos.y, spawnPos.z]);
+      onSpawn([spawnPos.x, spawnPos.y, spawnPos.z], deviceToSpawn);
       onSpawned();
     }
-  }, [shouldSpawn, camera, onSpawn, onSpawned]);
+  }, [deviceToSpawn, camera, onSpawn, onSpawned]);
 
   return null;
 }
@@ -115,16 +117,17 @@ function SparkComponent() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [devices, setDevices] = useState<Array<{ id: string, position: [number,number,number] }>>([]);
-  const [shouldSpawnDevice, setShouldSpawnDevice] = useState(false);
+  const [devices, setDevices] = useState<Array<{ id: string, position: [number,number,number], model: string }>>([]);
+  const [deviceToSpawn, setDeviceToSpawn] = useState<string | null>(null);
 
   //* Handle spawning a new device
-  const handleSpawnDevice = (position: [number, number, number]) => {
+  const handleSpawnDevice = (position: [number, number, number], model: string) => {
     setDevices((prev) => [
       ...prev,
       {
         id: crypto.randomUUID(),
         position,
+        model,
       }
     ]);
   };
@@ -162,7 +165,6 @@ function SparkComponent() {
         const idToRemove = deviceState.current;
         console.log('Removing device ❌:' + idToRemove);
         setDevices((prev) => prev.filter((d) => d.id !== idToRemove));
-        //! Reset device state
         deviceState.current = null;
       }
     };
@@ -178,9 +180,9 @@ function SparkComponent() {
   const items = [
     { icon: <FaHome className='fill-white' size={18} />, label: 'Home', onClick: () => navigate('/', { replace: true }) },
     { icon: <FaKeyboard className='fill-white' size={18} />, label: 'Controls', onClick: () => setDisplayInstructions(!displayInstruction) },
-    { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Add Light', onClick: () => setShouldSpawnDevice(true) },
-    { icon: <FaThermometerHalf className='fill-white' size={18} />, label: 'Add Thermometer', onClick: () => setShouldSpawnDevice(true) },
-    { icon: <FaWater className='fill-white' size={18} />, label: 'Add Hygrometer', onClick: () => setShouldSpawnDevice(true) },
+    { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Add Light', onClick: () => setDeviceToSpawn('LightBulb') },
+    { icon: <FaThermometerHalf className='fill-white' size={18} />, label: 'Add Thermometer', onClick: () => setDeviceToSpawn('Thermometer') },
+    { icon: <FaWater className='fill-white' size={18} />, label: 'Add Hygrometer', onClick: () => setDeviceToSpawn('Hygrometer') },
   ];
 
   //* Splats do not need the light component as it is 'embedded' into them so we do not add it to the canvas
@@ -242,9 +244,10 @@ function SparkComponent() {
             <Suspense fallback={null}>
               {devices.map((device) => (
                 <Device
+                  //* The element requires key prop in order to iterate over the list in React
                   key={device.id}
                   id={device.id}
-                  name="LightBulb"
+                  model={device.model}
                   position={device.position}
                 />
               ))}
@@ -252,9 +255,9 @@ function SparkComponent() {
 
           {/* Device spawner, handles spawning logic */}
           <DeviceSpawner
-            shouldSpawn={shouldSpawnDevice}
+            deviceToSpawn={deviceToSpawn}
             onSpawn={handleSpawnDevice}
-            onSpawned={() => setShouldSpawnDevice(false)}
+            onSpawned={() => setDeviceToSpawn(null)}
           />
         </Canvas>
       </div>
