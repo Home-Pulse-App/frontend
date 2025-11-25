@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-progress": "^1.1.8",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.0",
     "@sparkjsdev/spark": "^0.1.10",
     "@tailwindcss/vite": "^4.1.17",
@@ -25,6 +26,7 @@
     "react-router-dom": "^7.9.6",
     "tailwind-merge": "^3.4.0",
     "three": "^0.181.2",
+    "valtio": "^2.2.0",
     "vite-plugin-svgr": "^4.5.0"
   },
   "devDependencies": {
