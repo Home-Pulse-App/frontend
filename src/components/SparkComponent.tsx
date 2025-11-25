@@ -18,9 +18,10 @@ type DeviceState = {
   current: string | null;
   mode: number;
   transforming: boolean;
+  name: string;
 };
 
-const deviceState = proxy<DeviceState>({ current: null, mode: 0, transforming: false });
+const deviceState = proxy<DeviceState>({ current: null, mode: 0, transforming: false, name: '' });
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
@@ -45,8 +46,8 @@ function Device({ id, model, ...props }: DeviceProps) {
     <>
       <mesh
         ref={meshRef}
-        onClick={(e) => (e.stopPropagation(), (deviceState.current = id))}
-        onPointerMissed={(e) => e.type === 'click' && (deviceState.current = null)}
+        onClick={(e) => (e.stopPropagation(), (deviceState.current = id), (deviceState.name = model))}
+        onPointerMissed={(e) => e.type === 'click' && (deviceState.current = null, deviceState.name = '')}
         onContextMenu={(e) => snap.current === id && (e.stopPropagation(), (deviceState.mode = (snap.mode + 1) % modes.length))}
         onPointerOver={(e) => (e.stopPropagation(), setHovered(true))}
         onPointerOut={(e) => (e.stopPropagation(), setHovered(false))}
@@ -163,9 +164,11 @@ function SparkComponent() {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Backspace' && deviceState.current) {
         const idToRemove = deviceState.current;
-        console.log('Removing device ❌:' + idToRemove);
+        const nameToRemove = deviceState.name;
+        console.log('Removing device 🫆:' + idToRemove + ' ❌ Of type: ' + nameToRemove);
         setDevices((prev) => prev.filter((d) => d.id !== idToRemove));
         deviceState.current = null;
+        deviceState.name = '';
       }
     };
     window.addEventListener('keydown', handleKeyDown);
