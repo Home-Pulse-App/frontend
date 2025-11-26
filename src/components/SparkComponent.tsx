@@ -119,40 +119,41 @@ function SparkComponent() {
             </div>
           </div>
         }
-        {!loading &&
-          <>
-            {displayInstruction &&
-            <div className='absolute inset-0 bottom-20 z-40 flex items-center justify-center pointer-events-none'>
-              <Instructions></Instructions>
-            </div>
-            }
-            <div className='absolute inset-x-0 bottom-0 z-50 flex items-center justify-center'>
-              <Dock
-                items={items}
-                panelHeight={68}
-                baseItemSize={50}
-                magnification={70}
-              />
-            </div>
-          </>
-        }
+        {!loading && (
+          <div className={`absolute inset-0 bottom-20 z-40 flex items-center pointer-events-none ${displayInstruction ? 'justify-center gap-8' : 'justify-end pr-4'}`}>
+            {displayInstruction && (
+              <Instructions />
+            )}
 
-        {/* Sensor Control Panel */}
-        {!loading && snap.current && (
-          <SensorControlPanel
-            deviceId={snap.current}
-            deviceModel={snap.name}
-            sensorData={selectedDevice?.sensorData || defaultSensorData}
-            onSensorDataChange={(data) => {
-              if (snap.current && (window as any).__updateDeviceSensorData) {
-                (window as any).__updateDeviceSensorData(snap.current, data);
-              }
-            }}
-            onClose={() => {
-              deviceState.current = null;
-              deviceState.name = '';
-            }}
-          />
+            {/* Sensor Control Panel */}
+            {snap.current && (
+              <SensorControlPanel
+                deviceId={snap.current}
+                deviceModel={snap.name}
+                sensorData={selectedDevice?.sensorData || defaultSensorData}
+                onSensorDataChange={(data) => {
+                  if (snap.current && (window as any).__updateDeviceSensorData) {
+                    (window as any).__updateDeviceSensorData(snap.current, data);
+                  }
+                }}
+                onClose={() => {
+                  deviceState.current = null;
+                  deviceState.name = '';
+                }}
+              />
+            )}
+          </div>
+        )}
+
+        {!loading && (
+          <div className='absolute inset-x-0 bottom-0 z-50 flex items-center justify-center'>
+            <Dock
+              items={items}
+              panelHeight={68}
+              baseItemSize={50}
+              magnification={70}
+            />
+          </div>
         )}
 
         <Canvas

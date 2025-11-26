@@ -9,6 +9,7 @@ interface SensorControlPanelProps {
   sensorData: SensorData;
   onSensorDataChange: (data: SensorData) => void;
   onClose: () => void;
+  className?: string;
 }
 
 export default function SensorControlPanel({
@@ -16,7 +17,8 @@ export default function SensorControlPanel({
   deviceModel,
   sensorData,
   onSensorDataChange,
-  onClose
+  onClose,
+  className
 }: SensorControlPanelProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -31,10 +33,10 @@ export default function SensorControlPanel({
   };
 
   return (
-    <div className='fixed top-4 right-4 z-50'>
+    <div className={`pointer-events-auto ${className || ''}`}>
       <GlassSurface
         width="20rem"
-        height="auto"
+        height={500}
         displace={5}
         distortionScale={50}
         redOffset={5}
@@ -44,7 +46,7 @@ export default function SensorControlPanel({
         opacity={0.3}
         mixBlendMode="screen"
       >
-      <div className='w-full overflow-hidden rounded-lg'>
+      <div className='w-full h-full overflow-hidden rounded-lg flex flex-col'>
         {/* Header */}
         <div className='flex items-center justify-between p-4 bg-white/5 border-b border-white/10'>
           <div className='flex items-center gap-2'>
@@ -71,7 +73,7 @@ export default function SensorControlPanel({
 
         {/* Controls */}
         {!isCollapsed && (
-          <div className='p-4 space-y-4'>
+          <div className='p-4 space-y-4 overflow-y-auto flex-1 custom-scrollbar'>
             {/* Temperature Slider */}
             <div className='space-y-2'>
               <div className='flex items-center justify-between'>
