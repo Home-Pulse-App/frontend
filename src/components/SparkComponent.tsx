@@ -122,7 +122,7 @@ function SparkComponent() {
         {!loading &&
           <>
             {displayInstruction &&
-            <div className='absolute inset-0 z-40 flex items-center justify-center pointer-events-none'>
+            <div className='absolute inset-0 bottom-20 z-40 flex items-center justify-center pointer-events-none'>
               <Instructions></Instructions>
             </div>
             }
