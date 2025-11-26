@@ -1,9 +1,20 @@
+export interface SensorData {
+  temperature: number;
+  humidity: number;
+  light: number;
+  switch1: number;
+  switch2: number;
+  button1: number;
+  button2: number;
+}
+
 export interface DeviceData {
   id: string;
   model: string;
   position: [number, number, number];
   rotation: [number, number, number];
   scale: number;
+  sensorData?: SensorData;
 }
 
 interface UserData {

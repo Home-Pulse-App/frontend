@@ -3,9 +3,46 @@ import { useThree } from '@react-three/fiber';
 import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
-import type { DeviceData } from '../services/mockServer';
+import type { DeviceData, SensorData } from '../services/mockServer';
 
 const modes = ['translate', 'rotate', 'scale'] as const;
+
+//* Computes the material color for a device based on its type and sensor data
+function getDeviceColor(model: string, sensorData?: SensorData): THREE.Color {
+  // Default color if no sensor data
+  if (!sensorData) {
+    return new THREE.Color('#ffffff');
+  }
+
+  switch (model) {
+    case 'Light': {
+      //* Yellow if switch1 OR switch2 is ON, otherwise white
+      const isOn = sensorData.switch1 === 1 || sensorData.switch2 === 1;
+      return new THREE.Color(isOn ? '#ffff00' : '#ffffff');
+    }
+
+    case 'Thermometer': {
+      //* Gradient from dark blue (0°C) to red (50°C)
+      const temp = Math.max(0, Math.min(50, sensorData.temperature));
+      const t = temp / 50;
+      const darkBlue = new THREE.Color('#00008b');
+      const red = new THREE.Color('#ff0000');
+      return darkBlue.clone().lerp(red, t);
+    }
+
+    case 'Hygrometer': {
+      //* Gradient from white (0%) to dark blue (100%)
+      const humidity = Math.max(0, Math.min(100, sensorData.humidity));
+      const t = humidity / 100;
+      const white = new THREE.Color('#ffffff');
+      const darkBlue = new THREE.Color('#00008b');
+      return white.clone().lerp(darkBlue, t);
+    }
+
+    default:
+      return new THREE.Color('#ffffff');
+  }
+}
 
 type DeviceState = {
   current: string | null;
@@ -24,24 +61,28 @@ interface DeviceProps {
   position: [number, number, number];
   rotation: [number, number, number];
   scale: number;
+  sensorData?: SensorData;
   onTransformEnd: (id: string, position: THREE.Vector3, rotation: THREE.Euler, scale: THREE.Vector3) => void;
 }
 
-function Device({ id, model, position, rotation, scale, onTransformEnd, ...props }: DeviceProps) {
+function Device({ id, model, position, rotation, scale, sensorData, onTransformEnd, ...props }: DeviceProps) {
   const snap = useSnapshot(deviceState);
   const { nodes } = useGLTF(`./models/devices/${model}.gltf`) as any;
   const [hovered, setHovered] = useState(false);
   const meshRef = useRef<THREE.Mesh>(null!);
   useCursor(hovered);
 
-  // Apply initial transforms
+  //* Compute dynamic color based on device type and sensor data
+  const deviceColor = getDeviceColor(model, sensorData);
+
+  //* Apply initial transforms
   useEffect(() => {
     if (meshRef.current) {
       meshRef.current.position.set(...position);
       meshRef.current.rotation.set(...rotation);
       meshRef.current.scale.setScalar(scale);
     }
-  }, []); // Only on mount/remount
+  }, []);
 
   return (
     <>
@@ -58,7 +99,7 @@ function Device({ id, model, position, rotation, scale, onTransformEnd, ...props
         dispose={null}
       >
         <meshStandardMaterial
-          color='#ffffff'
+          color={deviceColor}
           metalness={0.5}
           roughness={0.2}
           transparent={false}
@@ -99,19 +140,19 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   const [devices, setDevices] = useState<DeviceData[]>(initialDevices);
   const camera = useThree((state) => state.camera);
 
-  // Update internal state if initialDevices changes (e.g. loaded from server)
+  //* Update internal state if initialDevices changes (e.g. loaded from server)
   useEffect(() => {
     if (initialDevices.length > 0) {
         setDevices(initialDevices);
     }
   }, [initialDevices]);
 
-  // Notify parent of changes
+  //* Notify parent of changes
   useEffect(() => {
     onDevicesChange?.(devices);
   }, [devices, onDevicesChange]);
 
-  // Handle spawning
+  //* Handle spawning
   useEffect(() => {
     if (deviceToSpawn) {
       const forward = new THREE.Vector3();
@@ -174,6 +215,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
             position={device.position}
             rotation={device.rotation}
             scale={device.scale}
+            sensorData={device.sensorData}
             onTransformEnd={handleTransformEnd}
           />
         ))}
