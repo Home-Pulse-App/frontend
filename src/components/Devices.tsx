@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, Suspense } from 'react';
 import { useThree } from '@react-three/fiber';
-import { TransformControls, useGLTF, useCursor } from '@react-three/drei';
+import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
 import type { DeviceData } from '../services/mockServer';
@@ -58,14 +58,18 @@ function Device({ id, model, position, rotation, scale, onTransformEnd, ...props
         dispose={null}
       >
         <meshStandardMaterial
-          color={snap.current === id ? '#ff6080' : '#ffffff'}
+          color='#ffffff'
           metalness={0.5}
           roughness={0.2}
-          emissive={snap.current === id ? '#ff6080' : '#000000'}
-          emissiveIntensity={snap.current === id ? 0.3 : 0}
-          transparent={true}
-          opacity={0.9}
+          transparent={false}
         />
+        {snap.current === id && (
+          <Outlines
+          thickness={5}
+          color='#ff6080'
+          angle={0.1}
+          />
+        )}
       </mesh>
       {snap.current === id && (
         <TransformControls
