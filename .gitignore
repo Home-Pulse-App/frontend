@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 public/models/InteriorDesign.ply
+public/models/valley.spz
