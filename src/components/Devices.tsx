@@ -134,7 +134,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     }
   }, [deviceToSpawn, camera, onSpawned]);
 
-  // Handle Backspace
+  //* Handle Backspace
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Backspace' && deviceState.current) {

@@ -67,7 +67,7 @@ function SparkComponent() {
   const items = [
     { icon: <FaHome className='fill-white' size={18} />, label: 'Home', onClick: () => navigate('/', { replace: true }) },
     { icon: <FaKeyboard className='fill-white' size={18} />, label: 'Controls', onClick: () => setDisplayInstructions(!displayInstruction) },
-    { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Add Light', onClick: () => setDeviceToSpawn('LightBulb') },
+    { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Add Light', onClick: () => setDeviceToSpawn('Light') },
     { icon: <FaThermometerHalf className='fill-white' size={18} />, label: 'Add Thermometer', onClick: () => setDeviceToSpawn('Thermometer') },
     { icon: <FaWater className='fill-white' size={18} />, label: 'Add Hygrometer', onClick: () => setDeviceToSpawn('Hygrometer') },
   ];
@@ -131,13 +131,13 @@ function SparkComponent() {
             setSplatCenter = {setSplatCenter}
           />
 
-           {/* Devices component handles rendering and spawning devices */}
-           <Devices
-             deviceToSpawn={deviceToSpawn}
-             onSpawned={() => setDeviceToSpawn(null)}
-             initialDevices={initialDevices}
-             onDevicesChange={handleDevicesChange}
-           />
+          {/* Devices component handles rendering and spawning devices */}
+          <Devices
+            deviceToSpawn={deviceToSpawn}
+            onSpawned={() => setDeviceToSpawn(null)}
+            initialDevices={initialDevices}
+            onDevicesChange={handleDevicesChange}
+          />
         </Canvas>
       </div>
     </>
