@@ -66,14 +66,15 @@ function FileUpload({ onFileUpload }: FileUploadProps) {
       onFileUpload(fileData);
     }
 
-    // Convert to base64 and save
+    //TODO Check what is the best way to do this when connecting to the backend
+    //* Convert to base64 and save
     const reader = new FileReader();
     reader.onload = async () => {
       const base64Data = reader.result as string;
       console.log('[FileUpload] File read complete, base64 length:', base64Data.length);
       await mockServer.saveSplatData('default-user', base64Data);
       console.log('[FileUpload] Save complete, navigating...');
-      // Navigate ONLY after saving is complete
+      //* Navigate ONLY after saving is complete
       navigate('/viewer', { state: { file: fileData } });
     };
     reader.onerror = (error) => {

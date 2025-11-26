@@ -40,7 +40,7 @@ function SparkComponent() {
       return;
     }
 
-    // Check for initial devices passed from Load Session
+    //* Check for initial devices passed from Load Session
     if (location.state?.devices) {
         setInitialDevices(location.state.devices);
     }
@@ -176,14 +176,16 @@ function SparkComponent() {
             setSplatCenter = {setSplatCenter}
           />
 
-          {/* Devices component handles rendering and spawning devices */}
-          <Devices
-            deviceToSpawn={deviceToSpawn}
-            onSpawned={() => setDeviceToSpawn(null)}
-            initialDevices={initialDevices}
-            onDevicesChange={handleDevicesChange}
-            onSensorDataUpdate={handleSensorDataUpdate}
-          />
+          {/* Devices component handles rendering and spawning devices - only render after splat loads */}
+          {!loading && (
+            <Devices
+              deviceToSpawn={deviceToSpawn}
+              onSpawned={() => setDeviceToSpawn(null)}
+              initialDevices={initialDevices}
+              onDevicesChange={handleDevicesChange}
+              onSensorDataUpdate={handleSensorDataUpdate}
+            />
+          )}
         </Canvas>
       </div>
     </>

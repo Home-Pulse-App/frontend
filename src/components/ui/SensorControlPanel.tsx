@@ -26,6 +26,7 @@ export default function SensorControlPanel({
       ...sensorData,
       [field]: value
     });
+    console.log('SensorControlPanel handleChange', field, value);
   };
 
   return (
@@ -126,7 +127,7 @@ export default function SensorControlPanel({
           {/* Switches */}
           <div className='space-y-3'>
             <label className='text-white/80 text-xs font-medium'>Switches</label>
-            <div className='grid grid-cols-2 gap-3'>
+            <div className='flex justify-center'>
               <button
                 onClick={() => handleChange('switch1', sensorData.switch1 === 1 ? 0 : 1)}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
@@ -135,17 +136,7 @@ export default function SensorControlPanel({
                     : 'bg-white/10 text-white/60 hover:bg-white/20'
                 }`}
               >
-                Switch 1
-              </button>
-              <button
-                onClick={() => handleChange('switch2', sensorData.switch2 === 1 ? 0 : 1)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                  sensorData.switch2 === 1
-                    ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/50'
-                    : 'bg-white/10 text-white/60 hover:bg-white/20'
-                }`}
-              >
-                Switch 2
+                Switch
               </button>
             </div>
           </div>

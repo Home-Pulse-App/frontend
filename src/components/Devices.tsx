@@ -9,7 +9,7 @@ const modes = ['translate', 'rotate', 'scale'] as const;
 
 //* Computes the material color for a device based on its type and sensor data
 function getDeviceColor(model: string, sensorData?: SensorData): THREE.Color {
-  // Default color if no sensor data
+  //* Default color if no sensor data
   if (!sensorData) {
     return new THREE.Color('#ffffff');
   }
