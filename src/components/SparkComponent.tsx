@@ -4,7 +4,7 @@ import { Progress } from './ui/Progress';
 import { useLocation } from 'react-router';
 import SplatScene from './SplatScene';
 import Dock from './ui/Dock';
-import { FaHome, FaKeyboard, FaLightbulb, FaThermometerHalf, FaWater } from 'react-icons/fa';
+import { FaHome, FaKeyboard, FaLightbulb, FaSun, FaThermometerHalf, FaWater } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import Instructions from './ui/Instructions/Instructions';
 import Devices, { deviceState } from './Devices';
@@ -75,6 +75,7 @@ function SparkComponent() {
     { icon: <FaLightbulb className='fill-white' size={18} />, label: 'Add Light', onClick: () => setDeviceToSpawn('Light') },
     { icon: <FaThermometerHalf className='fill-white' size={18} />, label: 'Add Thermometer', onClick: () => setDeviceToSpawn('Thermometer') },
     { icon: <FaWater className='fill-white' size={18} />, label: 'Add Hygrometer', onClick: () => setDeviceToSpawn('Hygrometer') },
+    { icon: <FaSun className='fill-white' size={18} />, label: 'Add Light Sensor', onClick: () => setDeviceToSpawn('AmbientLightSensor') },
   ];
 
   const handleDevicesChange = (devices: DeviceData[]) => {
@@ -95,7 +96,7 @@ function SparkComponent() {
   const defaultSensorData: SensorData = {
     temperature: 0,
     humidity: 0,
-    light: 75,
+    light: 0,
     switch1: 0,
     switch2: 0,
     button1: 0,

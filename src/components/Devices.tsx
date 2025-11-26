@@ -17,13 +17,8 @@ function getDeviceColor(model: string, sensorData?: SensorData): THREE.Color {
   switch (model) {
     case 'Light': {
       //* Yellow if switch1 OR switch2 is ON, otherwise white
-      const light = Math.max(0, Math.min(100, sensorData.light));
-      const t = light / 100;
-      const white = new THREE.Color('#ffffff');
-      const yellow = new THREE.Color('#ffff00');
-
       const isOn = sensorData.switch1 === 1 || sensorData.switch2 === 1;
-      return new THREE.Color(isOn ? white.clone().lerp(yellow, t) : '#ffffff');
+      return new THREE.Color(isOn ? '#ffff00' : '#ffffff');
     }
 
     case 'Thermometer': {
@@ -42,6 +37,15 @@ function getDeviceColor(model: string, sensorData?: SensorData): THREE.Color {
       const white = new THREE.Color('#ffffff');
       const darkBlue = new THREE.Color('#00008b');
       return white.clone().lerp(darkBlue, t);
+    }
+
+    case 'AmbientLightSensor': {
+      //* Gradient from white (0%) to yellow (100%)
+      const light = Math.max(0, Math.min(100, sensorData.light));
+      const t = light / 100;
+      const white = new THREE.Color('#ffffff');
+      const yellow = new THREE.Color('#ffff00');
+      return white.clone().lerp(yellow, t);
     }
 
     default:
