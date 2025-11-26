@@ -76,8 +76,8 @@ function DockItem({
       onClick={onClick}
       className={`relative inline-flex items-center justify-center rounded-full bg-[rgb(43,41,40)] border-gray-400 border-2 shadow-md ${className}`}
       tabIndex={0}
-      role="button"
-      aria-haspopup="true"
+      role='button'
+      aria-haspopup='true'
     >
       {Children.map(children, child =>
         React.isValidElement(child)
@@ -114,7 +114,7 @@ function DockLabel({ children, className = '', isHovered }: DockLabelProps) {
           exit={{ opacity: 0, y: 0 }}
           transition={{ duration: 0.2 }}
           className={`${className} absolute -top-6 left-1/2 w-fit whitespace-pre rounded-md border bg-[rgb(43,41,40)] border-gray-800 px-2 py-0.5 text-xs text-white -translate-x-1/2`}
-          role="tooltip"
+          role='tooltip'
         >
           {children}
         </motion.div>
@@ -151,7 +151,7 @@ export default function Dock({
   const height = useSpring(heightRow, spring);
 
   return (
-    <motion.div style={{ height }} className="mx-2 flex max-w-full items-center [scrollbar-width:none]">
+    <motion.div style={{ height }} className='mx-2 flex max-w-full items-center [scrollbar-width:none]'>
       <motion.div
         onMouseMove={({ pageX }) => {
           isHovered.set(1);
@@ -163,8 +163,8 @@ export default function Dock({
         }}
         className={`${className} absolute bottom-10 left-1/2 transform -translate-x-1/2 flex items-end w-fit gap-4 rounded-2xl pb-2 px-4`}
         style={{ height: panelHeight }}
-        role="toolbar"
-        aria-label="Application dock"
+        role='toolbar'
+        aria-label='Application dock'
       >
         {items.map((item, index) => (
           <DockItem

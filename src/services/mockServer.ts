@@ -13,7 +13,7 @@ export interface DeviceData {
   model: string;
   position: [number, number, number];
   rotation: [number, number, number];
-  scale: number;
+  scale: number; //! Assuming uniform scale for now
   sensorData?: SensorData;
 }
 

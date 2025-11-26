@@ -17,17 +17,22 @@ function getDeviceColor(model: string, sensorData?: SensorData): THREE.Color {
   switch (model) {
     case 'Light': {
       //* Yellow if switch1 OR switch2 is ON, otherwise white
+      const light = Math.max(0, Math.min(100, sensorData.light));
+      const t = light / 100;
+      const white = new THREE.Color('#ffffff');
+      const yellow = new THREE.Color('#ffff00');
+
       const isOn = sensorData.switch1 === 1 || sensorData.switch2 === 1;
-      return new THREE.Color(isOn ? '#ffff00' : '#ffffff');
+      return new THREE.Color(isOn ? white.clone().lerp(yellow, t) : '#ffffff');
     }
 
     case 'Thermometer': {
-      //* Gradient from dark blue (0°C) to red (50°C)
+      //* Gradient from white (0°C) to red (50°C)
       const temp = Math.max(0, Math.min(50, sensorData.temperature));
       const t = temp / 50;
-      const darkBlue = new THREE.Color('#00008b');
+      const white = new THREE.Color('#ffffff');
       const red = new THREE.Color('#ff0000');
-      return darkBlue.clone().lerp(red, t);
+      return white.clone().lerp(red, t);
     }
 
     case 'Hygrometer': {
@@ -134,9 +139,10 @@ interface DevicesProps {
   onSpawned: () => void;
   initialDevices?: DeviceData[];
   onDevicesChange?: (devices: DeviceData[]) => void;
+  onSensorDataUpdate?: (deviceId: string, sensorData: SensorData) => void;
 }
 
-export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [], onDevicesChange }: DevicesProps) {
+export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [], onDevicesChange, onSensorDataUpdate }: DevicesProps) {
   const [devices, setDevices] = useState<DeviceData[]>(initialDevices);
   const camera = useThree((state) => state.camera);
 
@@ -191,6 +197,24 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  //* Update sensor data for a specific device
+  const updateDeviceSensorData = (deviceId: string, sensorData: SensorData) => {
+    setDevices(prev => prev.map(d =>
+      d.id === deviceId ? { ...d, sensorData } : d
+    ));
+    onSensorDataUpdate?.(deviceId, sensorData);
+  };
+
+  //* Expose updateDeviceSensorData to parent via callback
+  useEffect(() => {
+    if (onSensorDataUpdate) {
+      (window as any).__updateDeviceSensorData = updateDeviceSensorData;
+    }
+    return () => {
+      delete (window as any).__updateDeviceSensorData;
+    };
+  }, [onSensorDataUpdate]);
+
   const handleTransformEnd = (id: string, position: THREE.Vector3, rotation: THREE.Euler, scale: THREE.Vector3) => {
       setDevices(prev => prev.map(d => {
           if (d.id === id) {
@@ -198,7 +222,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
                   ...d,
                   position: [position.x, position.y, position.z],
                   rotation: [rotation.x, rotation.y, rotation.z],
-                  scale: scale.x // Assuming uniform scale for now
+                  scale: scale.x //! Assuming uniform scale for now
               };
           }
           return d;

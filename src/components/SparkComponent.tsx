@@ -8,7 +8,9 @@ import { FaHome, FaKeyboard, FaLightbulb, FaThermometerHalf, FaWater } from 'rea
 import { useNavigate } from 'react-router';
 import Instructions from './ui/Instructions/Instructions';
 import Devices, { deviceState } from './Devices';
-import { mockServer, type DeviceData } from '../services/mockServer';
+import { mockServer, type DeviceData, type SensorData } from '../services/mockServer';
+import SensorControlPanel from './ui/SensorControlPanel';
+import { useSnapshot } from 'valtio';
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
@@ -27,6 +29,9 @@ function SparkComponent() {
 
   const [deviceToSpawn, setDeviceToSpawn] = useState<string | null>(null);
   const [initialDevices, setInitialDevices] = useState<DeviceData[]>([]);
+  const [devices, setDevices] = useState<DeviceData[]>([]);
+
+  const snap = useSnapshot(deviceState);
 
   //* Redirect to splash screen if no file data is available (e.g., direct navigation or page reload)
   useEffect(() => {
@@ -73,7 +78,28 @@ function SparkComponent() {
   ];
 
   const handleDevicesChange = (devices: DeviceData[]) => {
+      setDevices(devices);
       mockServer.saveDevices('default-user', devices);
+  };
+
+  const handleSensorDataUpdate = (deviceId: string, sensorData: SensorData) => {
+    const updatedDevices = devices.map(d =>
+      d.id === deviceId ? { ...d, sensorData } : d
+    );
+    setDevices(updatedDevices);
+    mockServer.saveDevices('default-user', updatedDevices);
+  };
+
+  //* Get current selected device data
+  const selectedDevice = devices.find(d => d.id === snap.current);
+  const defaultSensorData: SensorData = {
+    temperature: 0,
+    humidity: 0,
+    light: 75,
+    switch1: 0,
+    switch2: 0,
+    button1: 0,
+    button2: 0
   };
 
   //* Splats do not need the light component as it is 'embedded' into them so we do not add it to the canvas
@@ -109,6 +135,25 @@ function SparkComponent() {
             </div>
           </>
         }
+
+        {/* Sensor Control Panel */}
+        {!loading && snap.current && (
+          <SensorControlPanel
+            deviceId={snap.current}
+            deviceModel={snap.name}
+            sensorData={selectedDevice?.sensorData || defaultSensorData}
+            onSensorDataChange={(data) => {
+              if (snap.current && (window as any).__updateDeviceSensorData) {
+                (window as any).__updateDeviceSensorData(snap.current, data);
+              }
+            }}
+            onClose={() => {
+              deviceState.current = null;
+              deviceState.name = '';
+            }}
+          />
+        )}
+
         <Canvas
           // https://threejs.org/docs/#PerspectiveCamera
           camera={{ position: [splatCenter.x, splatCenter.y, splatCenter.z], fov: 75, near: 0.01, far: 1000 }}
@@ -137,6 +182,7 @@ function SparkComponent() {
             onSpawned={() => setDeviceToSpawn(null)}
             initialDevices={initialDevices}
             onDevicesChange={handleDevicesChange}
+            onSensorDataUpdate={handleSensorDataUpdate}
           />
         </Canvas>
       </div>

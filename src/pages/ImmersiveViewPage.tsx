@@ -43,7 +43,7 @@ function ImmersiveViewPage() {
         <div className='pointer-events-auto shrink-0 flex flex-col items-center gap-4'>
           <FileUpload/>
 
-          <div className="flex flex-col items-center gap-2">
+          <div className='flex flex-col items-center gap-2'>
             <button
               onClick={handleLoadSession}
               disabled={loading}
@@ -51,7 +51,7 @@ function ImmersiveViewPage() {
             >
               {loading ? 'Loading...' : 'Load Previous Session'}
             </button>
-            {error && <p className="text-red-400 text-sm">{error}</p>}
+            {error && <p className='text-red-400 text-sm'>{error}</p>}
           </div>
         </div>
       </div>

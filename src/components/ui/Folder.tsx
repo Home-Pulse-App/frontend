@@ -176,21 +176,21 @@ const Folder: React.FC<FolderProps> = ({
     >
       <input
         ref={fileInputRef}
-        type="file"
+        type='file'
         onChange={handleFileChange}
-        className="hidden"
-        accept="*/*"
+        className='hidden'
+        accept='*/*'
       />
 
       <div
-        className="relative w-[100px] h-20 rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] transition-all duration-300 bg-gray-300 dark:bg-gray-200"
+        className='relative w-[100px] h-20 rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px] transition-all duration-300 bg-gray-300 dark:bg-gray-200'
         style={{
           transform: open || isDragging ? 'translateY(-8px)' : 'translateY(0)',
           boxShadow: isDragging ? '0 0 12px rgba(82,39,255,0.4)' : 'none',
         }}
       >
         <span
-          className="absolute z-0 bottom-[98%] left-0 w-[30px] h-2.5 rounded-tl-[5px] rounded-tr-[5px] bg-gray-300 dark:bg-gray-200"
+          className='absolute z-0 bottom-[98%] left-0 w-[30px] h-2.5 rounded-tl-[5px] rounded-tr-[5px] bg-gray-300 dark:bg-gray-200'
         />
 
         {Array.from({ length: maxItems }).map((_, i) => {
@@ -220,14 +220,14 @@ const Folder: React.FC<FolderProps> = ({
         })}
 
         <div
-          className="absolute z-30 w-full h-full origin-bottom transition-transform duration-300 ease-in-out bg-[#dfeaeb] dark:bg-white"
+          className='absolute z-30 w-full h-full origin-bottom transition-transform duration-300 ease-in-out bg-[#dfeaeb] dark:bg-white'
           style={{
             borderRadius: '5px 10px 10px 10px',
             transform: open || isDragging ? 'skew(15deg) scaleY(0.6)' : 'none',
           }}
         />
         <div
-          className="absolute z-30 w-full h-full origin-bottom transition-transform duration-300 ease-in-out bg-[#dfeaeb] dark:bg-white"
+          className='absolute z-30 w-full h-full origin-bottom transition-transform duration-300 ease-in-out bg-[#dfeaeb] dark:bg-white'
           style={{
             borderRadius: '5px 10px 10px 10px',
             transform: open || isDragging ? 'skew(-15deg) scaleY(0.6)' : 'none',
