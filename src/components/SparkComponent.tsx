@@ -1,5 +1,5 @@
-import { useEffect, useState, Suspense, useRef } from 'react';
-import {Canvas, useThree} from '@react-three/fiber';
+import { useEffect, useState } from 'react';
+import {Canvas} from '@react-three/fiber';
 import { Progress } from './ui/Progress';
 import { useLocation } from 'react-router';
 import SplatScene from './SplatScene';
@@ -7,104 +7,10 @@ import Dock from './ui/Dock';
 import { FaHome, FaKeyboard, FaLightbulb, FaThermometerHalf, FaWater } from 'react-icons/fa';
 import { useNavigate } from 'react-router';
 import Instructions from './ui/Instructions/Instructions';
-import { TransformControls, useGLTF, useCursor } from '@react-three/drei';
-import { proxy, useSnapshot } from 'valtio';
-import * as THREE from 'three';
-
-//* Device state management using Valtio
-const modes = ['translate', 'rotate', 'scale'] as const;
-
-type DeviceState = {
-  current: string | null;
-  mode: number;
-  transforming: boolean;
-  name: string;
-};
-
-const deviceState = proxy<DeviceState>({ current: null, mode: 0, transforming: false, name: '' });
+import Devices, { deviceState } from './Devices';
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
-
-interface DeviceProps {
-  id: string;
-  model: string;
-  position?: [number, number, number];
-  rotation?: [number, number, number];
-  scale?: number;
-}
-
-//* Device component, renders a GLTF model with transform capabilities
-function Device({ id, model, ...props }: DeviceProps) {
-  const snap = useSnapshot(deviceState);
-  const { nodes } = useGLTF(`./models/devices/${model}.gltf`) as any;
-  const [hovered, setHovered] = useState(false);
-  const meshRef = useRef<THREE.Mesh>(null!);
-  useCursor(hovered);
-
-  return (
-    <>
-      <mesh
-        ref={meshRef}
-        onClick={(e) => (e.stopPropagation(), (deviceState.current = id), (deviceState.name = model))}
-        onPointerMissed={(e) => e.type === 'click' && (deviceState.current = null, deviceState.name = '')}
-        onContextMenu={(e) => snap.current === id && (e.stopPropagation(), (deviceState.mode = (snap.mode + 1) % modes.length))}
-        onPointerOver={(e) => (e.stopPropagation(), setHovered(true))}
-        onPointerOut={(e) => (e.stopPropagation(), setHovered(false))}
-        name={id}
-        geometry={nodes[model].geometry}
-        {...props}
-        dispose={null}
-      >
-        <meshStandardMaterial
-          color={snap.current === id ? '#ff6080' : '#ffffff'}
-          metalness={0.5}
-          roughness={0.2}
-          emissive={snap.current === id ? '#ff6080' : '#000000'}
-          emissiveIntensity={snap.current === id ? 0.3 : 0}
-          transparent={true}
-          opacity={0.9}
-        />
-      </mesh>
-      {snap.current === id && (
-        <TransformControls
-          object={meshRef.current!}
-          mode={modes[snap.mode] as any}
-          onMouseDown={() => { deviceState.transforming = true; }}
-          onMouseUp={() => { deviceState.transforming = false; }}
-        />
-      )}
-    </>
-  );
-}
-
-// DeviceControls component removed – TransformControls are now handled inside each Device.
-//* Device spawner, handles spawning devices in front of camera
-interface DeviceSpawnerProps {
-  onSpawn: (position: [number, number, number], model: string) => void;
-  deviceToSpawn: string | null;
-  onSpawned: () => void;
-}
-
-function DeviceSpawner({ onSpawn, deviceToSpawn, onSpawned }: DeviceSpawnerProps) {
-  const camera = useThree((state) => state.camera);
-
-  useEffect(() => {
-    if (deviceToSpawn) {
-      const forward = new THREE.Vector3();
-      camera.getWorldDirection(forward);
-
-      const camPos = camera.position.clone();
-      const distance = 1.5;
-      const spawnPos = camPos.add(forward.multiplyScalar(distance));
-
-      onSpawn([spawnPos.x, spawnPos.y, spawnPos.z], deviceToSpawn);
-      onSpawned();
-    }
-  }, [deviceToSpawn, camera, onSpawn, onSpawned]);
-
-  return null;
-}
 
 //* Spark component, handles the main canvas and device placement
 function SparkComponent() {
@@ -118,20 +24,7 @@ function SparkComponent() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [devices, setDevices] = useState<Array<{ id: string, position: [number,number,number], model: string }>>([]);
   const [deviceToSpawn, setDeviceToSpawn] = useState<string | null>(null);
-
-  //* Handle spawning a new device
-  const handleSpawnDevice = (position: [number, number, number], model: string) => {
-    setDevices((prev) => [
-      ...prev,
-      {
-        id: crypto.randomUUID(),
-        position,
-        model,
-      }
-    ]);
-  };
 
   //* Redirect to splash screen if no file data is available (e.g., direct navigation or page reload)
   useEffect(() => {
@@ -157,22 +50,6 @@ function SparkComponent() {
     };
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, []);
-
-  //* Handle Backspace to remove selected device
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Backspace' && deviceState.current) {
-        const idToRemove = deviceState.current;
-        const nameToRemove = deviceState.name;
-        console.log('Removing device 🫆:' + idToRemove + ' ❌ Of type: ' + nameToRemove);
-        setDevices((prev) => prev.filter((d) => d.id !== idToRemove));
-        deviceState.current = null;
-        deviceState.name = '';
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   //* Don't render if no file data is available (redirect will happen)
@@ -243,23 +120,9 @@ function SparkComponent() {
             setSplatCenter = {setSplatCenter}
           />
 
-           {/* Device models, rendered from devices array */}
-            <Suspense fallback={null}>
-              {devices.map((device) => (
-                <Device
-                  //* The element requires key prop in order to iterate over the list in React
-                  key={device.id}
-                  id={device.id}
-                  model={device.model}
-                  position={device.position}
-                />
-              ))}
-            </Suspense>
-
-          {/* Device spawner, handles spawning logic */}
-          <DeviceSpawner
+          {/* Devices component handles rendering and spawning devices */}
+          <Devices
             deviceToSpawn={deviceToSpawn}
-            onSpawn={handleSpawnDevice}
             onSpawned={() => setDeviceToSpawn(null)}
           />
         </Canvas>
