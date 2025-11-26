@@ -178,6 +178,16 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
           position: [spawnPos.x, spawnPos.y, spawnPos.z],
           rotation: [0, 0, 0],
           scale: 1,
+          //
+          // sensorData: {
+          //   temperature: 0,
+          //   humidity: 0,
+          //   light: 50,
+          //   switch1: 0,
+          //   switch2: 0,
+          //   button1: 0,
+          //   button2: 0,
+          // },
       };
 
       setDevices((prev) => [...prev, newDevice]);
