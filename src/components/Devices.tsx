@@ -3,6 +3,7 @@ import { useThree } from '@react-three/fiber';
 import { TransformControls, useGLTF, useCursor } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
+import type { DeviceData } from '../services/mockServer';
 
 const modes = ['translate', 'rotate', 'scale'] as const;
 
@@ -20,17 +21,27 @@ export { deviceState };
 interface DeviceProps {
   id: string;
   model: string;
-  position?: [number, number, number];
-  rotation?: [number, number, number];
-  scale?: number;
+  position: [number, number, number];
+  rotation: [number, number, number];
+  scale: number;
+  onTransformEnd: (id: string, position: THREE.Vector3, rotation: THREE.Euler, scale: THREE.Vector3) => void;
 }
 
-function Device({ id, model, ...props }: DeviceProps) {
+function Device({ id, model, position, rotation, scale, onTransformEnd, ...props }: DeviceProps) {
   const snap = useSnapshot(deviceState);
   const { nodes } = useGLTF(`./models/devices/${model}.gltf`) as any;
   const [hovered, setHovered] = useState(false);
   const meshRef = useRef<THREE.Mesh>(null!);
   useCursor(hovered);
+
+  // Apply initial transforms
+  useEffect(() => {
+    if (meshRef.current) {
+      meshRef.current.position.set(...position);
+      meshRef.current.rotation.set(...rotation);
+      meshRef.current.scale.setScalar(scale);
+    }
+  }, []); // Only on mount/remount
 
   return (
     <>
@@ -61,7 +72,12 @@ function Device({ id, model, ...props }: DeviceProps) {
           object={meshRef.current!}
           mode={modes[snap.mode] as any}
           onMouseDown={() => { deviceState.transforming = true; }}
-          onMouseUp={() => { deviceState.transforming = false; }}
+          onMouseUp={() => {
+            deviceState.transforming = false;
+            if (meshRef.current) {
+                onTransformEnd(id, meshRef.current.position, meshRef.current.rotation, meshRef.current.scale);
+            }
+          }}
         />
       )}
     </>
@@ -71,11 +87,25 @@ function Device({ id, model, ...props }: DeviceProps) {
 interface DevicesProps {
   deviceToSpawn: string | null;
   onSpawned: () => void;
+  initialDevices?: DeviceData[];
+  onDevicesChange?: (devices: DeviceData[]) => void;
 }
 
-export default function Devices({ deviceToSpawn, onSpawned }: DevicesProps) {
-  const [devices, setDevices] = useState<Array<{ id: string, position: [number,number,number], model: string }>>([]);
+export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [], onDevicesChange }: DevicesProps) {
+  const [devices, setDevices] = useState<DeviceData[]>(initialDevices);
   const camera = useThree((state) => state.camera);
+
+  // Update internal state if initialDevices changes (e.g. loaded from server)
+  useEffect(() => {
+    if (initialDevices.length > 0) {
+        setDevices(initialDevices);
+    }
+  }, [initialDevices]);
+
+  // Notify parent of changes
+  useEffect(() => {
+    onDevicesChange?.(devices);
+  }, [devices, onDevicesChange]);
 
   // Handle spawning
   useEffect(() => {
@@ -86,16 +116,16 @@ export default function Devices({ deviceToSpawn, onSpawned }: DevicesProps) {
       const camPos = camera.position.clone();
       const distance = 1.5;
       const spawnPos = camPos.add(forward.multiplyScalar(distance));
-      const position: [number, number, number] = [spawnPos.x, spawnPos.y, spawnPos.z];
 
-      setDevices((prev) => [
-        ...prev,
-        {
+      const newDevice: DeviceData = {
           id: crypto.randomUUID(),
-          position,
           model: deviceToSpawn,
-        }
-      ]);
+          position: [spawnPos.x, spawnPos.y, spawnPos.z],
+          rotation: [0, 0, 0],
+          scale: 1,
+      };
+
+      setDevices((prev) => [...prev, newDevice]);
       onSpawned();
     }
   }, [deviceToSpawn, camera, onSpawned]);
@@ -116,6 +146,20 @@ export default function Devices({ deviceToSpawn, onSpawned }: DevicesProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const handleTransformEnd = (id: string, position: THREE.Vector3, rotation: THREE.Euler, scale: THREE.Vector3) => {
+      setDevices(prev => prev.map(d => {
+          if (d.id === id) {
+              return {
+                  ...d,
+                  position: [position.x, position.y, position.z],
+                  rotation: [rotation.x, rotation.y, rotation.z],
+                  scale: scale.x // Assuming uniform scale for now
+              };
+          }
+          return d;
+      }));
+  };
+
   return (
       <Suspense fallback={null}>
         {devices.map((device) => (
@@ -124,8 +168,12 @@ export default function Devices({ deviceToSpawn, onSpawned }: DevicesProps) {
             id={device.id}
             model={device.model}
             position={device.position}
+            rotation={device.rotation}
+            scale={device.scale}
+            onTransformEnd={handleTransformEnd}
           />
         ))}
       </Suspense>
   );
 }
+

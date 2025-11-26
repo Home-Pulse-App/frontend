@@ -8,6 +8,7 @@ import { FaHome, FaKeyboard, FaLightbulb, FaThermometerHalf, FaWater } from 'rea
 import { useNavigate } from 'react-router';
 import Instructions from './ui/Instructions/Instructions';
 import Devices, { deviceState } from './Devices';
+import { mockServer, type DeviceData } from '../services/mockServer';
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
@@ -25,12 +26,18 @@ function SparkComponent() {
   const navigate = useNavigate();
 
   const [deviceToSpawn, setDeviceToSpawn] = useState<string | null>(null);
+  const [initialDevices, setInitialDevices] = useState<DeviceData[]>([]);
 
   //* Redirect to splash screen if no file data is available (e.g., direct navigation or page reload)
   useEffect(() => {
     if (!location.state?.file?.url) {
       navigate('/', { replace: true });
       return;
+    }
+
+    // Check for initial devices passed from Load Session
+    if (location.state?.devices) {
+        setInitialDevices(location.state.devices);
     }
   }, [location.state, navigate]);
 
@@ -64,6 +71,10 @@ function SparkComponent() {
     { icon: <FaThermometerHalf className='fill-white' size={18} />, label: 'Add Thermometer', onClick: () => setDeviceToSpawn('Thermometer') },
     { icon: <FaWater className='fill-white' size={18} />, label: 'Add Hygrometer', onClick: () => setDeviceToSpawn('Hygrometer') },
   ];
+
+  const handleDevicesChange = (devices: DeviceData[]) => {
+      mockServer.saveDevices('default-user', devices);
+  };
 
   //* Splats do not need the light component as it is 'embedded' into them so we do not add it to the canvas
   return (
@@ -120,11 +131,13 @@ function SparkComponent() {
             setSplatCenter = {setSplatCenter}
           />
 
-          {/* Devices component handles rendering and spawning devices */}
-          <Devices
-            deviceToSpawn={deviceToSpawn}
-            onSpawned={() => setDeviceToSpawn(null)}
-          />
+           {/* Devices component handles rendering and spawning devices */}
+           <Devices
+             deviceToSpawn={deviceToSpawn}
+             onSpawned={() => setDeviceToSpawn(null)}
+             initialDevices={initialDevices}
+             onDevicesChange={handleDevicesChange}
+           />
         </Canvas>
       </div>
     </>

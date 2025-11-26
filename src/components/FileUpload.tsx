@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import Folder from '../components/ui/Folder';
+import { mockServer } from '../services/mockServer';
 
 type FileUploadProps = {
   onFileUpload?: (fileData: FileData) => void;
@@ -64,7 +65,22 @@ function FileUpload({ onFileUpload }: FileUploadProps) {
     if (onFileUpload) {
       onFileUpload(fileData);
     }
-    navigate('/viewer', { state: { file: fileData } });
+
+    // Convert to base64 and save
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64Data = reader.result as string;
+      console.log('[FileUpload] File read complete, base64 length:', base64Data.length);
+      await mockServer.saveSplatData('default-user', base64Data);
+      console.log('[FileUpload] Save complete, navigating...');
+      // Navigate ONLY after saving is complete
+      navigate('/viewer', { state: { file: fileData } });
+    };
+    reader.onerror = (error) => {
+      console.error('[FileUpload] FileReader error:', error);
+    };
+    console.log('[FileUpload] Starting to read file:', file.name);
+    reader.readAsDataURL(file);
 
   };
 
