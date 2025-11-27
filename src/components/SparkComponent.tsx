@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import {Canvas} from '@react-three/fiber';
 import { Progress } from './ui/Progress';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import SplatScene from './SplatScene';
 import Dock from './ui/Dock';
 import { FaHome, FaKeyboard, FaLightbulb, FaSun, FaThermometerHalf, FaWater } from 'react-icons/fa';
-import { useNavigate } from 'react-router';
 import Instructions from './ui/Instructions/Instructions';
 import Devices, { deviceState } from './Devices';
 import { mockServer, type DeviceData, type SensorData } from '../services/mockServer';
@@ -64,11 +63,6 @@ function SparkComponent() {
     return () => window.removeEventListener('keydown', handleEscape);
   }, []);
 
-  //* Don't render if no file data is available (redirect will happen)
-  if (!location.state?.file?.url) {
-    return null;
-  }
-
   const items = [
     { icon: <FaHome className='fill-white' size={18} />, label: 'Home', onClick: () => navigate('/', { replace: true }) },
     { icon: <FaKeyboard className='fill-white' size={18} />, label: 'Controls', onClick: () => setDisplayInstructions(!displayInstruction) },
@@ -80,6 +74,7 @@ function SparkComponent() {
 
   const handleDevicesChange = (devices: DeviceData[]) => {
       setDevices(devices);
+      //TODO: Manage real userID when connecting to the backend
       mockServer.saveDevices('default-user', devices);
   };
 
@@ -88,6 +83,7 @@ function SparkComponent() {
       d.id === deviceId ? { ...d, sensorData } : d
     );
     setDevices(updatedDevices);
+    //TODO: Manage real userID when connecting to the backend
     mockServer.saveDevices('default-user', updatedDevices);
   };
 
@@ -178,7 +174,7 @@ function SparkComponent() {
             setSplatCenter = {setSplatCenter}
           />
 
-          {/* Devices component handles rendering and spawning devices - only render after splat loads */}
+          {/* Devices component handles rendering and spawning devices, only render after splat loads */}
           {!loading && (
             <Devices
               deviceToSpawn={deviceToSpawn}

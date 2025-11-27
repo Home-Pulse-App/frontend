@@ -7,6 +7,7 @@ import type { DeviceData, SensorData } from '../services/mockServer';
 
 const modes = ['translate', 'rotate', 'scale'] as const;
 
+//TODO: When placing a device, it should retrieve the sensor data from the backend and color the device accordingly
 //* Computes the material color for a device based on its type and sensor data
 function getDeviceColor(model: string, sensorData?: SensorData): THREE.Color {
   //* Default color if no sensor data

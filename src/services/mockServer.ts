@@ -18,7 +18,7 @@ export interface DeviceData {
 }
 
 interface UserData {
-  splatData: string | null; // Base64 string
+  splatData: string | null; //* Base64 string
   devices: DeviceData[];
 }
 
@@ -26,7 +26,7 @@ const STORAGE_KEY = 'home_pulse_mock_db';
 const DB_NAME = 'HomePulseDB';
 const STORE_NAME = 'splats';
 
-// IndexedDB helper functions
+//* IndexedDB helper functions to store big files/data (splat data)
 const openDB = (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, 1);
@@ -67,7 +67,7 @@ const saveSplatToIndexedDB = async (userId: string, data: string): Promise<void>
   });
 };
 
-// localStorage for device data (smaller)
+//* localStorage for small files/data (device data)
 const getDevicesFromLocalStorage = (userId: string): DeviceData[] => {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored) {
@@ -89,7 +89,7 @@ const saveDevicesToLocalStorage = (userId: string, devices: DeviceData[]) => {
 
 export const mockServer = {
   loadUserData: async (userId: string = 'default-user'): Promise<UserData> => {
-    // Simulate network delay
+    //* Simulate network delay
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     const splatData = await getSplatFromIndexedDB(userId);

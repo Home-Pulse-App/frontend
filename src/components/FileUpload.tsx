@@ -66,7 +66,7 @@ function FileUpload({ onFileUpload }: FileUploadProps) {
       onFileUpload(fileData);
     }
 
-    //TODO Check what is the best way to do this when connecting to the backend
+    //TODO: Check what is the best way to do this when connecting to the backend
     //* Convert to base64 and save
     const reader = new FileReader();
     reader.onload = async () => {
