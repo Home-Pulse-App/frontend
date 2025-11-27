@@ -164,5 +164,5 @@ export {
   NavigationMenuLink,
   NavigationMenuIndicator,
   NavigationMenuViewport,
-  navigationMenuTriggerStyle,
+  // navigationMenuTriggerStyle is intentionally exported for internal use only
 }
