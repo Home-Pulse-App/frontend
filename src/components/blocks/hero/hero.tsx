@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
 const Example = () => (
   <div className="flex flex-col gap-16 px-8 py-9 text-center">
     <div className="flex flex-col items-center justify-center gap-8">
-      <Link href="#">
+      <Link to="#">
         <Announcement>
           <AnnouncementTag>codeworks students</AnnouncementTag>
           <AnnouncementTitle>Introducing Home Pulse</AnnouncementTitle>
@@ -40,10 +40,10 @@ const Example = () => (
 
       <div className="flex items-center gap-2">
         <Button asChild>
-          <Link href="#">Get started</Link>
+          <Link to="#">Get started</Link>
         </Button>
         <Button asChild variant="outline">
-          <Link className="no-underline" href="#">
+          <Link className="no-underline" to="#">
             Learn more
           </Link>
         </Button>
