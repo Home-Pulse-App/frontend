@@ -20,7 +20,7 @@ import {
 import { Link } from 'react-router-dom';
 
 const Example = () => (
-  <div className="flex flex-col gap-16 px-8 py-24 text-center">
+  <div className="flex flex-col gap-16 px-8 py-9 text-center">
     <div className="flex flex-col items-center justify-center gap-8">
       <Link href="#">
         <Announcement>
