@@ -1,6 +1,6 @@
 'use client';
 
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -34,7 +34,7 @@ const formSchema = z.object({
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number')
-    .regex(/[!@#$%^&*]/, "Password must contain at least one special character (!@#$%^&*)"),
+    .regex(/[!@#$%^&*]/, 'Password must contain at least one special character (!@#$%^&*)'),
   terms: z.boolean().refine((val) => val === true, {
     message: 'You must accept the terms and conditions.',
   }),

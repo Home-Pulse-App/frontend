@@ -15,7 +15,7 @@ export default async function fetchDeviceData() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${TOKEN}`, // ← JWT sent here
         },
-      }
+      },
     );
 
     if (!response.ok) {
@@ -28,7 +28,7 @@ export default async function fetchDeviceData() {
     const json = await response.json();
     console.log('Success! Latest reading:', json.data.latest.sensorsData);
     return json.data.latest.sensorsData;
-  } catch (err: any) {
+  } catch (err: Error | unknown) {
     console.error('Fetch failed:', err);
     throw err;
   }

@@ -1,33 +1,33 @@
-import { Asterisk, CornerDownRight } from "lucide-react";
-import React from "react";
+import { Asterisk, CornerDownRight } from 'lucide-react';
+import React from 'react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 const Process1 = () => {
   const process = [
     {
-      step: "01",
-      title: "Discover & Research",
+      step: '01',
+      title: 'Discover & Research',
       description:
-        "We begin by understanding your business goals, target audience, and current challenges. This phase involves research, analysis, and strategic planning to identify opportunities.",
+        'We begin by understanding your business goals, target audience, and current challenges. This phase involves research, analysis, and strategic planning to identify opportunities.',
     },
     {
-      step: "02",
-      title: "Strategy & Planning",
+      step: '02',
+      title: 'Strategy & Planning',
       description:
-        "Based on our findings, we develop a comprehensive strategy that aligns with your objectives. This includes defining the approach, timeline, and key milestones for success.",
+        'Based on our findings, we develop a comprehensive strategy that aligns with your objectives. This includes defining the approach, timeline, and key milestones for success.',
     },
     {
-      step: "03",
-      title: "Execute & Develop",
+      step: '03',
+      title: 'Execute & Develop',
       description:
-        "We bring the strategy to life through careful implementation and development. Our team works collaboratively to ensure every detail meets your requirements and standards.",
+        'We bring the strategy to life through careful implementation and development. Our team works collaboratively to ensure every detail meets your requirements and standards.',
     },
     {
-      step: "04",
-      title: "Optimize & Improve",
+      step: '04',
+      title: 'Optimize & Improve',
       description:
-        "We continuously monitor performance and gather feedback to refine and improve the solution. This iterative process ensures long-term success and growth.",
+        'We continuously monitor performance and gather feedback to refine and improve the solution. This iterative process ensures long-term success and growth.',
     },
   ];
 
@@ -37,7 +37,7 @@ const Process1 = () => {
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-6 lg:gap-20">
           <div className="top-10 col-span-2 h-fit w-fit gap-3 space-y-7 py-8 lg:sticky">
             <div className="relative w-fit text-5xl font-semibold tracking-tight lg:text-7xl">
-              {" "}
+              {' '}
               <h1 className="w-fit">Our Process</h1>
               <Asterisk className="absolute -right-2 -top-2 size-5 text-orange-500 md:size-10 lg:-right-14" />
             </div>

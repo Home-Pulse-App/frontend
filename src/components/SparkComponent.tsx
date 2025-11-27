@@ -41,7 +41,7 @@ function SparkComponent() {
 
     //* Check for initial devices passed from Load Session
     if (location.state?.devices) {
-        setInitialDevices(location.state.devices);
+      setInitialDevices(location.state.devices);
     }
   }, [location.state, navigate]);
 
@@ -73,19 +73,19 @@ function SparkComponent() {
   ];
 
   const handleDevicesChange = useCallback((devices: DeviceData[]) => {
-      setDevices(devices);
-      //TODO: Manage real userID when connecting to the backend
-      mockServer.saveDevices('default-user', devices);
+    setDevices(devices);
+    //TODO: Manage real userID when connecting to the backend
+    mockServer.saveDevices('default-user', devices);
   }, []);
 
   const handleSensorDataUpdate = useCallback(async (deviceId: string, sensorData: SensorData) => {
     setDevices(prev => {
-        const updatedDevices = prev.map(d =>
-            d.id === deviceId ? { ...d, sensorData } : d
-        );
+      const updatedDevices = prev.map(d =>
+        d.id === deviceId ? { ...d, sensorData } : d,
+      );
         //TODO: Manage real userID when connecting to the backend
-        mockServer.saveDevices('default-user', updatedDevices);
-        return updatedDevices;
+      mockServer.saveDevices('default-user', updatedDevices);
+      return updatedDevices;
     });
   }, []);
 
@@ -98,7 +98,7 @@ function SparkComponent() {
     switch1: 0,
     switch2: 0,
     button1: 0,
-    button2: 0
+    button2: 0,
   };
 
   //* Splats do not need the light component as it is 'embedded' into them so we do not add it to the canvas

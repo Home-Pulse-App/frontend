@@ -22,8 +22,8 @@ function ImmersiveViewPage() {
         navigate('/viewer', {
           state: {
             file: { url: splatUrl, name: 'Restored Session', type: 'splat', size: blob.size },
-            devices: userData.devices
-          }
+            devices: userData.devices,
+          },
         });
       } else {
         setError('No saved session found.');

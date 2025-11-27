@@ -1,7 +1,7 @@
-import { LoginForm } from "@/components/login-form"
-import { Navbar01 } from "@/components/ui/shadcn-io/navbar-01"
-import FooterSimple01 from "@/components/blocks/footer/footer-simple-01"
-import HomePulseLogo from "@/assets/HomePulseLogo.png"
+import { LoginForm } from '@/components/login-form';
+import { Navbar01 } from '@/components/ui/shadcn-io/navbar-01';
+import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
+import HomePulseLogo from '@/assets/HomePulseLogo.png';
 
 export default function LoginPage() {
   return (
@@ -17,5 +17,5 @@ export default function LoginPage() {
       </main>
       <FooterSimple01 />
     </div>
-  )
+  );
 }

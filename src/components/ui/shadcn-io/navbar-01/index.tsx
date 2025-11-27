@@ -110,7 +110,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
       ctaHref = '/register',
       ...props
     },
-    ref
+    ref,
   ) => {
     const [isMobile, setIsMobile] = useState(false);
     const containerRef = useRef<HTMLElement>(null);
@@ -150,7 +150,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
         ref={combinedRef}
         className={cn(
           'sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 [&_*]:no-underline',
-          className
+          className,
         )}
         {...props}
       >
@@ -177,10 +177,10 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
                           <Link
                             to={link.href}
                             className={cn(
-                              "flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer no-underline",
+                              'flex w-full items-center rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer no-underline',
                               link.active
-                                ? "bg-accent text-accent-foreground"
-                                : "text-foreground/80"
+                                ? 'bg-accent text-accent-foreground'
+                                : 'text-foreground/80',
                             )}
                           >
                             {link.label}
@@ -210,10 +210,10 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
                         <Link
                           to={link.href}
                           className={cn(
-                            "group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer no-underline",
+                            'group inline-flex h-9 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer no-underline',
                             link.active
-                              ? "bg-accent text-accent-foreground"
-                              : "text-foreground/80 hover:text-foreground"
+                              ? 'bg-accent text-accent-foreground'
+                              : 'text-foreground/80 hover:text-foreground',
                           )}
                         >
                           {link.label}
@@ -243,7 +243,7 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
         </div>
       </header>
     );
-  }
+  },
 );
 
 Navbar01.displayName = 'Navbar01';

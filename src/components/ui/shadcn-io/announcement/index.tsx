@@ -17,7 +17,7 @@ export const Announcement = ({
       'group max-w-full gap-2 rounded-full bg-background px-3 py-0.5 font-medium shadow-sm transition-all',
       'hover:shadow-md',
       themed && 'announcement-themed border-foreground/5',
-      className
+      className,
     )}
     variant={variant}
     {...props}
@@ -34,7 +34,7 @@ export const AnnouncementTag = ({
     className={cn(
       '-ml-2.5 shrink-0 truncate rounded-full bg-foreground/5 px-2.5 py-1 text-xs',
       'group-[.announcement-themed]:bg-background/60',
-      className
+      className,
     )}
     {...props}
   />

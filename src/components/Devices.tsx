@@ -107,9 +107,9 @@ function Device({ id, model, position, rotation, scale, sensorData, onTransformE
         />
         {snap.current === id && (
           <Outlines
-          thickness={5}
-          color='#ff6080'
-          angle={0.1}
+            thickness={5}
+            color='#ff6080'
+            angle={0.1}
           />
         )}
       </mesh>
@@ -132,7 +132,7 @@ function Device({ id, model, position, rotation, scale, sensorData, onTransformE
           onMouseUp={() => {
             deviceState.transforming = false;
             if (meshRef.current) {
-                onTransformEnd(id, meshRef.current.position, meshRef.current.rotation, meshRef.current.scale);
+              onTransformEnd(id, meshRef.current.position, meshRef.current.rotation, meshRef.current.scale);
             }
           }}
         />
@@ -156,7 +156,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   //* Update internal state if initialDevices changes (e.g. loaded from server)
   useEffect(() => {
     if (initialDevices.length > 0) {
-        setDevices(initialDevices);
+      setDevices(initialDevices);
     }
   }, [initialDevices]);
 
@@ -176,21 +176,21 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
       const spawnPos = camPos.add(forward.multiplyScalar(distance));
 
       const newDevice: DeviceData = {
-          id: crypto.randomUUID(),
-          model: deviceToSpawn,
-          position: [spawnPos.x, spawnPos.y, spawnPos.z],
-          rotation: [0, 0, 0],
-          scale: 1,
-          //? default sensorData is not used for spawning from here
-          // sensorData: {
-          //   temperature: 0,
-          //   humidity: 0,
-          //   light: 0,
-          //   switch1: 0,
-          //   switch2: 0,
-          //   button1: 0,
-          //   button2: 0,
-          // },
+        id: crypto.randomUUID(),
+        model: deviceToSpawn,
+        position: [spawnPos.x, spawnPos.y, spawnPos.z],
+        rotation: [0, 0, 0],
+        scale: 1,
+        //? default sensorData is not used for spawning from here
+        // sensorData: {
+        //   temperature: 0,
+        //   humidity: 0,
+        //   light: 0,
+        //   switch1: 0,
+        //   switch2: 0,
+        //   button1: 0,
+        //   button2: 0,
+        // },
       };
 
       setDevices((prev) => [...prev, newDevice]);
@@ -218,7 +218,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   //* Update sensor data for a specific device
   const updateDeviceSensorData = useCallback(async (deviceId: string, sensorData: SensorData) => {
     setDevices(prev => prev.map(d =>
-      d.id === deviceId ? { ...d, sensorData } : d
+      d.id === deviceId ? { ...d, sensorData } : d,
     ));
     // console.log(devices); // Removed to avoid dependency on 'devices'
     onSensorDataUpdate?.(deviceId, sensorData);
@@ -250,11 +250,11 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
         //* Use the ref to get the latest devices list
         devicesRef.current.forEach(d =>{
           updateDeviceSensorData(d.id, newData);
-        })
+        });
       } catch (error) {
-        console.error("Error fetching device data:", error);
+        console.error('Error fetching device data:', error);
       }
-    }
+    };
 
     //* Initial fetch
     responseData();
@@ -264,34 +264,34 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   },[]);
 
   const handleTransformEnd = (id: string, position: THREE.Vector3, rotation: THREE.Euler, scale: THREE.Vector3) => {
-      setDevices(prev => prev.map(d => {
-          if (d.id === id) {
-              return {
-                  ...d,
-                  position: [position.x, position.y, position.z],
-                  rotation: [rotation.x, rotation.y, rotation.z],
-                  scale: scale.x //! Assuming uniform scale for now
-              };
-          }
-          return d;
-      }));
+    setDevices(prev => prev.map(d => {
+      if (d.id === id) {
+        return {
+          ...d,
+          position: [position.x, position.y, position.z],
+          rotation: [rotation.x, rotation.y, rotation.z],
+          scale: scale.x, //! Assuming uniform scale for now
+        };
+      }
+      return d;
+    }));
   };
 
   return (
-      <Suspense fallback={null}>
-        {devices.map((device) => (
-          <Device
-            key={device.id}
-            id={device.id}
-            model={device.model}
-            position={device.position}
-            rotation={device.rotation}
-            scale={device.scale}
-            sensorData={device.sensorData}
-            onTransformEnd={handleTransformEnd}
-          />
-        ))}
-      </Suspense>
+    <Suspense fallback={null}>
+      {devices.map((device) => (
+        <Device
+          key={device.id}
+          id={device.id}
+          model={device.model}
+          position={device.position}
+          rotation={device.rotation}
+          scale={device.scale}
+          sensorData={device.sensorData}
+          onTransformEnd={handleTransformEnd}
+        />
+      ))}
+    </Suspense>
   );
 }
 

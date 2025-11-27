@@ -32,7 +32,7 @@ export default function HomePage() {
             <Hero />
           </div>
 
-        <Separator />
+          <Separator />
 
           <div className="py-6">
             <Process1 />

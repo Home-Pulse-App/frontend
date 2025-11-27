@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Github, Instagram, Twitter, Youtube } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Github, Instagram, Twitter, Youtube } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const YEAR = new Date().getFullYear();
 
-export const title = "Simple Footer";
+export const title = 'Simple Footer';
 
 export default function FooterSimple01() {
   return (

@@ -1,7 +1,7 @@
-import { Navbar01 } from "@/components/ui/shadcn-io/navbar-01"
-import FooterSimple01 from "@/components/blocks/footer/footer-simple-01"
-import HomePulseLogo from "@/assets/HomePulseLogo.png"
-import FormPatterns2 from "@/components/examples/form/patterns/form-patterns-2"
+import { Navbar01 } from '@/components/ui/shadcn-io/navbar-01';
+import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
+import HomePulseLogo from '@/assets/HomePulseLogo.png';
+import FormPatterns2 from '@/components/examples/form/patterns/form-patterns-2';
 
 export default function RegisterPage() {
   return (
@@ -21,7 +21,6 @@ export default function RegisterPage() {
       </main>
       <FooterSimple01 />
     </div>
-  )
+  );
 }
-
 

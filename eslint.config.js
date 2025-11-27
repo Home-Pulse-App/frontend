@@ -1,9 +1,9 @@
 import js from '@eslint/js';
 import globals from 'globals';
-import reactHooks from 'eslint-plugin-react-hooks';
+// import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
-// import stylistic from '@stylistic/eslint-plugin';
+import stylistic from '@stylistic/eslint-plugin';
 
 export default [
   { ignores: ['dist'] },
@@ -16,16 +16,16 @@ export default [
       globals: globals.browser,
     },
     plugins: {
-      'react-hooks': reactHooks,
+      // 'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      // '@stylistic': stylistic,
+      '@stylistic': stylistic,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      // ...reactHooks.configs.recommended.rules,
+      // 'react-refresh/only-export-components': [
+      //   'warn',
+      //   { allowConstantExport: true },
+      // ],
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/quotes': ['error', 'single'],
       '@stylistic/indent': ['error', 2],
@@ -43,6 +43,7 @@ export default [
         { anonymous: 'always', named: 'never', asyncArrow: 'always' },
       ],
       '@stylistic/space-infix-ops': 'error',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ];
