@@ -1,7 +1,7 @@
 import { Navbar01 } from '@/components/ui/shadcn-io/navbar-01';
 import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
 import HomePulseLogo from '@/assets/HomePulseLogo.png';
-import Hero from "@/components/blocks/hero/hero"
+import Hero from '@/components/blocks/hero/hero';
 
 export default function HomePage() {
   return (
@@ -15,6 +15,12 @@ export default function HomePage() {
           />
         }
         logoHref="/"
+        items={[
+          { label: 'Dashboard', href: '/dashboard' },
+          { label: 'Pricing', href: '/pricing' },
+          { label: 'About', href: '/about' },
+          { label: 'Sign in', href: '/login' }, 
+        ]}
       />
 
       {/* Main content grows to fill space */}
