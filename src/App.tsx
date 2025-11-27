@@ -12,20 +12,20 @@ function App() {
   return (
     // <Router>
     //   <Routes>
-    //     <Route path="/" element={<HomePage />} />
+    //     <Route path='/' element={<HomePage />} />
 
-    //     <Route path="/login" element={<Login />} />
-    //     <Route path="/register" element={<Register />} />
+    //     <Route path='/login' element={<Login />} />
+    //     <Route path='/register' element={<Register />} />
 
-    //     <Route path="/dashboard" element={<Dashboard />} />
+    //     <Route path='/dashboard' element={<Dashboard />} />
     //   </Routes>
     // </Router>
     <div className='page-body'>
       <Routes>
-        <Route path="/" element={
+        <Route path='/' element={
           <ImmersiveViewPage/>
         } />
-        <Route path="/viewer" element={
+        <Route path='/viewer' element={
           <SparkComponent/>
         } />
       </Routes>
