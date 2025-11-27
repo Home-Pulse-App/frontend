@@ -40,8 +40,10 @@ const formSchema = z.object({
   }),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 const Example = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullName: '',
@@ -51,7 +53,7 @@ const Example = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: FormValues) {
     console.log(values);
   }
 
@@ -129,7 +131,7 @@ const Example = () => {
                 <FormControl>
                   <Checkbox
                     checked={field.value}
-                    onCheckedChange={field.onChange}
+                    onCheckedChange={(val) => field.onChange(Boolean(val))}
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">

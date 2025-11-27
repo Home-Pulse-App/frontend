@@ -18,7 +18,7 @@ export default function HomePage() {
           />
         }
         logoHref="/"
-        items={[
+        navigationLinks={[
           { label: 'Dashboard', href: '/dashboard' },
           { label: 'Pricing', href: '/pricing' },
           { label: 'About', href: '/about' },
