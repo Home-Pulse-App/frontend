@@ -7,7 +7,7 @@ const Example = () => {
   return (
     <div className="w-full mx-auto space-y-2">
       <div className="flex justify-between text-sm">
-        <span className="text-muted-foreground">Progress</span>
+        <span className="text-muted-foreground">Progress...</span>
         <span className="font-medium">{value}%</span>
       </div>
       <Progress value={value} />
