@@ -78,7 +78,7 @@ function SparkComponent() {
       mockServer.saveDevices('default-user', devices);
   };
 
-  const handleSensorDataUpdate = (deviceId: string, sensorData: SensorData) => {
+  const handleSensorDataUpdate = async (deviceId: string, sensorData: SensorData) => {
     const updatedDevices = devices.map(d =>
       d.id === deviceId ? { ...d, sensorData } : d
     );

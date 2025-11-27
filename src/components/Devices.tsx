@@ -4,6 +4,7 @@ import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/dr
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
 import type { DeviceData, SensorData } from '../services/mockServer';
+import fetchDeviceData from '@/services/api-services';
 
 const modes = ['translate', 'rotate', 'scale'] as const;
 
@@ -21,14 +22,14 @@ function getDeviceColor(model: string, sensorData?: SensorData): THREE.Color {
     }
 
     case 'Thermometer': {
-      const temp = Math.max(0, Math.min(50, sensorData.temperature));
-      const t = temp / 50;
+      const temp = Math.max(0, Math.min(30, sensorData.temperature));
+      const t = temp / 30;
       return new THREE.Color('#ffffff').lerp(new THREE.Color('#ff0000'), t);
     }
 
     case 'Hygrometer': {
-      const humidity = Math.max(0, Math.min(100, sensorData.humidity));
-      const t = humidity / 100;
+      const humidity = Math.max(0, Math.min(60, sensorData.humidity));
+      const t = humidity / 60;
       return new THREE.Color('#ffffff').lerp(new THREE.Color('#00008b'), t);
     }
 
@@ -184,7 +185,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
           // sensorData: {
           //   temperature: 0,
           //   humidity: 0,
-          //   light: 50,
+          //   light: 0,
           //   switch1: 0,
           //   switch2: 0,
           //   button1: 0,
@@ -214,15 +215,18 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   }, []);
 
   //* Update sensor data for a specific device
-  const updateDeviceSensorData = (deviceId: string, sensorData: SensorData) => {
+  const updateDeviceSensorData = async (deviceId: string, sensorData: SensorData) => {
     setDevices(prev => prev.map(d =>
       d.id === deviceId ? { ...d, sensorData } : d
     ));
+    console.log(devices);
     onSensorDataUpdate?.(deviceId, sensorData);
+    console.log('📈',sensorData);
   };
 
   //* Expose updateDeviceSensorData to parent via callback
   useEffect(() => {
+
     if (onSensorDataUpdate) {
       (window as any).__updateDeviceSensorData = updateDeviceSensorData;
     }
@@ -230,6 +234,19 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
       delete (window as any).__updateDeviceSensorData;
     };
   }, [onSensorDataUpdate]);
+
+  //!test of a useEffect to fetch new data
+  useEffect(() => {
+    const responseData = async () => {
+      const newData = await fetchDeviceData();
+      devices.forEach(d =>{
+        updateDeviceSensorData(d.id,newData);
+      })
+     }
+     responseData();
+     const testInterval = setInterval(responseData, 6000);
+     return ()=> clearInterval(testInterval);
+  },[onDevicesChange]);
 
   const handleTransformEnd = (id: string, position: THREE.Vector3, rotation: THREE.Euler, scale: THREE.Vector3) => {
       setDevices(prev => prev.map(d => {
