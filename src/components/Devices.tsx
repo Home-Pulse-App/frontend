@@ -10,43 +10,32 @@ const modes = ['translate', 'rotate', 'scale'] as const;
 //TODO: When placing a device, it should retrieve the sensor data from the backend and color the device accordingly
 //* Computes the material color for a device based on its type and sensor data
 function getDeviceColor(model: string, sensorData?: SensorData): THREE.Color {
-  //* Default color if no sensor data
   if (!sensorData) {
     return new THREE.Color('#ffffff');
   }
 
   switch (model) {
     case 'Light': {
-      //* Yellow if switch1 OR switch2 is ON, otherwise white
       const isOn = sensorData.switch1 === 1 || sensorData.switch2 === 1;
       return new THREE.Color(isOn ? '#ffff00' : '#ffffff');
     }
 
     case 'Thermometer': {
-      //* Gradient from white (0°C) to red (50°C)
       const temp = Math.max(0, Math.min(50, sensorData.temperature));
       const t = temp / 50;
-      const white = new THREE.Color('#ffffff');
-      const red = new THREE.Color('#ff0000');
-      return white.clone().lerp(red, t);
+      return new THREE.Color('#ffffff').lerp(new THREE.Color('#ff0000'), t);
     }
 
     case 'Hygrometer': {
-      //* Gradient from white (0%) to dark blue (100%)
       const humidity = Math.max(0, Math.min(100, sensorData.humidity));
       const t = humidity / 100;
-      const white = new THREE.Color('#ffffff');
-      const darkBlue = new THREE.Color('#00008b');
-      return white.clone().lerp(darkBlue, t);
+      return new THREE.Color('#ffffff').lerp(new THREE.Color('#00008b'), t);
     }
 
     case 'AmbientLightSensor': {
-      //* Gradient from white (0%) to yellow (100%)
       const light = Math.max(0, Math.min(100, sensorData.light));
       const t = light / 100;
-      const white = new THREE.Color('#ffffff');
-      const yellow = new THREE.Color('#ffff00');
-      return white.clone().lerp(yellow, t);
+      return new THREE.Color('#ffffff').lerp(new THREE.Color('#ffff00'), t);
     }
 
     default:
@@ -83,6 +72,7 @@ function Device({ id, model, position, rotation, scale, sensorData, onTransformE
   useCursor(hovered);
 
   //* Compute dynamic color based on device type and sensor data
+  //? Apparently R3F updates some properties automatically via JSX like color but not emissive
   const deviceColor = getDeviceColor(model, sensorData);
 
   //* Apply initial transforms
@@ -122,6 +112,17 @@ function Device({ id, model, position, rotation, scale, sensorData, onTransformE
           />
         )}
       </mesh>
+
+      {/* Add actual light source for Light devices when switch is on */}
+      {model === 'Light' && sensorData && (sensorData.switch1 === 1 || sensorData.switch2 === 1) && (
+        <pointLight
+          position={position}
+          color='#ffff00'
+          intensity={10}
+          distance={10}
+          decay={2}
+        />
+      )}
       {snap.current === id && (
         <TransformControls
           object={meshRef.current!}
@@ -179,7 +180,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
           position: [spawnPos.x, spawnPos.y, spawnPos.z],
           rotation: [0, 0, 0],
           scale: 1,
-          //
+          //? default sensorData is not used for spawning from here
           // sensorData: {
           //   temperature: 0,
           //   humidity: 0,
