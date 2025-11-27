@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+public/models/InteriorDesign.ply
+public/models/valley.spz
