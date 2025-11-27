@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, Suspense } from 'react';
+import { useEffect, useState, useRef, Suspense, useCallback } from 'react';
 import { useThree } from '@react-three/fiber';
 import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
@@ -89,7 +89,7 @@ function Device({ id, model, position, rotation, scale, sensorData, onTransformE
     <>
       <mesh
         ref={meshRef}
-        onClick={(e) => (e.stopPropagation(), (deviceState.current = id), (deviceState.name = model))}
+        onClick={(e) => (e.stopPropagation(), console.log('Clicked device:', id), (deviceState.current = id), (deviceState.name = model))}
         onPointerMissed={(e) => e.type === 'click' && (deviceState.current = null, deviceState.name = '')}
         onContextMenu={(e) => snap.current === id && (e.stopPropagation(), (deviceState.mode = (snap.mode + 1) % modes.length))}
         onPointerOver={(e) => (e.stopPropagation(), setHovered(true))}
@@ -201,6 +201,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   //* Handle Backspace
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      console.log('Key pressed:', event.key, 'Current device:', deviceState.current);
       if (event.key === 'Backspace' && deviceState.current) {
         const idToRemove = deviceState.current;
         const nameToRemove = deviceState.name;
@@ -215,14 +216,14 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   }, []);
 
   //* Update sensor data for a specific device
-  const updateDeviceSensorData = async (deviceId: string, sensorData: SensorData) => {
+  const updateDeviceSensorData = useCallback(async (deviceId: string, sensorData: SensorData) => {
     setDevices(prev => prev.map(d =>
       d.id === deviceId ? { ...d, sensorData } : d
     ));
-    console.log(devices);
+    // console.log(devices); // Removed to avoid dependency on 'devices'
     onSensorDataUpdate?.(deviceId, sensorData);
     console.log('📈',sensorData);
-  };
+  }, [onSensorDataUpdate]);
 
   //* Expose updateDeviceSensorData to parent via callback
   useEffect(() => {
@@ -235,18 +236,32 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     };
   }, [onSensorDataUpdate]);
 
+  //* Keep a ref to devices to access latest state inside interval without resetting it
+  const devicesRef = useRef(devices);
+  useEffect(() => {
+    devicesRef.current = devices;
+  }, [devices]);
+
   //!test of a useEffect to fetch new data
   useEffect(() => {
     const responseData = async () => {
-      const newData = await fetchDeviceData();
-      devices.forEach(d =>{
-        updateDeviceSensorData(d.id,newData);
-      })
-     }
-     responseData();
-     const testInterval = setInterval(responseData, 6000);
-     return ()=> clearInterval(testInterval);
-  },[onDevicesChange]);
+      try {
+        const newData = await fetchDeviceData();
+        //* Use the ref to get the latest devices list
+        devicesRef.current.forEach(d =>{
+          updateDeviceSensorData(d.id, newData);
+        })
+      } catch (error) {
+        console.error("Error fetching device data:", error);
+      }
+    }
+
+    //* Initial fetch
+    responseData();
+
+    const testInterval = setInterval(responseData, 6000);
+    return ()=> clearInterval(testInterval);
+  },[]);
 
   const handleTransformEnd = (id: string, position: THREE.Vector3, rotation: THREE.Euler, scale: THREE.Vector3) => {
       setDevices(prev => prev.map(d => {

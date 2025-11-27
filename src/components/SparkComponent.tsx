@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {Canvas} from '@react-three/fiber';
 import { Progress } from './ui/progress';
 import { useLocation, useNavigate } from 'react-router';
@@ -72,20 +72,22 @@ function SparkComponent() {
     { icon: <FaSun className='fill-white' size={18} />, label: 'Add Light Sensor', onClick: () => setDeviceToSpawn('AmbientLightSensor') },
   ];
 
-  const handleDevicesChange = (devices: DeviceData[]) => {
+  const handleDevicesChange = useCallback((devices: DeviceData[]) => {
       setDevices(devices);
       //TODO: Manage real userID when connecting to the backend
       mockServer.saveDevices('default-user', devices);
-  };
+  }, []);
 
-  const handleSensorDataUpdate = async (deviceId: string, sensorData: SensorData) => {
-    const updatedDevices = devices.map(d =>
-      d.id === deviceId ? { ...d, sensorData } : d
-    );
-    setDevices(updatedDevices);
-    //TODO: Manage real userID when connecting to the backend
-    mockServer.saveDevices('default-user', updatedDevices);
-  };
+  const handleSensorDataUpdate = useCallback(async (deviceId: string, sensorData: SensorData) => {
+    setDevices(prev => {
+        const updatedDevices = prev.map(d =>
+            d.id === deviceId ? { ...d, sensorData } : d
+        );
+        //TODO: Manage real userID when connecting to the backend
+        mockServer.saveDevices('default-user', updatedDevices);
+        return updatedDevices;
+    });
+  }, []);
 
   //* Get current selected device data
   const selectedDevice = devices.find(d => d.id === snap.current);
