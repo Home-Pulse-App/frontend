@@ -56,7 +56,7 @@ const Example = () => (
         muted
         preload="auto"
         slot="media"
-        src="https://stream.mux.com/DS00Spx1CV902MCtPj5WknGlR102V5HFkDe/high.mp4"
+        src="../public/videos/HeroVideo.mp4"
       />
       <VideoPlayerControlBar>
         <VideoPlayerPlayButton />

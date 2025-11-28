@@ -121,5 +121,11 @@ export const VideoPlayerContent = ({
   className,
   ...props
 }: VideoPlayerContentProps) => (
-  <video className={cn('mt-0 mb-0', className)} {...props} />
+  <video className={cn('mt-0 mb-0', className)}
+  //* Added autoplay, muted and loop
+    autoPlay
+    muted
+    loop
+    {...props}
+  />
 );
