@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import FileUpload from '../components/FileUpload';
 import { mockServer } from '../services/mockServer';
+import '../immersiveStyle.css';
 
 function ImmersiveViewPage() {
   const navigate = useNavigate();
