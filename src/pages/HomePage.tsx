@@ -27,20 +27,22 @@ export default function HomePage() {
       />
 
       <main className="flex-1 px-6 py-6">
-        <section className="space-y-2">
-          <div className="py-4">
-            <Hero />
+        <div className="mx-auto w-full max-w-screen-xl">
+          <section className="space-y-2">
+            <div className="py-4">
+              <Hero />
+            </div>
+
+            <Separator />
+
+            <div className="py-6">
+              <Process1 />
+            </div>
+          </section>
+
+          <div className="mx-auto max-w-md mt-2">
+            <ProgressWithLabel1 />
           </div>
-
-          <Separator />
-
-          <div className="py-6">
-            <Process1 />
-          </div>
-        </section>
-
-        <div className="mx-auto max-w-md mt-2">
-          <ProgressWithLabel1 />
         </div>
       </main>
 
