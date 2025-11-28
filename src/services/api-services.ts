@@ -71,8 +71,8 @@ export async function postSensorData(value:string) {
     }
 
     const json = await response.json();
-    console.log('Success! Latest reading:', json.data.latest.sensorsData);
-    return json.data.latest.sensorsData;
+    console.log('Post Success! your post:', json.data.topic, json.data.value);
+    return json.data;
   } catch (err: Error | unknown) {
     console.error('Fetch failed:', err);
     throw err;
