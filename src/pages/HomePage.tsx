@@ -5,6 +5,7 @@ import Hero from '@/components/blocks/hero/hero';
 import { Process1 } from '@/components/process1';
 import ProgressWithLabel1 from '@/components/examples/progress/with-label/progress-with-label-1';
 import { Separator } from '@/components/ui/separator';
+import '../App.css';
 
 export default function HomePage() {
   return (
@@ -22,7 +23,6 @@ export default function HomePage() {
           { label: 'Dashboard', href: '/dashboard' },
           { label: 'Pricing', href: '/pricing' },
           { label: 'About', href: '/about' },
-          { label: 'Sign in', href: '/login' },
         ]}
       />
 
