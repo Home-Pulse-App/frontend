@@ -93,7 +93,7 @@ export default function SensorControlPanel({
                 <input
                   type='range'
                   min='0'
-                  max='50'
+                  max='30'
                   step='1'
                   value={sensorData.temperature}
                   onChange={(e) => handleChange('temperature', Number(e.target.value))}
@@ -101,7 +101,7 @@ export default function SensorControlPanel({
                 />
                 <div className='flex justify-between text-xs text-white/40'>
                   <span>0°C</span>
-                  <span>50°C</span>
+                  <span>30°C</span>
                 </div>
               </div>
 
@@ -114,7 +114,7 @@ export default function SensorControlPanel({
                 <input
                   type='range'
                   min='0'
-                  max='100'
+                  max='60'
                   step='1'
                   value={sensorData.humidity}
                   onChange={(e) => handleChange('humidity', Number(e.target.value))}
@@ -122,7 +122,7 @@ export default function SensorControlPanel({
                 />
                 <div className='flex justify-between text-xs text-white/40'>
                   <span>0%</span>
-                  <span>100%</span>
+                  <span>60%</span>
                 </div>
               </div>
 
@@ -142,8 +142,8 @@ export default function SensorControlPanel({
                   className='w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider'
                 />
                 <div className='flex justify-between text-xs text-white/40'>
-                  <span>0</span>
-                  <span>100</span>
+                  <span>0%</span>
+                  <span>100%</span>
                 </div>
               </div>
 

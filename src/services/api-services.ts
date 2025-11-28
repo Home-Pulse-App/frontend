@@ -1,6 +1,5 @@
 // Paste your JWT token here (from login response or browser dev tools)
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MjczYTM2NDAxMDAzNGUwNjY3Y2I0NiIsImVtYWlsIjoidXNlckBtYWlsLmNvbSIsImlhdCI6MTc2NDMyNTkzMiwiZXhwIjoxNzY0NDEyMzMyfQ.zv_wEVEikZbiuTAT_Ec2NNAZ5rlL6mWbG23akbt59Gk'; // ← CHANGE THIS!
-
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5Mjg2OWE3NjQwOThkMWEwYzk5MDAzOSIsImVtYWlsIjoiYWxmcmVkb0BleGFtcGxlLmNvbSIsImlhdCI6MTc2NDMyNzkyMSwiZXhwIjoxNzY0NDE0MzIxfQ.-UYJWmP4w6GJaeG3GOfE51rhrxZeuStCe1a1BbSsZ5c'; // ← CHANGE THIS!
 
 export default async function fetchDeviceData() {
 
@@ -34,13 +33,13 @@ export default async function fetchDeviceData() {
   }
 }
 
-export  async function postSensorData(value:string) {
+export async function postSensorData(value:string) {
 
   const deviceName = 'iot1'; // ← Change to your real device name
-  let postValue: String;
+  let postValue: string;
   console.log(value);
 
-  if (value == '1'){
+  if (value == '1') {
     postValue = '1';
   } else {
     postValue = '0';
@@ -57,10 +56,10 @@ export  async function postSensorData(value:string) {
         },
         body:JSON.stringify(
           {
-            "sensor": "switch1",
-            "value": `${postValue}`,
-          }
-        ) 
+            'sensor': 'switch1',
+            'value': `${postValue}`,
+          },
+        ),
       },
     );
 
