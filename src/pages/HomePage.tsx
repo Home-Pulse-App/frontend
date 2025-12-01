@@ -4,6 +4,7 @@ import { Process1 } from '@/components/process1';
 import { Separator } from '@/components/ui/separator';
 import '../App.css';
 import Navbar from '@/components/Navbar';
+import HomePulseLogo from '@/assets/HomePulseLogo.png';
 
 export default function HomePage() {
   return (
