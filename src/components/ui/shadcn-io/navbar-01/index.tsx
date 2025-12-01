@@ -95,6 +95,7 @@ const defaultNavigationLinks: Navbar01NavLink[] = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/about', label: 'About' },
+  { href: '/immersiveView', label: 'ImmersiveView' },
 ];
 
 export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
