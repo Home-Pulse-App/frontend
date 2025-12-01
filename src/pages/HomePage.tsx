@@ -9,21 +9,21 @@ import '../App.css';
 export default function HomePage() {
   return (
     <div className="relative flex min-h-screen flex-col w-full">
-      <main className="flex-1 px-6 py-6">
-        <Navbar01
-          logo={
-            <img
-              src={HomePulseLogo}
-              alt="HomePulse Logo"
-              className="h-15 w-auto"
-            />
-          }
-          logoHref="/"
-          navigationLinks={[
-            { label: 'Dashboard', href: '/dashboard' },
-            { label: 'Immersive View', href: '/ImmersiveView' },
-          ]}
-        />
+      <Navbar01
+        logo={
+          <img
+            src={HomePulseLogo}
+            alt="HomePulse Logo"
+            className="h-15 w-auto"
+          />
+        }
+        logoHref="/"
+        navigationLinks={[
+          { label: 'Dashboard', href: '/dashboard' },
+          { label: 'Immersive View', href: '/ImmersiveView' },
+        ]}
+      />
+      <main className="flex-1 px-6 py-6 mt-10">
         <div className="mx-auto w-full max-w-7xl">
           <section className="space-y-2">
             <div className="py-4">
