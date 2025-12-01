@@ -18,8 +18,7 @@ function App() {
 
         <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route path="/about" element={<ImmersiveViewPage />} />
-
+        <Route path="/ImmersiveView" element={<ImmersiveViewPage />} />
         <Route path="/viewer" element={<SparkComponent />} />
       </Routes>
     </div>

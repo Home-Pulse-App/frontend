@@ -1,7 +1,7 @@
 'use client';
+import { useEffect, useRef } from 'react';
 import {
   Announcement,
-  AnnouncementTag,
   AnnouncementTitle,
 } from '@/components/ui/shadcn-io/announcement';
 import { Button } from '@/components/ui/button';
@@ -17,58 +17,95 @@ import {
   VideoPlayerTimeRange,
   VideoPlayerVolumeRange,
 } from '@/components/ui/shadcn-io/video-player';
-import { Link } from 'react-router-dom';
+import { HashLink } from 'react-router-hash-link';
 
-const Example = () => (
-  <div className="flex flex-col gap-16 px-8 py-9 text-center">
-    <div className="flex flex-col items-center justify-center gap-8">
-      <Link to="#">
-        <Announcement>
-          <AnnouncementTag>codeworks students</AnnouncementTag>
-          <AnnouncementTitle>Introducing Home Pulse</AnnouncementTitle>
-        </Announcement>
-      </Link>
-      <h1 className="mb-0 text-balance font-medium text-6xl md:text-7xl xl:text-[5.25rem]">
-        The best way to manage & track your devices
-      </h1>
-      <p className="mt-0 mb-0 text-balance text-lg text-muted-foreground">
-        Offering an intuitive way to navigate and control your smart
-        home devices from your own 3D space,
-        <br />
-        or choose and explore one of our preset modelled rooms.
-      </p>
+const Example = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-      <div className="flex items-center gap-2">
-        <Button asChild>
-          <Link to="#">Get started</Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link className="no-underline" to="#">
-            Learn more
-          </Link>
-        </Button>
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            //* Video is in view, play it
+            videoElement.play().catch((error) => {
+              console.log('Auto-play prevented:', error);
+            });
+          } else {
+            //* Video is out of view, pause it
+            videoElement.pause();
+          }
+        });
+      },
+      {
+        threshold: 0.9,
+      },
+    );
+
+    observer.observe(videoElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-16 px-8 py-9 text-center">
+      <div className="flex flex-col items-center justify-center gap-8">
+        <HashLink
+          smooth
+          to="#hero-video"
+          scroll={(el) => {
+            const y = el.getBoundingClientRect().top + window.pageYOffset - 75;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }}
+        >
+          <Announcement>
+            <AnnouncementTitle>Introducing Home Pulse</AnnouncementTitle>
+          </Announcement>
+        </HashLink>
+        <h1 className="mb-0 text-balance font-medium text-6xl md:text-7xl xl:text-[5.25rem]">
+          Your home's health, at a glance 🩺
+        </h1>
+        <p className="mt-0 mb-0 text-balance text-lg text-muted-foreground">
+          Home Pulse unifies your rooms and smart devices to deliver clear, real-time insights.
+          <br />
+          Simple, seamless, effortless.
+        </p>
+
+        <div className="flex items-center gap-2">
+          <Button asChild>
+            <HashLink smooth to="#Process">
+              Learn more
+            </HashLink>
+          </Button>
+        </div>
       </div>
-    </div>
 
-    <VideoPlayer className="overflow-hidden rounded-lg border">
-      <VideoPlayerContent
-        crossOrigin=""
-        muted
-        preload="auto"
-        slot="media"
-        src="../public/videos/HeroVideo.mp4"
-      />
-      <VideoPlayerControlBar>
-        <VideoPlayerPlayButton />
-        <VideoPlayerSeekBackwardButton />
-        <VideoPlayerSeekForwardButton />
-        <VideoPlayerTimeRange />
-        <VideoPlayerTimeDisplay showDuration />
-        <VideoPlayerMuteButton />
-        <VideoPlayerVolumeRange />
-      </VideoPlayerControlBar>
-    </VideoPlayer>
-  </div>
-);
+      <VideoPlayer id="hero-video" className="overflow-hidden rounded-lg border">
+        <VideoPlayerContent
+          ref={videoRef}
+          crossOrigin=""
+          muted
+          preload="auto"
+          slot="media"
+          src="/videos/HeroVideo.mp4"
+        />
+        <VideoPlayerControlBar>
+          <VideoPlayerPlayButton />
+          <VideoPlayerSeekBackwardButton />
+          <VideoPlayerSeekForwardButton />
+          <VideoPlayerTimeRange />
+          <VideoPlayerTimeDisplay showDuration />
+          <VideoPlayerMuteButton />
+          <VideoPlayerVolumeRange />
+        </VideoPlayerControlBar>
+      </VideoPlayer>
+    </div>
+  );
+};
 
 export default Example;
