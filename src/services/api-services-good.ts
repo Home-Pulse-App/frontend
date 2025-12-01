@@ -1,12 +1,7 @@
 import { create } from 'zustand';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = '/api';
 
-const useAuthStore = create<AuthState>((set) => ({
-    accessToken: null,
-    setAccessToken: (token) => set({ accessToken: token }),
-    logout: () => set({ accessToken: null }),
-}));
 // Types & Interfaces
 export interface ApiResponse<T = any> {
     success: boolean;
@@ -287,6 +282,11 @@ export const authService = {
         return !!useAuthStore.getState().accessToken;
     },
 };
+export const useAuthStore = create<AuthState>((set) => ({
+    accessToken: null,
+    setAccessToken: (token) => set({ accessToken: token }),
+    logout: () => set({ accessToken: null }),
+}));
 // User Service
 export const userService = {
 
@@ -419,7 +419,7 @@ export const deviceDataService = {
     },
 };
 // Export API Client for advanced usage
-export { apiClient, useAuthStore };
+export { apiClient };
 
 // Usage Examples
 /*
