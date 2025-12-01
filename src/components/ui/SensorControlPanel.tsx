@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaTimes } from 'react-icons/fa';
-import type { SensorData } from '../../services/mockServer';
 import GlassSurface from './GlassSurface';
-import { postSensorData } from '@/services/api-services';
+import { deviceDataService } from '@/services/api-services-good';
+import { type SensorData } from '@/types/api-services';
 
 interface SensorControlPanelProps {
   deviceId: string | null;
@@ -38,8 +38,11 @@ export default function SensorControlPanel({
       ...sensorData,
       [field]: value,
     });
-    const sendValue = value.toString();
-    await postSensorData(sendValue);
+    const sendPayload = {
+      sensor: 'switch1',
+      value: value.toString(),
+    }
+    await deviceDataService.postData('iot1', sendPayload);
   };
 
   return (
@@ -156,11 +159,10 @@ export default function SensorControlPanel({
                 <div className='flex justify-center'>
                   <button
                     onClick={() => handleChangeSwitch('switch1', sensorData.switch1 === 1 ? 0 : 1)}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                      sensorData.switch1 === 1
-                        ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/50'
-                        : 'bg-white/10 text-white/60 hover:bg-white/20'
-                    }`}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${sensorData.switch1 === 1
+                      ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/50'
+                      : 'bg-white/10 text-white/60 hover:bg-white/20'
+                      }`}
                   >
                     Switch
                   </button>

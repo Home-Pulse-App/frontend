@@ -3,8 +3,9 @@ import { useThree } from '@react-three/fiber';
 import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
-import type { DeviceData, SensorData } from '../services/mockServer';
-import fetchDeviceData from '@/services/api-services';
+import { deviceDataService } from '@/services/api-services-good';
+import type { SensorData } from '@/types/api-services';
+import type { DeviceData } from '@/types/device';
 
 const modes = ['translate', 'rotate', 'scale'] as const;
 
@@ -192,7 +193,6 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
         //   button2: 0,
         // },
       };
-
       setDevices((prev) => [...prev, newDevice]);
       onSpawned();
     }
@@ -222,7 +222,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     ));
     // console.log(devices); // Removed to avoid dependency on 'devices'
     onSensorDataUpdate?.(deviceId, sensorData);
-    console.log('📈',sensorData);
+    console.log('📈', sensorData);
   }, [onSensorDataUpdate]);
 
   //* Expose updateDeviceSensorData to parent via callback
@@ -242,26 +242,24 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     devicesRef.current = devices;
   }, [devices]);
 
-  //!test of a useEffect to fetch new data
   useEffect(() => {
     const responseData = async () => {
       try {
-        const newData = await fetchDeviceData();
+        const deviceId = 'iot1'
+        const newData = await deviceDataService.getLatest(deviceId);
         //* Use the ref to get the latest devices list
-        devicesRef.current.forEach(d =>{
-          updateDeviceSensorData(d.id, newData);
+        devicesRef.current.forEach(d => {
+          updateDeviceSensorData(d.id, newData.data.latest.sensorsData);
         });
       } catch (error) {
         console.error('Error fetching device data:', error);
       }
     };
-
     //* Initial fetch
     responseData();
-
     const testInterval = setInterval(responseData, 6000);
-    return ()=> clearInterval(testInterval);
-  },[]);
+    return () => clearInterval(testInterval);
+  }, []);
 
   const handleTransformEnd = (id: string, position: THREE.Vector3, rotation: THREE.Euler, scale: THREE.Vector3) => {
     setDevices(prev => prev.map(d => {

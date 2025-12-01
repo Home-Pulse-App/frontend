@@ -15,7 +15,9 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { authService, type LoginCredentials } from '@/services/api-services-good';
+import { authService } from '@/services/api-services-good';
+import type { LoginCredentials } from '@/types/api-services';
+
 
 export function LoginForm({
   className,
