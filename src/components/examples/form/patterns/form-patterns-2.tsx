@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -35,9 +34,6 @@ const formSchema = z.object({
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
     .regex(/[0-9]/, 'Password must contain at least one number')
     .regex(/[!@#$%^&*]/, 'Password must contain at least one special character (!@#$%^&*)'),
-  terms: z.boolean().refine((val) => val === true, {
-    message: 'You must accept the terms and conditions.',
-  }),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -49,7 +45,6 @@ const Example = () => {
       fullName: '',
       email: '',
       password: '',
-      terms: false,
     },
   });
 
@@ -120,29 +115,6 @@ const Example = () => {
                   Must contain uppercase, lowercase, and number
                 </FormDescription>
                 <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="terms"
-            render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(val) => field.onChange(Boolean(val))}
-                  />
-                </FormControl>
-                <div className="space-y-1 leading-none">
-                  <FormLabel className="font-normal text-sm">
-                    I agree to the{' '}
-                    <a className="hover:underline" href="#">
-                      terms and conditions
-                    </a>
-                  </FormLabel>
-                  <FormMessage />
-                </div>
               </FormItem>
             )}
           />
