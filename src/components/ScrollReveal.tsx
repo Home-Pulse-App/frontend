@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, ReactNode, RefObject } from 'react';
+import React, { useEffect, useRef, useMemo, type ReactNode, type RefObject } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -27,7 +27,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   containerClassName = '',
   textClassName = '',
   rotationEnd = 'bottom bottom',
-  wordAnimationEnd = 'bottom bottom'
+  wordAnimationEnd = 'bottom bottom',
 }) => {
   const containerRef = useRef<HTMLHeadingElement>(null);
 
@@ -60,9 +60,9 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           scroller,
           start: 'top bottom',
           end: rotationEnd,
-          scrub: true
-        }
-      }
+          scrub: true,
+        },
+      },
     );
 
     const wordElements = el.querySelectorAll<HTMLElement>('.word');
@@ -79,9 +79,9 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
           scroller,
           start: 'top bottom-=20%',
           end: wordAnimationEnd,
-          scrub: true
-        }
-      }
+          scrub: true,
+        },
+      },
     );
 
     if (enableBlur) {
@@ -97,9 +97,9 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
             scroller,
             start: 'top bottom-=20%',
             end: wordAnimationEnd,
-            scrub: true
-          }
-        }
+            scrub: true,
+          },
+        },
       );
     }
 
@@ -110,7 +110,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
 
   return (
     <h2 ref={containerRef} className={`my-5 ${containerClassName}`}>
-      <p className={`text-[clamp(1.6rem,4vw,3rem)] leading-[1.5] font-semibold ${textClassName}`}>{splitText}</p>
+      <p className={`text-[clamp(1.6rem,4vw,3rem)] leading-normal font-semibold ${textClassName}`}>{splitText}</p>
     </h2>
   );
 };

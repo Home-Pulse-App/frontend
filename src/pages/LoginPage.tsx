@@ -6,6 +6,16 @@ import HomePulseLogo from '@/assets/HomePulseLogo.png';
 export default function LoginPage() {
   return (
     <div className="relative flex min-h-screen flex-col w-full">
+      {/* Fixed Background */}
+      <div
+        className="fixed inset-0 w-full h-full -z-10"
+        style={{
+          backgroundImage: 'url(/images/iotBackground_Gradient.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
       <Navbar01
         logo={<img src={HomePulseLogo} alt="HomePulse Logo" className="h-15 w-auto" />}
         logoHref="/"

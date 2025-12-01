@@ -11,9 +11,19 @@ import {
 export default function RegisterPage() {
   return (
     <div className="relative flex min-h-screen flex-col w-full">
+      {/* Fixed Background */}
+      <div
+        className="fixed inset-0 w-full h-full -z-10"
+        style={{
+          backgroundImage: 'url(/images/iotBackground_Gradient.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
       {/* Fixed Navbar */}
       <Navbar01
-        logo={<img src={HomePulseLogo} alt="HomePulse Logo" className="h-15 w-auto" />}
+        logo={<img src={HomePulseLogo} alt="HomePulse Logo" className="h-16 w-auto" />}
         logoHref="/"
         navigationLinks={[
           { label: 'Dashboard', href: '/dashboard' },
@@ -39,8 +49,7 @@ export default function RegisterPage() {
           </div>
         </section>
         {/* Developer Instructions Section */}
-        <section className="w-full mx-auto py-16 px-4 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url(/images/iotBackground_Gradient.png)' }}
+        <section className="w-full mx-auto py-16 px-4"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <div className="w-full">
