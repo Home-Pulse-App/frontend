@@ -41,7 +41,7 @@ export default function SensorControlPanel({
     const sendPayload = {
       sensor: 'switch1',
       value: value.toString(),
-    }
+    };
     await deviceDataService.postData('iot1', sendPayload);
   };
 
@@ -162,7 +162,7 @@ export default function SensorControlPanel({
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${sensorData.switch1 === 1
                       ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/50'
                       : 'bg-white/10 text-white/60 hover:bg-white/20'
-                      }`}
+                    }`}
                   >
                     Switch
                   </button>

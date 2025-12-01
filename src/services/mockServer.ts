@@ -1,4 +1,4 @@
-import type { DeviceData, UserData } from "@/types/device";
+import type { DeviceData, UserData } from '@/types/device';
 
 const STORAGE_KEY = 'home_pulse_mock_db';
 const DB_NAME = 'HomePulseDB';

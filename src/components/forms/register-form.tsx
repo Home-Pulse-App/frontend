@@ -149,4 +149,4 @@ export function RegisterForm() {
       </Form>
     </div>
   );
-};
+}
