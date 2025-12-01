@@ -3,7 +3,7 @@ import { useThree } from '@react-three/fiber';
 import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
-import { deviceDataService } from '@/services/api-services-good';
+import { deviceDataService } from '@/services/api-services';
 import type { SensorData } from '@/types/api-services';
 import type { DeviceData } from '@/types/device';
 

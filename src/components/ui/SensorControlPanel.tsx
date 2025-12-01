@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaChevronDown, FaChevronUp, FaTimes } from 'react-icons/fa';
 import GlassSurface from './GlassSurface';
-import { deviceDataService } from '@/services/api-services-good';
+import { deviceDataService } from '@/services/api-services';
 import { type SensorData } from '@/types/api-services';
 
 interface SensorControlPanelProps {

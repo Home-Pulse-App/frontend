@@ -35,6 +35,10 @@ export interface AuthState {
 }
 
 // User Types
+export interface CreateUserResponse {
+    success: boolean;
+    message: string;
+}
 export interface CreateUserData {
     userName: string;
     email: string;
