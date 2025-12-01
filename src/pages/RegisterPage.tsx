@@ -1,6 +1,7 @@
 import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
 import FormPatterns2 from '@/components/examples/form/patterns/form-patterns-2';
 import Navbar from '@/components/Navbar';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function RegisterPage() {
   return (
@@ -16,9 +17,14 @@ export default function RegisterPage() {
         }}
       />
       <Navbar />
+      {/* Hero Section with Registration Form */}
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
-          <FormPatterns2 />
+          <Card className="bg-white">
+            <CardContent>
+              <FormPatterns2 />
+            </CardContent>
+          </Card>
         </div>
       </main>
       <FooterSimple01 />
