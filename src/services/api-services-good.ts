@@ -111,6 +111,7 @@ export interface Device {
 export interface SensorData {
   [key: string]: number | boolean | string;
 }
+
 export interface DeviceReading {
   _id: string;
   userId: string;

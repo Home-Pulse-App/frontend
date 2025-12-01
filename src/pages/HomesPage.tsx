@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import HomeCard from '@/components/HomeCard';
 import { useHomesStore } from '@/store/homeStore';
-import { Navbar01 } from '@/components/ui/shadcn-io/navbar-01';
-import HomePulseLogo from '@/assets/HomePulseLogo.png';
+import Navbar from '@/components/Navbar';
 import CreateHomeModal from '@/components/CreateHomeModal';
 
 export default function HomesPage() {
@@ -21,16 +20,7 @@ export default function HomesPage() {
 
   return (
     <div className="relative flex min-h-screen flex-col w-full">
-      <Navbar01
-        logo={<img src={HomePulseLogo} alt="HomePulse Logo" className="h-15 w-auto" />}
-        logoHref="/"
-        navigationLinks={[
-          { label: 'Dashboard', href: '/dashboard' },
-          { label: 'Homes', href: '/homes' },
-          { label: 'Pricing', href: '/pricing' },
-          { label: 'About', href: '/about' },
-        ]}
-      />
+      <Navbar />
 
       <div className="w-7xl mx-auto">
         <div className="flex items-center justify-between pt-10 py-4 border-b">
