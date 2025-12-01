@@ -1,62 +1,15 @@
-import { Navbar01 } from '@/components/ui/shadcn-io/navbar-01';
 import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
-import HomePulseLogo from '@/assets/HomePulseLogo.png';
 import FormPatterns2 from '@/components/examples/form/patterns/form-patterns-2';
-import { DeveloperInstructions } from '@/components/DeveloperInstructions';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
+import Navbar from '@/components/Navbar';
 
 export default function RegisterPage() {
   return (
     <div className="relative flex min-h-screen flex-col w-full">
-      {/* Fixed Background */}
-      <div
-        className="fixed inset-0 w-full h-full -z-10"
-        style={{
-          backgroundImage: 'url(/images/iotBackground_Gradient.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      />
-      {/* Fixed Navbar */}
-      <Navbar01
-        logo={<img src={HomePulseLogo} alt="HomePulse Logo" className="h-16 w-auto" />}
-        logoHref="/"
-        navigationLinks={[
-          { label: 'Dashboard', href: '/dashboard' },
-          { label: 'Immersive View', href: '/ImmersiveView' },
-        ]}
-        signInHref="/login"
-        ctaHref="/register"
-        signInText="Sign In"
-        ctaText="Get Started"
-      />
-
-      <main className="flex-1 flex flex-col w-full">
-        {/* Hero Section with Registration Form */}
-        <section
-          className="min-h-screen flex flex-col items-center justify-center pt-20 pb-12 px-4"
-        >
-          <div className="w-full max-w-md">
-            <Card className="bg-background/95 backdrop-blur">
-              <CardContent className="pt-6">
-                <FormPatterns2 />
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-        {/* Developer Instructions Section */}
-        <section className="w-full mx-auto py-16 px-4"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-            <div className="w-full">
-              <DeveloperInstructions />
-            </div>
-          </div>
-        </section>
+      <Navbar />
+      <main className="flex-1 flex items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <FormPatterns2 />
+        </div>
       </main>
       <FooterSimple01 />
     </div>
