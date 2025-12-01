@@ -38,7 +38,8 @@
     "three": "^0.181.2",
     "valtio": "^2.2.0",
     "vite-plugin-svgr": "^4.5.0",
-    "zod": "^4.1.13"
+    "zod": "^4.1.13",
+    "zustand": "^5.0.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
