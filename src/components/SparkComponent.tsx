@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import {Canvas} from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber';
 import { Progress } from './ui/progress';
 import { useLocation, useNavigate } from 'react-router';
 import SplatScene from './SplatScene';
@@ -7,7 +7,9 @@ import Dock from './ui/Dock';
 import { FaHome, FaKeyboard, FaLightbulb, FaSun, FaThermometerHalf, FaWater } from 'react-icons/fa';
 import Instructions from './ui/Instructions/Instructions';
 import Devices, { deviceState } from './Devices';
-import { mockServer, type DeviceData, type SensorData } from '../services/mockServer';
+import { mockServer } from '../services/mockServer';
+import { type DeviceData } from '@/types/device';
+import { type SensorData } from '@/types/api-services';
 import SensorControlPanel from './ui/SensorControlPanel';
 import { useSnapshot } from 'valtio';
 
@@ -21,7 +23,7 @@ function SparkComponent() {
   const [loading, setLoading] = useState(true);
   const [splatURL, setSplatURL] = useState('');
   const [displayInstruction, setDisplayInstructions] = useState(false);
-  const [splatCenter, setSplatCenter] = useState({x: 0, y: 0, z: 0});
+  const [splatCenter, setSplatCenter] = useState({ x: 0, y: 0, z: 0 });
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -83,7 +85,7 @@ function SparkComponent() {
       const updatedDevices = prev.map(d =>
         d.id === deviceId ? { ...d, sensorData } : d,
       );
-        //TODO: Manage real userID when connecting to the backend
+      //TODO: Manage real userID when connecting to the backend
       mockServer.saveDevices('default-user', updatedDevices);
       return updatedDevices;
     });
@@ -170,10 +172,10 @@ function SparkComponent() {
 
           {/* Gaussian splat scene */}
           <SplatScene
-            splatURL = {splatURL}
-            setLoading = {setLoading}
-            setProgress = {setProgress}
-            setSplatCenter = {setSplatCenter}
+            splatURL={splatURL}
+            setLoading={setLoading}
+            setProgress={setProgress}
+            setSplatCenter={setSplatCenter}
           />
 
           {/* Devices component handles rendering and spawning devices, only render after splat loads */}

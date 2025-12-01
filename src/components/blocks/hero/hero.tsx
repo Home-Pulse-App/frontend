@@ -53,7 +53,7 @@ const Example = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-16 px-8 py-9 text-center">
+    <div className="flex flex-col gap-16 px-8 pt-0 py-9 text-center">
       <div className="flex flex-col items-center justify-center gap-8">
         <HashLink
           smooth
