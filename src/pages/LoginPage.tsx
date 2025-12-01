@@ -9,6 +9,10 @@ export default function LoginPage() {
       <Navbar01
         logo={<img src={HomePulseLogo} alt="HomePulse Logo" className="h-15 w-auto" />}
         logoHref="/"
+        navigationLinks={[
+          { label: 'Dashboard', href: '/dashboard' },
+          { label: 'Immersive View', href: '/ImmersiveView' },
+        ]}
       />
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">

@@ -93,7 +93,7 @@ const Example = () => {
                 <FormControl>
                   <Input
                     className="bg-background"
-                    placeholder="you@example.com"
+                    placeholder="email@example.com"
                     type="email"
                     {...field}
                   />

@@ -29,13 +29,13 @@ export function LoginForm({
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    //TODO remove console.log on production 
+    //TODO remove console.log on production
     console.log('Login attempt:', { email, password: '***' });
 
     try {
       const credentials: LoginCredentials = {
         email: email,
-        password: password
+        password: password,
       };
       const response = await authService.login(credentials);
       console.log('Login successful:', response);
@@ -62,7 +62,7 @@ export function LoginForm({
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="email@example.com"
                   required
                 />
               </Field>
