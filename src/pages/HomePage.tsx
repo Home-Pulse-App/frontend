@@ -3,7 +3,6 @@ import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
 import HomePulseLogo from '@/assets/HomePulseLogo.png';
 import Hero from '@/components/blocks/hero/hero';
 import { Process1 } from '@/components/process1';
-import ProgressWithLabel1 from '@/components/examples/progress/with-label/progress-with-label-1';
 import { Separator } from '@/components/ui/separator';
 import '../App.css';
 
@@ -29,14 +28,10 @@ export default function HomePage() {
 
             <Separator />
 
-            <div className="py-6">
+            <div id="Process" className="py-6">
               <Process1 />
             </div>
           </section>
-
-          <div className="mx-auto max-w-md mt-2">
-            <ProgressWithLabel1 />
-          </div>
         </div>
       </main>
 

@@ -1,9 +1,7 @@
+import { create } from 'zustand';
 
-// API Services for Home Pulse Frontend
-// Base configuration and types for the Home Pulse API
-// Copy this file to your React frontend project
-// Configuration
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = '/api';
+
 // Types & Interfaces
 export interface ApiResponse<T = any> {
   success: boolean;
@@ -34,6 +32,12 @@ export interface LoginCredentials {
 export interface LoginResponse {
   token: string;
 }
+export interface AuthState {
+  accessToken: string | null;
+  setAccessToken: (token: string | null) => void;
+  logout: () => void;
+}
+
 // User Types
 export interface CreateUserData {
   userName: string;
@@ -153,49 +157,51 @@ export interface DeviceStatsResponse {
 // HTTP Client Utility
 class ApiClient {
   private baseURL: string;
-  private token: string | null = null;
+
   constructor(baseURL: string) {
     this.baseURL = baseURL;
-    // Try to load token from localStorage
-    if (typeof window !== 'undefined') {
-      this.token = localStorage.getItem('authToken');
-    }
   }
-  setToken(token: string | null) {
-    this.token = token;
-    if (typeof window !== 'undefined') {
-      if (token) {
-        localStorage.setItem('authToken', token);
-      } else {
-        localStorage.removeItem('authToken');
-      }
-    }
-  }
-  getToken(): string | null {
-    return this.token;
-  }
+
   private async request<T>(
     endpoint: string,
     options: RequestInit = {},
   ): Promise<T> {
-    const headers = {
+    const { accessToken } = useAuthStore.getState();
+
+    const headers = new Headers({
       'Content-Type': 'application/json',
-      ...(options.headers as Record<string, string> || {}),
-    } as Record<string, string>;
-    if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token}`;
+      ...options.headers,
+    });
+
+    // Only add Bearer token if we have one
+    if (accessToken) {
+      headers.set('Authorization', `Bearer ${accessToken}`);
     }
+
     const config: RequestInit = {
       ...options,
       headers,
+      credentials: 'include', // CRITICAL: Send HttpOnly cookies
     };
+
     const response = await fetch(`${this.baseURL}${endpoint}`, config);
+
+    // Handle 401 → token expired → try to refresh
+    if (response.status === 401) {
+      const refreshed = await authService.refreshToken();
+      if (!refreshed) {
+        authService.logout();
+        throw new Error('Session expired. Please log in again.');
+      }
+      // Retry original request with new token
+      return this.request<T>(endpoint, options);
+    }
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({
-        message: response.statusText,
-      }));
+      const errorData = await response.json().catch(() => ({ message: response.statusText }));
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
+
     return response.json();
   }
   async get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
@@ -224,27 +230,63 @@ class ApiClient {
 const apiClient = new ApiClient(API_BASE_URL);
 // Auth Service
 export const authService = {
-
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
-    const response = await apiClient.post<LoginResponse>('/auth/login', credentials);
-    if (response.token) {
-      apiClient.setToken(response.token);
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+      credentials: 'include', // Important for receiving HttpOnly cookie
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.message || 'Login failed');
     }
-    return response;
-  },
 
+    const data = await response.json();
+
+    // Save access token in memory only
+    if (data.token) {
+      useAuthStore.getState().setAccessToken(data.token);
+    }
+
+    return data;
+  },
+  async refreshToken(): Promise<boolean> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+        method: 'POST',
+        credentials: 'include', // Sends refresh token cookie
+      });
+
+      if (!response.ok) return false;
+
+      const data = await response.json();
+      if (data.token) {
+        useAuthStore.getState().setAccessToken(data.token);
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  },
   logout(): void {
-    apiClient.setToken(null);
+    useAuthStore.getState().logout();
   },
-
   getToken(): string | null {
-    return apiClient.getToken();
+    return useAuthStore.getState().accessToken;
   },
 
   isAuthenticated(): boolean {
-    return !!apiClient.getToken();
+    return !!useAuthStore.getState().accessToken;
   },
 };
+export const useAuthStore = create<AuthState>((set) => ({
+  accessToken: null,
+  setAccessToken: (token) => set({ accessToken: token }),
+  logout: () => set({ accessToken: null }),
+}));
 // User Service
 export const userService = {
 
