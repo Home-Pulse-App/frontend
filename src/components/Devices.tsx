@@ -245,7 +245,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   useEffect(() => {
     const responseData = async () => {
       try {
-        const deviceId = 'iot1'
+        const deviceId = 'iot1';
         const newData = await deviceDataService.getLatest(deviceId);
         //* Use the ref to get the latest devices list
         devicesRef.current.forEach(d => {
