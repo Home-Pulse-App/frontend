@@ -25,14 +25,14 @@ function SplatScene({splatURL, setLoading, setProgress, setSplatCenter}: SplatSc
   const baseTime = useRef(0);
 
   //* Setup magic effect shader with some help from the example https://sparkjs.dev/examples/#splat-reveal-effects and AI
-  const setupMagicEffect = (splatMesh: SplatMesh) => {
+  const setupMagicEffect = (splatMesh: SplatMesh, maxRadius: number) => {
     try {
       splatMesh.objectModifier = dyno.dynoBlock(
         { gsplat: dyno.Gsplat },
         { gsplat: dyno.Gsplat },
         ({ gsplat }) => {
           const d = new dyno.Dyno({
-            inTypes: { gsplat: dyno.Gsplat, t: 'float' },
+            inTypes: { gsplat: dyno.Gsplat, t: 'float', maxRadius: 'float' },
             outTypes: { gsplat: dyno.Gsplat },
             globals: () => [
               dyno.unindent(`
@@ -67,7 +67,7 @@ function SplatScene({splatURL, setLoading, setProgress, setSplatCenter}: SplatSc
             statements: ({ inputs, outputs }) => dyno.unindentLines(`
               ${outputs.gsplat} = ${inputs.gsplat};
               float t = ${inputs.t};
-              float s = smoothstep(0.,10.,t-4.5)*10.;
+              float s = smoothstep(0.,10.,t-4.5)*${inputs.maxRadius};
               vec3 scales = ${inputs.gsplat}.scales;
               vec3 localPos = ${inputs.gsplat}.center;
               float l = length(localPos.xz);
@@ -83,7 +83,7 @@ function SplatScene({splatURL, setLoading, setProgress, setSplatCenter}: SplatSc
             `),
           });
 
-          gsplat = d.apply({ gsplat, t: animateT.current }).gsplat;
+          gsplat = d.apply({ gsplat, t: animateT.current, maxRadius: dyno.dynoFloat(maxRadius) }).gsplat;
           return { gsplat };
         },
       );
@@ -123,9 +123,16 @@ function SplatScene({splatURL, setLoading, setProgress, setSplatCenter}: SplatSc
         setSplatCenter(center);
         console.log('Splat center 🎯:', center);
 
+        const maxRadius = Math.max(
+          Math.hypot(bbox.min.x, bbox.min.z),
+          Math.hypot(bbox.min.x, bbox.max.z),
+          Math.hypot(bbox.max.x, bbox.min.z),
+          Math.hypot(bbox.max.x, bbox.max.z),
+        );
+
         setSplatLoaded(true);
         baseTime.current = 0;
-        setupMagicEffect(splatMesh);
+        setupMagicEffect(splatMesh, maxRadius);
 
       } catch (error) {
         console.error('🚨 Error mounting the Splat:', error);
