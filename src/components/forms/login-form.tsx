@@ -36,11 +36,13 @@ export function LoginForm({
         email: email,
         password: password,
       };
-      const response = await authService.login(credentials);
-      console.log('Login successful:', response);
+      await authService.login(credentials);
+      console.log('Login successful');
+      alert('Login successful');
       navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
+      alert('Login failed');
     }
   };
   return (

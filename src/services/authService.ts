@@ -17,10 +17,13 @@ export const authService = {
     }
 
     const data = await response.json();
+    console.log('Login data: ', data);
 
     // Save access token in memory only
-    if (data.token) {
-      useAuthStore.getState().setAccessToken(data.token);
+    if (data.ResponseData.token) {
+      useAuthStore.getState().setAccessToken(data.ResponseData.token);
+      useAuthStore.getState().setUserName(data.ResponseData.user);
+      console.log('Authenticated: ', authService.isAuthenticated());
     }
 
     return data;
