@@ -1,10 +1,12 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import Folder from '../components/ui/Folder';
-import { mockServer } from '../services/localDBService';
+// import { mockServer } from '../services/localDBService';
+import { useRoomStore } from '@/store/roomStore';
 
 type FileUploadProps = {
   onFileUpload?: (fileData: FileData) => void;
+  roomId: string;
 };
 
 export interface FileData {
@@ -14,11 +16,12 @@ export interface FileData {
   url: string;
 }
 
-function FileUpload({ onFileUpload }: FileUploadProps) {
+function FileUpload({ onFileUpload, roomId }: FileUploadProps) {
   //* Trick to avoid unused variables
   const [, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const { updateRoom } = useRoomStore();
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -72,7 +75,9 @@ function FileUpload({ onFileUpload }: FileUploadProps) {
     reader.onload = async () => {
       const base64Data = reader.result as string;
       console.log('[FileUpload] File read complete, base64 length:', base64Data.length);
-      await mockServer.saveSplatData('default-user', base64Data);
+      // await mockServer.saveSplatData('default-user', base64Data);
+      const response = await updateRoom(roomId, { viewSplat: base64Data });
+      console.log(response);
       console.log('[FileUpload] Save complete, navigating...');
       //* Navigate ONLY after saving is complete
       navigate('/viewer', { state: { file: fileData } });

@@ -5,13 +5,17 @@ import { mockServer } from '../services/localDBService';
 import '../immersiveStyle.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/blocks/footer/Footer';
-// import { useRoomStore } from '@/store/roomStore';
+import { useRoomStore } from '@/store/roomStore';
 
 function ImmersiveViewPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [splatExist, setSplatExist] = useState(false);
+  const { fetchRoom, viewSplat } = useRoomStore();
+
+  const params = new URLSearchParams(window.location.search);
+  const roomId = params.get('roomId');
 
   const handleLoadSession = async () => {
     setLoading(true);
@@ -42,16 +46,17 @@ function ImmersiveViewPage() {
   };
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const roomId = params.get('roomId');
     if (roomId) {
-      //TODO FetchRoom by roomId alone, and check if splatData exists
-      // useRoomStore.fetchRooms(homeId);
-      // if (splatData) {
-      //   setSplatExist(true);
-      // } else {
-      //   setSplatExist(false);
-      // }
+      try {
+        fetchRoom(roomId);
+        if (viewSplat) {
+          setSplatExist(true);
+        } else {
+          setSplatExist(false);
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
   }, []);
 
@@ -60,7 +65,7 @@ function ImmersiveViewPage() {
       <Navbar />
       <main className='flex-1 flex items-center justify-center px-4 py-12'>
         <div className='flex flex-col items-center gap-6'>
-          <FileUpload />
+          <FileUpload roomId={roomId!} />
           {splatExist && (
             <div className='flex flex-col items-center gap-2'>
               <button
