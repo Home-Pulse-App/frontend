@@ -154,9 +154,9 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
       }
     }, [ref]);
 
-    const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleLogout = async (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
-      authService.logout();
+      await authService.logout();
       alert('Logout successful');
       navigate('/');
     };
