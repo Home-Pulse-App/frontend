@@ -25,7 +25,7 @@ export default function GettingStartedPage() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
           className='w-full'
         >
-          <DeveloperInstructions cardOpacity={90} />
+          <DeveloperInstructions cardOpacity={100} />
         </motion.div>
       </main>
       <FooterSimple01 />
