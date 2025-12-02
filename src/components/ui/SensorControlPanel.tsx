@@ -48,7 +48,7 @@ export default function SensorControlPanel({
   return (
     <div className={`pointer-events-auto ${className || ''}`}>
       <GlassSurface
-        width="20rem"
+        width='20rem'
         height={500}
         displace={5}
         distortionScale={50}
@@ -57,7 +57,7 @@ export default function SensorControlPanel({
         blueOffset={25}
         brightness={60}
         opacity={0.3}
-        mixBlendMode="screen"
+        mixBlendMode='screen'
       >
         <div className='w-full h-full overflow-hidden rounded-lg flex flex-col'>
           {/* Header */}

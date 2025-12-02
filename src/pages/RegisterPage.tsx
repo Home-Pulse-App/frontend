@@ -4,12 +4,23 @@ import { RegisterForm } from '@/components/forms/register-form';
 
 export default function RegisterPage() {
   return (
-    <div className="relative flex min-h-screen flex-col w-full">
+    <div className='relative flex min-h-screen flex-col w-full'>
+      {/* Fixed Background */}
+      <div
+        className='fixed inset-0 w-full h-full -z-10'
+        style={{
+          backgroundImage: 'url(/images/iotBackground_Gradient.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
       <Navbar />
-      <main className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
-          <RegisterForm />
-        </div>
+      {/* Hero Section with Registration Form */}
+      <main className='flex-1 flex items-center justify-center px-4 py-12'>
+
+        <RegisterForm />
+
       </main>
       <FooterSimple01 />
     </div>
