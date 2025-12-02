@@ -138,6 +138,11 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
     }
   },
   cleanSplat: () => {
-    set({ viewSplatFileId: '' });
+    const currentSplatUrl = useRoomStore.getState().viewSplat;
+    if (currentSplatUrl) {
+      // Revoke the old blob URL to free up memory
+      URL.revokeObjectURL(currentSplatUrl);
+    }
+    set({ viewSplatFileId: '', viewSplat: '' });
   },
 }));

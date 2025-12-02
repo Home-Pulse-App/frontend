@@ -53,26 +53,12 @@ export const roomService = {
 
   async getRoomSplat(roomId: string): Promise<{ splatUrl: string | null }> {
     try {
-      const token = localStorage.getItem('token');
-      const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+      const blob = await apiClient.getBlob(`/room/${roomId}/splat`);
 
-      const response = await fetch(`${baseURL}/room/${roomId}/splat`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          // No splat file exists for this room
-          return { splatUrl: null };
-        }
-        throw new Error(`Failed to fetch splat file: ${response.statusText}`);
+      if (!blob) {
+        // No splat file exists for this room
+        return { splatUrl: null };
       }
-
-      // Get the blob from the response
-      const blob = await response.blob();
 
       // Create a URL for the blob
       const splatUrl = URL.createObjectURL(blob);
