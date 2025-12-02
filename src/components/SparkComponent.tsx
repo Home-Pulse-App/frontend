@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Progress } from './ui/Progress';
 import { useLocation, useNavigate } from 'react-router';
 import SplatScene from './SplatScene';
 import Dock from './ui/Dock';
@@ -12,6 +11,8 @@ import { type DeviceData } from '@/types/device';
 import SensorControlPanel from './ui/SensorControlPanel';
 import { useSnapshot } from 'valtio';
 import type { SensorData } from '@/types/sensorsDataTypes';
+import { Progress } from './ui/progress';
+
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
