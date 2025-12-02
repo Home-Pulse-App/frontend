@@ -1,4 +1,4 @@
-import { Progress } from '@/components/ui/progress';
+import { Progress } from '@/components/ui/Progress';
 
 export const title = 'With Percentage';
 

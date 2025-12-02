@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Progress } from './ui/progress';
+import { Progress } from './ui/Progress';
 import { useLocation, useNavigate } from 'react-router';
 import SplatScene from './SplatScene';
 import Dock from './ui/Dock';
