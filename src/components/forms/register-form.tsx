@@ -17,6 +17,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { userService } from '@/services/api-services';
 import type { CreateUserData } from '@/types/api-services';
+import {
+  Card,
+  CardContent,
+} from '@/components/ui/card';
 
 export const title = 'Signup Form';
 
@@ -72,81 +76,85 @@ export function RegisterForm() {
 
   return (
     <div className="w-full max-w-sm">
-      <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="space-y-2 text-center">
-            <h1 className="font-bold text-2xl">Create an account</h1>
-            <p className="text-muted-foreground text-sm">
-              Sign up to enjoy with out Application.
-            </p>
-          </div>
-          <FormField
-            control={form.control}
-            name="fullName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-background"
-                    placeholder="John Doe"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-background"
-                    placeholder="email@example.com"
-                    type="email"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-background"
-                    placeholder="Create a strong password"
-                    type="password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormDescription className="text-xs">
-                  Must be 8 characters long and contain uppercase, lowercase, number and special character (!@#$%^&*)
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button className="w-full" type="submit">
-            Create Account
-          </Button>
-          <p className="text-center text-muted-foreground text-sm">
-            Already have an account?{' '}
-            <Link to="/login" className="hover:underline">
-              Sign in
-            </Link>
-          </p>
-        </form>
-      </Form>
+      <Card>
+        <CardContent>
+          <Form {...form}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="space-y-2 text-center">
+                <h1 className="font-bold text-2xl">Create an account</h1>
+                <p className="text-muted-foreground text-sm">
+                  Sign up to enjoy Home Pulse.
+                </p>
+              </div>
+              <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-background"
+                        placeholder="John Doe"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-background"
+                        placeholder="email@example.com"
+                        type="email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-background"
+                        placeholder="Create a strong password"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-xs mt-2 mb-2">
+                      Must be 8 characters long and contain uppercase, lowercase, number and special character (!@#$%^&*)
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className="w-full" type="submit">
+                Create Account
+              </Button>
+              <p className="text-center text-muted-foreground text-sm">
+                Already have an account?{' '}
+                <Link to="/login" className="underline">
+                  Sign in
+                </Link>
+              </p>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

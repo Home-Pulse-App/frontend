@@ -77,7 +77,7 @@ export function LoginForm({
                 <Button type="submit">Login</Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{' '}
-                  <Link to="/register" className="hover:underline">
+                  <Link to="/register" className="underline">
                     Sign up
                   </Link>
                 </FieldDescription>
