@@ -28,8 +28,7 @@ export function LoginForm({
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    //TODO remove console.log on production
-    console.log('Login attempt:', { email, password: '***' });
+    // console.log('Login attempt:', { email, password: '***' });
 
     try {
       const credentials: LoginCredentials = {
