@@ -7,6 +7,7 @@ import Register from './pages/RegisterPage';
 import ImmersiveViewPage from './pages/ImmersiveViewPage';
 import SparkComponent from './components/SparkComponent';
 import HomesPage from './pages/HomesPage';
+import GettingStartedPage from './pages/GettingStartedPage';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
         <Route path='/dashboard' element={<Dashboard />} />
 
         <Route path='/ImmersiveView' element={<ImmersiveViewPage />} />
+
+        <Route path='/getting-started' element={<GettingStartedPage />} />
+
         <Route path='/viewer' element={<SparkComponent />} />
 
         <Route path='/homes' element={<HomesPage />} />

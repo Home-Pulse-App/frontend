@@ -97,7 +97,7 @@ const defaultNavigationLinks: Navbar01NavLink[] = [
   { href: '/', label: 'Home', active: true },
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/about', label: 'About' },
+  { href: '/getting-started', label: 'Getting Started' },
   { href: '/immersiveView', label: 'ImmersiveView' },
 ];
 
