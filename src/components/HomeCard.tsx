@@ -1,5 +1,4 @@
-import type { Home } from "@/types/homes-types";
-
+import type { Home } from '@/types/homes-types';
 
 interface HomeCardProps {
   home: Home;
