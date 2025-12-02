@@ -18,7 +18,7 @@ export default function GettingStartedPage() {
         }}
       />
       <Navbar />
-      <main className='flex-1 flex items-center justify-center px-4 py-12'>
+      <main className='flex-1 flex items-center justify-center px-4 py-8'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
