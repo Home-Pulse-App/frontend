@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import Folder from '../components/ui/Folder';
-import { mockServer } from '../services/mockServer';
+import { mockServer } from '../services/localDBService';
 
 type FileUploadProps = {
   onFileUpload?: (fileData: FileData) => void;
@@ -107,7 +107,7 @@ function FileUpload({ onFileUpload }: FileUploadProps) {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        onClick= {handleFileDialog}
+        onClick={handleFileDialog}
         className='cursor-pointer'
       >
         <input

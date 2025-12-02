@@ -3,8 +3,8 @@ import { useThree } from '@react-three/fiber';
 import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
-import { deviceDataService } from '@/services/api-services';
-import type { SensorData } from '@/types/api-services';
+import { deviceDataService } from '@/services/deviceDataService';
+import type { SensorData } from '@/types/sensorsDataTypes';
 import type { DeviceData } from '@/types/device';
 
 const modes = ['translate', 'rotate', 'scale'] as const;

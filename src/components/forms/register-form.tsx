@@ -15,8 +15,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { userService } from '@/services/api-services';
-import type { CreateUserData } from '@/types/api-services';
+import type { CreateUserData } from '@/types/user-types';
+import { userService } from '@/services/userService';
 
 export const title = 'Signup Form';
 

@@ -1,6 +1,6 @@
 import { Navbar01 } from '@/components/ui/shadcn-io/navbar-01';
 import HomePulseLogo from '@/assets/HomePulseLogo.png';
-import { authService } from '@/services/api-services';
+import { authService } from '@/services/authService';
 
 export default function Navbar() {
   const auth = authService.isAuthenticated();

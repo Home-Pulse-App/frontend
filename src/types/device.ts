@@ -1,4 +1,4 @@
-import type { SensorData } from './api-services';
+import type { SensorData } from './sensorsDataTypes';
 
 export interface DeviceData {
   id: string;
