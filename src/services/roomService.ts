@@ -47,7 +47,40 @@ export const roomService = {
     return apiClient.put(`/room/${roomId}`, roomData);
   },
 
-  async getRoom(roomId: string): Promise<{ success: boolean; message: string; data: { room: Room } }> {
+  async getRoom(roomId: string): Promise<{ message: string; room: Room }> {
     return apiClient.get(`/room/${roomId}`);
+  },
+
+  async getRoomSplat(roomId: string): Promise<{ splatUrl: string | null }> {
+    try {
+      const token = localStorage.getItem('token');
+      const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+      const response = await fetch(`${baseURL}/room/${roomId}/splat`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          // No splat file exists for this room
+          return { splatUrl: null };
+        }
+        throw new Error(`Failed to fetch splat file: ${response.statusText}`);
+      }
+
+      // Get the blob from the response
+      const blob = await response.blob();
+
+      // Create a URL for the blob
+      const splatUrl = URL.createObjectURL(blob);
+
+      return { splatUrl };
+    } catch (error) {
+      console.error('Error fetching splat file:', error);
+      return { splatUrl: null };
+    }
   },
 };

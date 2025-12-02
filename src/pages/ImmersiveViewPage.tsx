@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import FileUpload from '../components/FileUpload';
 import { mockServer } from '../services/localDBService';
 import '../immersiveStyle.css';
@@ -12,10 +12,9 @@ function ImmersiveViewPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [splatExist, setSplatExist] = useState(false);
-  const { fetchRoom, viewSplat } = useRoomStore();
+  const { fetchRoom, viewSplatFileId, cleanSplat, loading: roomLoading } = useRoomStore();
 
-  const params = new URLSearchParams(window.location.search);
-  const roomId = params.get('roomId');
+  const { roomId } = useParams<{ roomId: string }>();
 
   const handleLoadSession = async () => {
     setLoading(true);
@@ -45,21 +44,26 @@ function ImmersiveViewPage() {
     }
   };
 
+  // Fetch room data when component mounts
   useEffect(() => {
     if (roomId) {
-      try {
-        fetchRoom(roomId);
-        if (viewSplat) {
-          setSplatExist(true);
-        } else {
-          setSplatExist(false);
-        }
-      } catch (err) {
-        console.error(err);
-      }
+      cleanSplat();
+      fetchRoom(roomId);
     }
-  }, []);
+  }, [roomId, fetchRoom]);
 
+  // Update splatExist when viewSplatFileId changes
+  useEffect(() => {
+    if (viewSplatFileId) {
+      console.log('Splat File ID:', viewSplatFileId);
+      setSplatExist(true);
+    } else {
+      console.log('No Splat File ID');
+      setSplatExist(false);
+    }
+  }, [viewSplatFileId]);
+
+  if (roomLoading) return <p>Loading room...</p>;
   return (
     <div className='relative flex min-h-screen flex-col w-full'>
       <Navbar />
