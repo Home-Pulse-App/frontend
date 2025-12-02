@@ -6,6 +6,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
+import ScrollReveal from './ScrollReveal';
+
 export function DeveloperInstructions() {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 px-4 pb-12">
@@ -13,7 +15,9 @@ export function DeveloperInstructions() {
         <CardHeader>
           <CardTitle className="text-2xl">Getting Started with Home-Pulse</CardTitle>
           <CardDescription>
-            Follow these instructions to set up and run the Home-Pulse IoT monitoring system
+            <ScrollReveal>
+              Follow these instructions to set up and run the Home-Pulse IoT monitoring system
+            </ScrollReveal>
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-8">
