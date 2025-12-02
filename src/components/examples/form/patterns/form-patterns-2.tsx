@@ -53,25 +53,25 @@ const Example = () => {
   }
 
   return (
-    <div className="w-full max-w-sm">
+    <div className='w-full max-w-sm'>
       <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="space-y-2 text-center">
-            <h1 className="font-bold text-2xl">Create an account</h1>
-            <p className="text-muted-foreground text-sm">
+        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+          <div className='space-y-2 text-center'>
+            <h1 className='font-bold text-2xl'>Create an account</h1>
+            <p className='text-muted-foreground text-sm'>
               Sign up to get started with our platform
             </p>
           </div>
           <FormField
             control={form.control}
-            name="fullName"
+            name='fullName'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="bg-background"
-                    placeholder="John Doe"
+                    className='bg-background'
+                    placeholder='John Doe'
                     {...field}
                   />
                 </FormControl>
@@ -81,15 +81,15 @@ const Example = () => {
           />
           <FormField
             control={form.control}
-            name="email"
+            name='email'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    className="bg-background"
-                    placeholder="email@example.com"
-                    type="email"
+                    className='bg-background'
+                    placeholder='email@example.com'
+                    type='email'
                     {...field}
                   />
                 </FormControl>
@@ -99,31 +99,31 @@ const Example = () => {
           />
           <FormField
             control={form.control}
-            name="password"
+            name='password'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
-                    className="bg-background"
-                    placeholder="Create a strong password"
-                    type="password"
+                    className='bg-background'
+                    placeholder='Create a strong password'
+                    type='password'
                     {...field}
                   />
                 </FormControl>
-                <FormDescription className="text-xs">
+                <FormDescription className='text-xs'>
                   Must contain uppercase, lowercase, and number
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button className="w-full" type="submit">
+          <Button className='w-full' type='submit'>
             Create Account
           </Button>
-          <p className="text-center text-muted-foreground text-sm">
+          <p className='text-center text-muted-foreground text-sm'>
             Already have an account?{' '}
-            <Link to="/login" className="hover:underline">
+            <Link to='/login' className='hover:underline'>
               Sign in
             </Link>
           </p>
