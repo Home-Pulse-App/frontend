@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import FileUpload from '../components/FileUpload';
 import { mockServer } from '../services/localDBService';
 import '../immersiveStyle.css';
@@ -13,9 +13,7 @@ function ImmersiveViewPage() {
   const [error, setError] = useState<string | null>(null);
   const [splatExist, setSplatExist] = useState(false);
   const { fetchRoom, viewSplat } = useRoomStore();
-
-  const params = new URLSearchParams(window.location.search);
-  const roomId = params.get('roomId');
+  const { roomId } = useParams<{ roomId: string }>();
 
   const handleLoadSession = async () => {
     setLoading(true);
@@ -58,14 +56,32 @@ function ImmersiveViewPage() {
         console.error(err);
       }
     }
+    else {
+      console.log('🚨 No roomId found in URL');
+    }
   }, []);
+
+  if (!roomId) {
+    return (
+      <div className='relative flex min-h-screen flex-col w-full'>
+        <Navbar />
+        <main className='flex-1 flex items-center justify-center px-4 py-12'>
+          <div className='flex flex-col items-center gap-6'>
+            <p className='text-red-400 text-lg font-semibold'>Error: No room ID provided in URL</p>
+            <p className='text-gray-400 text-sm'>Please navigate to this page with a valid roomId parameter</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className='relative flex min-h-screen flex-col w-full'>
       <Navbar />
       <main className='flex-1 flex items-center justify-center px-4 py-12'>
         <div className='flex flex-col items-center gap-6'>
-          <FileUpload roomId={roomId!} />
+          <FileUpload roomId={roomId} />
           {splatExist && (
             <div className='flex flex-col items-center gap-2'>
               <button

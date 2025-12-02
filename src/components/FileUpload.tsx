@@ -76,6 +76,14 @@ function FileUpload({ onFileUpload, roomId }: FileUploadProps) {
       const base64Data = reader.result as string;
       console.log('[FileUpload] File read complete, base64 length:', base64Data.length);
       // await mockServer.saveSplatData('default-user', base64Data);
+
+      // Validate roomId before making API call
+      if (!roomId || roomId === 'null' || roomId === 'undefined') {
+        console.error('[FileUpload] Invalid roomId:', roomId);
+        console.error('[FileUpload] Cannot save splat data without a valid room ID');
+        return;
+      }
+
       const response = await updateRoom(roomId, { viewSplat: base64Data });
       console.log(response);
       console.log('[FileUpload] Save complete, navigating...');
