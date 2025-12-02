@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import FileUpload from '../components/FileUpload';
 import { mockServer } from '../services/localDBService';
 import '../immersiveStyle.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/blocks/footer/Footer';
+// import { useRoomStore } from '@/store/roomStore';
 
 function ImmersiveViewPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [splatExist, setSplatExist] = useState(false);
 
   const handleLoadSession = async () => {
     setLoading(true);
@@ -39,22 +41,38 @@ function ImmersiveViewPage() {
     }
   };
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const roomId = params.get('roomId');
+    if (roomId) {
+      //TODO FetchRoom by roomId alone, and check if splatData exists
+      // useRoomStore.fetchRooms(homeId);
+      // if (splatData) {
+      //   setSplatExist(true);
+      // } else {
+      //   setSplatExist(false);
+      // }
+    }
+  }, []);
+
   return (
     <div className='relative flex min-h-screen flex-col w-full'>
       <Navbar />
       <main className='flex-1 flex items-center justify-center px-4 py-12'>
         <div className='flex flex-col items-center gap-6'>
           <FileUpload />
-          <div className='flex flex-col items-center gap-2'>
-            <button
-              onClick={handleLoadSession}
-              disabled={loading}
-              className='bg-black hover:bg-[#2E2E2E] text-white font-semibold py-2 px-6 rounded-lg shadow-md transition disabled:opacity-50'
-            >
-              {loading ? 'Loading...' : 'Load Previous Session'}
-            </button>
-            {error && <p className='text-red-400 text-sm'>{error}</p>}
-          </div>
+          {splatExist && (
+            <div className='flex flex-col items-center gap-2'>
+              <button
+                onClick={handleLoadSession}
+                disabled={loading}
+                className='bg-black hover:bg-[#2E2E2E] text-white font-semibold py-2 px-6 rounded-lg shadow-md transition disabled:opacity-50'
+              >
+                {loading ? 'Loading...' : 'Load Previous Session'}
+              </button>
+              {error && <p className='text-red-400 text-sm'>{error}</p>}
+            </div>
+          )}
         </div>
       </main>
       <Footer />

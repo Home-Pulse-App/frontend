@@ -5,6 +5,8 @@ import type { Device } from '@/types/devices-types';
 
 interface RoomsState {
   rooms: Room[];
+  viewDevices: string[];
+  viewSplat: string | null;
   devices: Record<string, Device[]>;
   loading: boolean;
 
@@ -20,6 +22,8 @@ interface RoomsState {
 
 export const useRoomStore = create<RoomsState>((set, get) => ({
   rooms: [],
+  viewDevices: [],
+  viewSplat: null,
   devices: {},
   loading: false,
 

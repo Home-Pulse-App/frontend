@@ -34,6 +34,10 @@ export default function RoomCard({ room, homeId, onDelete }: RoomCardProps) {
     navigate(`/homes/${homeId}/rooms/${room._id}`);
   }
 
+  function handleClick() {
+    navigate(`/ImmersiveView/${room._id}`);
+  }
+
   return (
     <div
       onClick={handleCardClick}
@@ -69,7 +73,13 @@ export default function RoomCard({ room, homeId, onDelete }: RoomCardProps) {
       </div>
       <div className='flex items-center justify-between mt-4'>
         <p className='text-gray-600'>Devices: {room.devices ? room.devices.length : 0}</p>
-        <button className='px-3 py-1 rounded-md font-medium bg-gray-200 hover:bg-gray-300 text-gray-700'>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handleClick();
+          }}
+          className='px-3 py-1 rounded-md font-medium bg-gray-200 hover:bg-gray-300 text-gray-700'
+        >
           Immersive View
         </button>
       </div>
