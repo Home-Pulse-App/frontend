@@ -15,15 +15,11 @@ export const authService = {
       const err = await response.json().catch(() => ({}));
       throw new Error(err.message || 'Login failed');
     }
-
     const data = await response.json();
-    console.log('Login data: ', data);
-
     // Save access token in memory only
     if (data.ResponseData.token) {
       useAuthStore.getState().setAccessToken(data.ResponseData.token);
       useAuthStore.getState().setUserName(data.ResponseData.user);
-      console.log('Authenticated: ', authService.isAuthenticated());
     }
 
     return data;
