@@ -10,6 +10,7 @@ import HomesPage from './pages/HomesPage';
 import HomeDetailsPage from './pages/HomeDetailsPage';
 import RoomDetailsPage from './pages/RoomDetailsPage';
 import GettingStartedPage from './pages/GettingStartedPage';
+import DevicePage from './pages/DevicePage';
 import ProtectedRoute from './protectedRoute';
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/getting-started' element={<GettingStartedPage />} />
         <Route path='/register' element={<Register />} />
+
+        {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/ImmersiveView' element={<ImmersiveViewPage />} />
@@ -27,6 +30,7 @@ function App() {
           <Route path='/homes' element={<HomesPage />} />
           <Route path='/homes/:id' element={<HomeDetailsPage />} />
           <Route path='/homes/:homeId/rooms/:roomId' element={<RoomDetailsPage />} />
+          <Route path='/devices' element={<DevicePage />} />
         </Route>
       </Routes>
     </div>

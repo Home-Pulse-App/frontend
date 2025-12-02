@@ -18,7 +18,7 @@ export const roomService = {
   async getDevices(
     homeId: string,
     roomId: string,
-  ): Promise<{ success: boolean; devices: Device[] }> {
+  ): Promise<{ success: boolean; message: string; data: { devices: Device[] } }> {
     return apiClient.get(`/homes/${homeId}/rooms/${roomId}/devices`);
   },
 

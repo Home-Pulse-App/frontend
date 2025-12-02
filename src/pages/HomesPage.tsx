@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import HomeCard from '@/components/HomeCard';
 import { useHomeStore } from '@/store/homeStore';
 import Navbar from '@/components/Navbar';
-import CreateHomeModal from '@/components/CreateModal';
+import CreateModal from '@/components/CreateModal';
 import type { Home } from '@/types/homes-types';
 
 export default function HomesPage() {
@@ -49,7 +49,7 @@ export default function HomesPage() {
         </div>
       </div>
 
-      <CreateHomeModal
+      <CreateModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onCreate={onCreate}

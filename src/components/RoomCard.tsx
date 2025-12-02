@@ -67,7 +67,12 @@ export default function RoomCard({ room, homeId, onDelete }: RoomCardProps) {
           </div>
         )}
       </div>
-      <p className='text-gray-600'>Devices: {room.devices ? room.devices.length : 0}</p>
+      <div className='flex items-center justify-between mt-4'>
+        <p className='text-gray-600'>Devices: {room.devices ? room.devices.length : 0}</p>
+        <button className='px-3 py-1 rounded-md font-medium bg-gray-200 hover:bg-gray-300 text-gray-700'>
+          Immersive View
+        </button>
+      </div>
     </div>
   );
 }

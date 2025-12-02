@@ -12,7 +12,7 @@ interface RoomsState {
   createRoom: (homeId: string, roomData: { roomName: string }) => Promise<void>;
   deleteRoom: (homeId: string, roomId: string) => Promise<void>;
 
-  fetchDevices: (homeId: string, roomId: string) => Promise<void>;
+  fetchDevicesOfRoom: (homeId: string, roomId: string) => Promise<void>;
   connectDevice: (homeId: string, roomId: string, deviceId: string) => Promise<void>;
   disconnectDevice: (homeId: string, roomId: string, deviceId: string) => Promise<void>;
 }
@@ -54,11 +54,11 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
     }
   },
 
-  fetchDevices: async (homeId: string, roomId: string) => {
+  fetchDevicesOfRoom: async (homeId: string, roomId: string) => {
     try {
       const response = await roomService.getDevices(homeId, roomId);
       set((state) => ({
-        devices: { ...state.devices, [roomId]: response.devices },
+        devices: { ...state.devices, [roomId]: response.data.devices },
       }));
     } catch (err) {
       console.error(err);
@@ -68,7 +68,7 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
   connectDevice: async (homeId: string, roomId: string, deviceId: string) => {
     try {
       await roomService.connectDevice(homeId, roomId, deviceId);
-      get().fetchDevices(homeId, roomId);
+      get().fetchDevicesOfRoom(homeId, roomId);
     } catch (err) {
       console.error(err);
     }
@@ -77,7 +77,7 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
   disconnectDevice: async (homeId: string, roomId: string, deviceId: string) => {
     try {
       await roomService.disconnectDevice(homeId, roomId, deviceId);
-      get().fetchDevices(homeId, roomId);
+      get().fetchDevicesOfRoom(homeId, roomId);
     } catch (err) {
       console.error(err);
     }
