@@ -75,27 +75,27 @@ export function RegisterForm() {
   }
 
   return (
-    <div className="w-full max-w-sm">
+    <div className='w-full max-w-sm'>
       <Card>
         <CardContent>
           <Form {...form}>
-            <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="space-y-2 text-center">
-                <h1 className="font-bold text-2xl">Create an account</h1>
-                <p className="text-muted-foreground text-sm">
+            <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
+              <div className='space-y-2 text-center'>
+                <h1 className='font-bold text-2xl'>Create an account</h1>
+                <p className='text-muted-foreground text-sm'>
                   Sign up to enjoy Home Pulse.
                 </p>
               </div>
               <FormField
                 control={form.control}
-                name="fullName"
+                name='fullName'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
                       <Input
-                        className="bg-background"
-                        placeholder="John Doe"
+                        className='bg-background'
+                        placeholder='John Doe'
                         {...field}
                       />
                     </FormControl>
@@ -105,15 +105,15 @@ export function RegisterForm() {
               />
               <FormField
                 control={form.control}
-                name="email"
+                name='email'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        className="bg-background"
-                        placeholder="email@example.com"
-                        type="email"
+                        className='bg-background'
+                        placeholder='email@example.com'
+                        type='email'
                         {...field}
                       />
                     </FormControl>
@@ -123,31 +123,31 @@ export function RegisterForm() {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name='password'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        className="bg-background"
-                        placeholder="Create a strong password"
-                        type="password"
+                        className='bg-background'
+                        placeholder='Create a strong password'
+                        type='password'
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription className="text-xs mt-2 mb-2">
+                    <FormDescription className='text-xs mt-2 mb-2'>
                       Must be 8 characters long and contain uppercase, lowercase, number and special character (!@#$%^&*)
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button className="w-full" type="submit">
+              <Button className='w-full' type='submit'>
                 Create Account
               </Button>
-              <p className="text-center text-muted-foreground text-sm">
+              <p className='text-center text-muted-foreground text-sm'>
                 Already have an account?{' '}
-                <Link to="/login" className="underline">
+                <Link to='/login' className='underline'>
                   Sign in
                 </Link>
               </p>

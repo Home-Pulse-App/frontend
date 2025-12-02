@@ -10,20 +10,20 @@ import HomesPage from './pages/HomesPage';
 
 function App() {
   return (
-    <div className="page-body">
+    <div className='page-body'>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path='/' element={<HomePage />} />
 
-        <Route path="/login" element={<Login />} />
+        <Route path='/login' element={<Login />} />
 
-        <Route path="/register" element={<Register />} />
+        <Route path='/register' element={<Register />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path='/dashboard' element={<Dashboard />} />
 
-        <Route path="/ImmersiveView" element={<ImmersiveViewPage />} />
-        <Route path="/viewer" element={<SparkComponent />} />
+        <Route path='/ImmersiveView' element={<ImmersiveViewPage />} />
+        <Route path='/viewer' element={<SparkComponent />} />
 
-        <Route path="/homes" element={<HomesPage />} />
+        <Route path='/homes' element={<HomesPage />} />
       </Routes>
     </div>
   );

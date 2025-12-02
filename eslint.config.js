@@ -32,6 +32,7 @@ export default [
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/no-trailing-spaces': 'error',
       '@stylistic/no-multiple-empty-lines': ['error', { max: 1 }],
+      '@stylistic/jsx-quotes': ['error', 'prefer-single'],
 
       '@stylistic/no-multi-spaces': 'error',
       '@stylistic/no-extra-semi': 'error',

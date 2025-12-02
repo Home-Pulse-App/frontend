@@ -23,7 +23,7 @@ function Instructions() {
           blueOffset={25}
           brightness={60}
           opacity={0.3}
-          mixBlendMode="screen"
+          mixBlendMode='screen'
         >
           <div className='flex flex-col pointer-events-none'>
             <div className='pointer-events-none'>

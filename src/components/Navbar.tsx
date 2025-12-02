@@ -8,8 +8,8 @@ export default function Navbar() {
     <>
       {auth ?
         <Navbar01
-          logo={<img src={HomePulseLogo} alt="HomePulse Logo" className="h-15 w-auto" />}
-          logoHref="/"
+          logo={<img src={HomePulseLogo} alt='HomePulse Logo' className='h-15 w-auto' />}
+          logoHref='/'
           navigationLinks={[
             { label: 'Dashboard', href: '/dashboard' },
             { label: 'Immersive View', href: '/ImmersiveView' },
@@ -19,8 +19,8 @@ export default function Navbar() {
         />
         :
         <Navbar01
-          logo={<img src={HomePulseLogo} alt="HomePulse Logo" className="h-15 w-auto" />}
-          logoHref="/"
+          logo={<img src={HomePulseLogo} alt='HomePulse Logo' className='h-15 w-auto' />}
+          logoHref='/'
           navigationLinks={[
             { label: 'About', href: '/about' },
           ]}

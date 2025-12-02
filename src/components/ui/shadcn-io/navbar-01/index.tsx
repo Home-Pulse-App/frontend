@@ -48,26 +48,26 @@ const HamburgerIcon = ({ className, ...props }: React.SVGAttributes<SVGElement>)
     className={cn('pointer-events-none', className)}
     width={16}
     height={16}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    xmlns="http://www.w3.org/2000/svg"
+    viewBox='0 0 24 24'
+    fill='none'
+    stroke='currentColor'
+    strokeWidth='2'
+    strokeLinecap='round'
+    strokeLinejoin='round'
+    xmlns='http://www.w3.org/2000/svg'
     {...props}
   >
     <path
-      d="M4 12L20 12"
-      className="origin-center -translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-315"
+      d='M4 12L20 12'
+      className='origin-center -translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-315'
     />
     <path
-      d="M4 12H20"
-      className="origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45"
+      d='M4 12H20'
+      className='origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45'
     />
     <path
-      d="M4 12H20"
-      className="origin-center translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-135"
+      d='M4 12H20'
+      className='origin-center translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-135'
     />
   </svg>
 );
@@ -155,26 +155,26 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
         )}
         {...props}
       >
-        <div className="container mx-auto flex h-16 max-w-screen-2xl items-center justify-between gap-4">
+        <div className='container mx-auto flex h-16 max-w-screen-2xl items-center justify-between gap-4'>
           {/* Left side */}
-          <div className="flex items-center gap-2">
+          <div className='flex items-center gap-2'>
             {/* Mobile menu trigger */}
             {isMobile && (
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    className="group h-9 w-9 hover:bg-accent hover:text-accent-foreground"
-                    variant="ghost"
-                    size="icon"
+                    className='group h-9 w-9 hover:bg-accent hover:text-accent-foreground'
+                    variant='ghost'
+                    size='icon'
                   >
                     <HamburgerIcon />
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent align="start" className="w-48 p-2">
-                  <NavigationMenu className="max-w-none">
-                    <NavigationMenuList className="flex-col items-start gap-1">
+                <PopoverContent align='start' className='w-48 p-2'>
+                  <NavigationMenu className='max-w-none'>
+                    <NavigationMenuList className='flex-col items-start gap-1'>
                       {navigationLinks.map((link, index) => (
-                        <NavigationMenuItem key={index} className="w-full">
+                        <NavigationMenuItem key={index} className='w-full'>
                           <Link
                             to={link.href}
                             className={cn(
@@ -194,18 +194,18 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
               </Popover>
             )}
             {/* Main nav */}
-            <div className="flex items-center gap-6">
+            <div className='flex items-center gap-6'>
               <Link
                 to={logoHref}
-                className="flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer"
+                className='flex items-center space-x-2 text-primary hover:text-primary/90 transition-colors cursor-pointer'
               >
-                <div className="text-2xl">{logo}</div>
-                <span className="hidden font-bold text-xl sm:inline-block">Home Pulse</span>
+                <div className='text-2xl'>{logo}</div>
+                <span className='hidden font-bold text-xl sm:inline-block'>Home Pulse</span>
               </Link>
               {/* Navigation menu */}
               {!isMobile && (
-                <NavigationMenu className="flex">
-                  <NavigationMenuList className="gap-1">
+                <NavigationMenu className='flex'>
+                  <NavigationMenuList className='gap-1'>
                     {navigationLinks.map((link, index) => (
                       <NavigationMenuItem key={index}>
                         <Link
@@ -227,16 +227,16 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
             </div>
           </div>
           {/* Right side */}
-          <div className="flex items-center gap-3">
+          <div className='flex items-center gap-3'>
             <Link
               to={signInHref}
-              className="text-sm font-medium px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground"
+              className='text-sm font-medium px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
             >
               {signInText}
             </Link>
             <Link
               to={ctaHref}
-              className="text-sm font-medium px-4 h-9 rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 flex items-center"
+              className='text-sm font-medium px-4 h-9 rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 flex items-center'
             >
               {ctaText}
             </Link>

@@ -47,9 +47,9 @@ export function LoginForm({
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <div className="space-y-2 text-center">
-            <h1 className="font-bold text-2xl">Login to your account</h1>
-            <p className="text-muted-foreground text-sm">
+          <div className='space-y-2 text-center'>
+            <h1 className='font-bold text-2xl'>Login to your account</h1>
+            <p className='text-muted-foreground text-sm'>
               Enter your email & password below to login to your account
             </p>
           </div>
@@ -58,26 +58,26 @@ export function LoginForm({
           <form onSubmit={handleSubmit}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor='email'>Email</FieldLabel>
                 <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="email@example.com"
+                  id='email'
+                  name='email'
+                  type='email'
+                  placeholder='email@example.com'
                   required
                 />
               </Field>
               <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                <div className='flex items-center'>
+                  <FieldLabel htmlFor='password'>Password</FieldLabel>
                 </div>
-                <Input id="password" name="password" type="password" required />
+                <Input id='password' name='password' type='password' required />
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
-                <FieldDescription className="text-center">
+                <Button type='submit'>Login</Button>
+                <FieldDescription className='text-center'>
                   Don&apos;t have an account?{' '}
-                  <Link to="/register" className="underline">
+                  <Link to='/register' className='underline'>
                     Sign up
                   </Link>
                 </FieldDescription>
