@@ -24,7 +24,7 @@ export default function DeveloperInstructions({ cardOpacity = 85 }: DeveloperIns
           deletingSpeed={30}
           pauseDuration={5000}
           loop
-          initialDelay={1000}
+          initialDelay={1500}
           className='text-3xl font-bold text-white text-center'
         />
       </div>
