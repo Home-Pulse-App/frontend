@@ -9,6 +9,8 @@ import SparkComponent from './components/SparkComponent';
 import HomesPage from './pages/HomesPage';
 import HomeDetailsPage from './pages/HomeDetailsPage';
 import RoomDetailsPage from './pages/RoomDetailsPage';
+import GettingStartedPage from './pages/GettingStartedPage';
+import ProtectedRoute from './protectedRoute';
 
 function App() {
   return (
@@ -16,13 +18,16 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/getting-started' element={<GettingStartedPage />} />
         <Route path='/register' element={<Register />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/ImmersiveView' element={<ImmersiveViewPage />} />
-        <Route path='/viewer' element={<SparkComponent />} />
-        <Route path='/homes' element={<HomesPage />} />
-        <Route path='/homes/:id' element={<HomeDetailsPage />} />
-        <Route path='/homes/:homeId/rooms/:roomId' element={<RoomDetailsPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/ImmersiveView' element={<ImmersiveViewPage />} />
+          <Route path='/viewer' element={<SparkComponent />} />
+          <Route path='/homes' element={<HomesPage />} />
+          <Route path='/homes/:id' element={<HomeDetailsPage />} />
+          <Route path='/homes/:homeId/rooms/:roomId' element={<RoomDetailsPage />} />
+        </Route>
       </Routes>
     </div>
   );

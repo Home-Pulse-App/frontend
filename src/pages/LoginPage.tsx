@@ -1,5 +1,5 @@
 import { LoginForm } from '@/components/forms/login-form';
-import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
+import Footer from '@/components/blocks/footer/Footer';
 import Navbar from '@/components/Navbar';
 
 export default function LoginPage() {
@@ -21,7 +21,7 @@ export default function LoginPage() {
           <LoginForm />
         </div>
       </main>
-      <FooterSimple01 />
+      <Footer />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
+import Footer from '@/components/blocks/footer/Footer';
 import Navbar from '@/components/Navbar';
 import DeveloperInstructions from '@/components/DeveloperInstructions';
 
@@ -28,7 +28,7 @@ export default function GettingStartedPage() {
           <DeveloperInstructions cardOpacity={100} />
         </motion.div>
       </main>
-      <FooterSimple01 />
+      <Footer />
     </div>
   );
 }

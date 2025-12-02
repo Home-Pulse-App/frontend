@@ -1,6 +1,6 @@
-import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
+import Footer from '@/components/blocks/footer/Footer';
 import Hero from '@/components/blocks/hero/hero';
-import { Process1 } from '@/components/process1';
+import { Process } from '@/components/Process';
 import { Separator } from '@/components/ui/separator';
 import '../App.css';
 import Navbar from '@/components/Navbar';
@@ -28,13 +28,13 @@ export default function HomePage() {
             <Separator />
 
             <div id='Process' className='py-6'>
-              <Process1 />
+              <Process />
             </div>
           </section>
         </div>
       </main>
 
-      <FooterSimple01 />
+      <Footer />
     </div>
   );
 }

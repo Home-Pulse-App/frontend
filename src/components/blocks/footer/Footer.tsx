@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 
 const YEAR = new Date().getFullYear();
 
-export const title = 'Simple Footer';
+// export const title = 'Simple Footer';
 
-export default function FooterSimple01() {
+export default function Footer() {
   return (
     <footer className='w-full border-t pb-8 pt-8 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60'>
       <div className='container mx-auto px-4'>
