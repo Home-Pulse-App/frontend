@@ -9,7 +9,11 @@ import {
 import { FaDatabase, FaTv, FaHands } from 'react-icons/fa';
 import TextType from './TextType';
 
-export default function DeveloperInstructions() {
+interface DeveloperInstructionsProps {
+  cardOpacity?: number;
+}
+
+export default function DeveloperInstructions({ cardOpacity = 85 }: DeveloperInstructionsProps) {
   return (
     <div className='w-full mt-10'>
       {/* Header outside cards */}
@@ -26,7 +30,7 @@ export default function DeveloperInstructions() {
 
       <main className='flex justify-between space-x-6 mt-10'>
         {/* Backend Setup Card */}
-        <Card className='bg-background/95 backdrop-blur'>
+        <Card className={`bg-background${cardOpacity === 100 ? '' : `/${cardOpacity}`} backdrop-blur`}>
           <CardHeader>
             <CardTitle className='text-2xl flex items-center gap-2'>Backend Setup <FaDatabase /></CardTitle>
             <CardDescription>
@@ -56,7 +60,7 @@ export default function DeveloperInstructions() {
         </Card>
 
         {/* Frontend Setup Card */}
-        <Card className='bg-background/95 backdrop-blur'>
+        <Card className={`bg-background${cardOpacity === 100 ? '' : `/${cardOpacity}`} backdrop-blur`}>
           <CardHeader>
             <CardTitle className='text-2xl flex items-center gap-2'>Frontend Setup <FaTv /></CardTitle>
             <CardDescription>
@@ -72,7 +76,7 @@ export default function DeveloperInstructions() {
         </Card>
 
         {/* Using the App Card */}
-        <Card className='bg-background/95 backdrop-blur'>
+        <Card className={`bg-background${cardOpacity === 100 ? '' : `/${cardOpacity}`} backdrop-blur`}>
           <CardHeader>
             <CardTitle className='text-2xl flex items-center gap-2'>Using the App for the First Time <FaHands /></CardTitle>
             <CardDescription>

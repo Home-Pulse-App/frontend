@@ -17,7 +17,7 @@ export default function AboutPage() {
       />
       <Navbar />
       <main className='flex-1 flex items-center justify-center px-4 py-12'>
-        <DeveloperInstructions />
+        <DeveloperInstructions cardOpacity={100} />
       </main>
       <FooterSimple01 />
     </div>
