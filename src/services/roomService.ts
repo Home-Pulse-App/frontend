@@ -1,6 +1,6 @@
-import type { CreateRoomData } from '@/types/room-types';
+import type { CreateRoomData, Room } from '@/types/room-types';
 import { apiClient } from './apiServices';
-import type { Device, Room } from '@/types';
+import type { Device } from '@/types/devices-types';
 
 export const roomService = {
 
