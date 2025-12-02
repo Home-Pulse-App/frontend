@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import FileUpload from '../components/FileUpload';
-import { mockServer } from '../services/mockServer';
+import { mockServer } from '../services/localDBService';
 import '../immersiveStyle.css';
 
 function ImmersiveViewPage() {
@@ -42,7 +42,7 @@ function ImmersiveViewPage() {
       <div className='w-full h-screen min-h-[600px] fixed z-20 flex flex-col items-center justify-between py-[10vh] pointer-events-none'>
 
         <div className='pointer-events-auto shrink-0 flex flex-col items-center gap-4'>
-          <FileUpload/>
+          <FileUpload />
 
           <div className='flex flex-col items-center gap-2'>
             <button

@@ -13,7 +13,7 @@ import {
   FieldLabel,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { authService } from '@/services/api-services';
+import { authService } from '@/services/authService';
 import type { LoginCredentials } from '@/types/api-services';
 
 export function LoginForm({

@@ -7,11 +7,11 @@ import Dock from './ui/Dock';
 import { FaHome, FaKeyboard, FaLightbulb, FaSun, FaThermometerHalf, FaWater } from 'react-icons/fa';
 import Instructions from './ui/Instructions/Instructions';
 import Devices, { deviceState } from './Devices';
-import { mockServer } from '../services/mockServer';
+import { mockServer } from '../services/localDBService';
 import { type DeviceData } from '@/types/device';
-import { type SensorData } from '@/types/api-services';
 import SensorControlPanel from './ui/SensorControlPanel';
 import { useSnapshot } from 'valtio';
+import type { SensorData } from '@/types/sensorsDataTypes';
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
