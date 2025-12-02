@@ -18,9 +18,9 @@ export default function RegisterPage() {
       <Navbar />
       {/* Hero Section with Registration Form */}
       <main className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md">
-          <RegisterForm />
-        </div>
+
+        <RegisterForm />
+
       </main>
       <FooterSimple01 />
     </div>
