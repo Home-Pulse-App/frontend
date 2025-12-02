@@ -11,7 +11,7 @@ import { type DeviceData } from '@/types/device';
 import SensorControlPanel from './ui/SensorControlPanel';
 import { useSnapshot } from 'valtio';
 import type { SensorData } from '@/types/sensorsDataTypes';
-import { Progress } from './ui/Progress';
+import { Progress } from '@/components/ui/Progress';
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
