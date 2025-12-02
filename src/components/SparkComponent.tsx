@@ -13,7 +13,6 @@ import { useSnapshot } from 'valtio';
 import type { SensorData } from '@/types/sensorsDataTypes';
 import { Progress } from './ui/progress';
 
-
 //* Export deviceState so other components can check transformation status
 export { deviceState };
 
