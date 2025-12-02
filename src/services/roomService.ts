@@ -3,16 +3,22 @@ import { apiClient } from './apiServices';
 import type { Device } from '@/types/devices-types';
 
 export const roomService = {
-
   async create(homeId: string, roomData: CreateRoomData): Promise<Room> {
-    return apiClient.post(`/homes/${homeId}/rooms`, roomData);
+    const response = await apiClient.post<{ message: string; room: Room }>(
+      `/homes/${homeId}/rooms`,
+      roomData,
+    );
+    return response.room;
   },
 
   async getAll(homeId: string): Promise<{ success: boolean; rooms: Room[] }> {
     return apiClient.get(`/homes/${homeId}/rooms`);
   },
 
-  async getDevices(homeId: string, roomId: string): Promise<{ success: boolean; devices: Device[] }> {
+  async getDevices(
+    homeId: string,
+    roomId: string,
+  ): Promise<{ success: boolean; devices: Device[] }> {
     return apiClient.get(`/homes/${homeId}/rooms/${roomId}/devices`);
   },
 
