@@ -8,14 +8,14 @@ import { Button } from '@/components/ui/button';
 import {
   VideoPlayer,
   VideoPlayerContent,
-  VideoPlayerControlBar,
-  VideoPlayerMuteButton,
-  VideoPlayerPlayButton,
-  VideoPlayerSeekBackwardButton,
-  VideoPlayerSeekForwardButton,
-  VideoPlayerTimeDisplay,
-  VideoPlayerTimeRange,
-  VideoPlayerVolumeRange,
+  // VideoPlayerControlBar,
+  // VideoPlayerMuteButton,
+  // VideoPlayerPlayButton,
+  // VideoPlayerSeekBackwardButton,
+  // VideoPlayerSeekForwardButton,
+  // VideoPlayerTimeDisplay,
+  // VideoPlayerTimeRange,
+  // VideoPlayerVolumeRange,
 } from '@/components/ui/shadcn-io/video-player';
 import { HashLink } from 'react-router-hash-link';
 
@@ -94,7 +94,7 @@ const Example = () => {
           slot='media'
           src='/videos/HeroVideo.mp4'
         />
-        <VideoPlayerControlBar>
+        {/* <VideoPlayerControlBar>
           <VideoPlayerPlayButton />
           <VideoPlayerSeekBackwardButton />
           <VideoPlayerSeekForwardButton />
@@ -102,7 +102,7 @@ const Example = () => {
           <VideoPlayerTimeDisplay showDuration />
           <VideoPlayerMuteButton />
           <VideoPlayerVolumeRange />
-        </VideoPlayerControlBar>
+        </VideoPlayerControlBar> */}
       </VideoPlayer>
     </div>
   );
