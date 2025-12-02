@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type { Room } from '@/types/room-types';
 
-import type { Home } from '@/types/homes-types';
-
-interface HomeCardProps {
-  home: Home;
+interface RoomCardProps {
+  room: Room;
+  homeId: string;
   onDelete: (id: string) => void;
 }
 
-export default function HomeCard({ home, onDelete }: HomeCardProps) {
+export default function RoomCard({ room, homeId, onDelete }: RoomCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -19,7 +19,6 @@ export default function HomeCard({ home, onDelete }: HomeCardProps) {
         setMenuOpen(false);
       }
     }
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -27,12 +26,12 @@ export default function HomeCard({ home, onDelete }: HomeCardProps) {
   }, []);
 
   function handleDelete() {
-    onDelete(home._id);
+    onDelete(room._id);
     setMenuOpen(false);
   }
 
   function handleCardClick() {
-    navigate(`/homes/${home._id}`);
+    navigate(`/homes/${homeId}/rooms/${room._id}`);
   }
 
   return (
@@ -41,7 +40,7 @@ export default function HomeCard({ home, onDelete }: HomeCardProps) {
       className='border rounded-lg p-4 shadow hover:shadow-lg transition cursor-pointer relative'
     >
       <div className='flex justify-between items-start'>
-        <h2 className='text-xl font-semibold mb-2'>{home.homeName}</h2>
+        <h2 className='text-xl font-semibold mb-2'>{room.roomName}</h2>
 
         <button
           onClick={(e) => {
@@ -63,13 +62,12 @@ export default function HomeCard({ home, onDelete }: HomeCardProps) {
               className='text-red-600 hover:bg-red-100 w-full text-left px-2 py-1 rounded-md'
               onClick={handleDelete}
             >
-              Delete home
+              Delete room
             </button>
           </div>
         )}
       </div>
-
-      <p className='text-gray-600'>Rooms: {home.rooms ? home.rooms.length : 0}</p>
+      <p className='text-gray-600'>Devices: {room.devices ? room.devices.length : 0}</p>
     </div>
   );
 }

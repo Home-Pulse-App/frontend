@@ -12,7 +12,7 @@ interface HomesState {
   deleteHome: (homeId: string) => Promise<void>;
 }
 
-export const useHomesStore = create<HomesState>((set) => ({
+export const useHomeStore = create<HomesState>((set) => ({
   homes: [],
   loading: false,
 
