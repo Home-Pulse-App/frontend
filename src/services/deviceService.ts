@@ -1,9 +1,7 @@
-
 import type { CreateDeviceData, Device } from '@/types/devices-types';
 import { apiClient } from './apiServices';
 
 export const deviceService = {
-
   async create(deviceData: CreateDeviceData): Promise<{
     success: boolean;
     message: string;
@@ -15,7 +13,7 @@ export const deviceService = {
   async getAll(): Promise<{
     success: boolean;
     message: string;
-    devices: Device[];
+    data: { devices: Device[] };
   }> {
     return apiClient.get('/devices');
   },

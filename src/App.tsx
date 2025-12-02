@@ -9,6 +9,7 @@ import SparkComponent from './components/SparkComponent';
 import HomesPage from './pages/HomesPage';
 import HomeDetailsPage from './pages/HomeDetailsPage';
 import RoomDetailsPage from './pages/RoomDetailsPage';
+import DevicePage from './pages/DevicePage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='/homes' element={<HomesPage />} />
         <Route path='/homes/:id' element={<HomeDetailsPage />} />
         <Route path='/homes/:homeId/rooms/:roomId' element={<RoomDetailsPage />} />
+        <Route path='/devices' element={<DevicePage />} />
       </Routes>
     </div>
   );
