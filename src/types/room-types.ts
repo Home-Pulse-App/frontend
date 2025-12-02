@@ -11,3 +11,7 @@ export interface Room {
   createdAt: string;
   updatedAt: string;
 }
+export interface UpdateRoomData {
+  viewDevices?: [string];
+  viewSplat?: string;
+}

@@ -1,4 +1,4 @@
-import type { CreateRoomData, Room } from '@/types/room-types';
+import type { CreateRoomData, Room, UpdateRoomData } from '@/types/room-types';
 import { apiClient } from './apiServices';
 import type { Device } from '@/types/devices-types';
 
@@ -40,5 +40,9 @@ export const roomService = {
 
   async delete(homeId: string, roomId: string): Promise<{ success: boolean; message: string }> {
     return apiClient.delete(`/homes/${homeId}/rooms/${roomId}`);
+  },
+
+  async update(homeId: string, roomId: string, roomData: UpdateRoomData): Promise<{ success: boolean; message: string }> {
+    return apiClient.put(`/homes/${homeId}/rooms/${roomId}`, roomData);
   },
 };

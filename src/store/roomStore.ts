@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { roomService } from '../services/roomService';
-import type { Room } from '@/types/room-types';
+import type { Room, UpdateRoomData } from '@/types/room-types';
 import type { Device } from '@/types/devices-types';
 
 interface RoomsState {
@@ -11,6 +11,7 @@ interface RoomsState {
   fetchRooms: (homeId: string) => Promise<void>;
   createRoom: (homeId: string, roomData: { roomName: string }) => Promise<void>;
   deleteRoom: (homeId: string, roomId: string) => Promise<void>;
+  updateRoom: (homeId: string, roomId: string, roomData: UpdateRoomData) => Promise<void>;
 
   fetchDevicesOfRoom: (homeId: string, roomId: string) => Promise<void>;
   connectDevice: (homeId: string, roomId: string, deviceId: string) => Promise<void>;
@@ -78,6 +79,15 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
     try {
       await roomService.disconnectDevice(homeId, roomId, deviceId);
       get().fetchDevicesOfRoom(homeId, roomId);
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  updateRoom: async (homeId: string, roomId: string, roomData: UpdateRoomData) => {
+    try {
+      await roomService.update(homeId, roomId, roomData);
+      get().fetchRooms(homeId);
     } catch (err) {
       console.error(err);
     }
