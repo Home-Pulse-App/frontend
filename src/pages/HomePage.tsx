@@ -1,4 +1,4 @@
-import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
+import Footer from '@/components/blocks/footer/Footer';
 import Hero from '@/components/blocks/hero/hero';
 import { Process } from '@/components/Process';
 import { Separator } from '@/components/ui/separator';
@@ -34,7 +34,7 @@ export default function HomePage() {
         </div>
       </main>
 
-      <FooterSimple01 />
+      <Footer />
     </div>
   );
 }

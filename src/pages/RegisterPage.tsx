@@ -1,4 +1,4 @@
-import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
+import Footer from '@/components/blocks/footer/Footer';
 import Navbar from '@/components/Navbar';
 import { RegisterForm } from '@/components/forms/register-form';
 
@@ -22,7 +22,7 @@ export default function RegisterPage() {
         <RegisterForm />
 
       </main>
-      <FooterSimple01 />
+      <Footer />
     </div>
   );
 }

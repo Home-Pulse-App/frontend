@@ -1,4 +1,4 @@
-import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
+import Footer from '@/components/blocks/footer/Footer';
 import Navbar from '@/components/Navbar';
 import { authService } from '@/services/authService';
 
@@ -27,7 +27,7 @@ export default function DashboardPage() {
           )}
         </div>
       </main>
-      <FooterSimple01 />
+      <Footer />
     </div>
   );
 }
