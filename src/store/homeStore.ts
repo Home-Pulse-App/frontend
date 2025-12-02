@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Home } from '../types';
-import * as HomesService from '../services/home.service';
+import { homeService } from '../services/homeService';
 
 interface HomesState {
   homes: Home[];
@@ -18,8 +18,8 @@ export const useHomesStore = create<HomesState>((set) => ({
   fetchHomes: async () => {
     set({ loading: true });
     try {
-      const homes = await HomesService.fetchHomes();
-      set({ homes, loading: false });
+      const response = await homeService.getAll();
+      set({ homes: response.homes, loading: false });
     } catch (err) {
       console.error(err);
       set({ loading: false });
@@ -28,8 +28,8 @@ export const useHomesStore = create<HomesState>((set) => ({
 
   createHome: async (homeData) => {
     try {
-      const home = await HomesService.createHome(homeData);
-      set((state) => ({ homes: [...state.homes, home] }));
+      const response = await homeService.create(homeData);
+      set((state) => ({ homes: [...state.homes, response.home] }));
     } catch (err) {
       console.error(err);
     }
@@ -37,17 +37,17 @@ export const useHomesStore = create<HomesState>((set) => ({
 
   getSingleHome: async (homeId) => {
     try {
-      const home = await HomesService.getSingleHome(homeId);
-      return home;
+      const response = await homeService.getById(homeId);
+      return response.home;
     } catch (err) {
       console.error(err);
       return undefined;
     }
   },
 
-  deleteHome: async (homeId) => {
+  deleteHome: async (homeId: string) => {
     try {
-      await HomesService.deleteHome(homeId);
+      await homeService.delete(homeId);
       set((state) => ({ homes: state.homes.filter((h) => h._id !== homeId) }));
     } catch (err) {
       console.error(err);
