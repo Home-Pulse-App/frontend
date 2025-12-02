@@ -2,7 +2,7 @@ import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
 import Navbar from '@/components/Navbar';
 import DeveloperInstructions from '@/components/DeveloperInstructions';
 
-export default function AboutPage() {
+export default function GettingStartedPage() {
   return (
     <div className='relative flex min-h-screen flex-col w-full'>
       {/* Fixed Background */}
@@ -17,7 +17,7 @@ export default function AboutPage() {
       />
       <Navbar />
       <main className='flex-1 flex items-center justify-center px-4 py-12'>
-        <DeveloperInstructions cardOpacity={100} />
+        <DeveloperInstructions cardOpacity={90} />
       </main>
       <FooterSimple01 />
     </div>

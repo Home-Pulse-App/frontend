@@ -14,7 +14,7 @@ export default function Navbar() {
             { label: 'Dashboard', href: '/dashboard' },
             { label: 'Immersive View', href: '/ImmersiveView' },
             { label: 'Homes', href: '/homes' },
-            { label: 'About', href: '/about' },
+            { label: 'Getting Started', href: '/getting-started' },
           ]}
         />
         :
@@ -22,7 +22,7 @@ export default function Navbar() {
           logo={<img src={HomePulseLogo} alt='HomePulse Logo' className='h-15 w-auto' />}
           logoHref='/'
           navigationLinks={[
-            { label: 'About', href: '/about' },
+            { label: 'Getting Started', href: '/getting-started' },
           ]}
         />};
     </>
