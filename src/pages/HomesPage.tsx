@@ -3,6 +3,7 @@ import HomeCard from '@/components/HomeCard';
 import { useHomesStore } from '@/store/homeStore';
 import Navbar from '@/components/Navbar';
 import CreateHomeModal from '@/components/CreateHomeModal';
+import type { Home } from '@/types/homes-types';
 
 export default function HomesPage() {
   const { homes, fetchHomes, createHome, loading } = useHomesStore();
@@ -39,7 +40,7 @@ export default function HomesPage() {
             </div>
           ) : (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4'>
-              {homes.map((home) => (
+              {homes.map((home: Home) => (
                 <HomeCard key={home._id} home={home} />
               ))}
             </div>

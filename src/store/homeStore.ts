@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import type { Home } from '../types';
+
 import { homeService } from '../services/homeService';
+import type { Home } from '@/types/homes-types';
 
 interface HomesState {
   homes: Home[];

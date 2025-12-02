@@ -4,24 +4,24 @@ export interface CreateDeviceData {
   sensors: SensorType[];
 }
 export type SensorType =
-    | 'temperature'
-    | 'humidity'
-    | 'pressure'
-    | 'light'
-    | 'motion'
-    | 'door'
-    | 'window'
-    | 'soilMoisture'
-    | 'airQuality'
-    | 'co2'
-    | 'pm25'
-    | 'switch1'
-    | 'switch2'
-    | 'switch3'
-    | 'switch4'
-    | 'power'
-    | 'voltage'
-    | 'current';
+  | 'temperature'
+  | 'humidity'
+  | 'pressure'
+  | 'light'
+  | 'motion'
+  | 'door'
+  | 'window'
+  | 'soilMoisture'
+  | 'airQuality'
+  | 'co2'
+  | 'pm25'
+  | 'switch1'
+  | 'switch2'
+  | 'switch3'
+  | 'switch4'
+  | 'power'
+  | 'voltage'
+  | 'current';
 export interface Device {
   _id: string;
   deviceName: string;
@@ -29,4 +29,6 @@ export interface Device {
   state: string;
   sensors: SensorType[];
   roomId?: string | null;
+  createdAt: string | null;
+  updatedAt: string | null;
 }
