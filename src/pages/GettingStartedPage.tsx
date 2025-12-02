@@ -2,6 +2,8 @@ import FooterSimple01 from '@/components/blocks/footer/footer-simple-01';
 import Navbar from '@/components/Navbar';
 import DeveloperInstructions from '@/components/DeveloperInstructions';
 
+import { motion } from 'framer-motion';
+
 export default function GettingStartedPage() {
   return (
     <div className='relative flex min-h-screen flex-col w-full'>
@@ -17,7 +19,14 @@ export default function GettingStartedPage() {
       />
       <Navbar />
       <main className='flex-1 flex items-center justify-center px-4 py-12'>
-        <DeveloperInstructions cardOpacity={90} />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className='w-full'
+        >
+          <DeveloperInstructions cardOpacity={90} />
+        </motion.div>
       </main>
       <FooterSimple01 />
     </div>
