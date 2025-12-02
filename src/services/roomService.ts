@@ -38,11 +38,15 @@ export const roomService = {
     return apiClient.delete(`/homes/${homeId}/rooms/${roomId}/disconnect/${deviceId}`);
   },
 
-  async delete(homeId: string, roomId: string): Promise<{ success: boolean; message: string }> {
+  async deleteRoom(homeId: string, roomId: string): Promise<{ success: boolean; message: string }> {
     return apiClient.delete(`/homes/${homeId}/rooms/${roomId}`);
   },
 
-  async update(homeId: string, roomId: string, roomData: UpdateRoomData): Promise<{ success: boolean; message: string }> {
-    return apiClient.put(`/homes/${homeId}/rooms/${roomId}`, roomData);
+  async updateRoom(roomId: string, roomData: UpdateRoomData): Promise<{ success: boolean; message: string }> {
+    return apiClient.put(`/room/${roomId}`, roomData);
+  },
+
+  async getRoom(roomId: string): Promise<{ success: boolean; message: string; data: { room: Room } }> {
+    return apiClient.get(`/room/${roomId}`);
   },
 };
