@@ -6,14 +6,15 @@ import type { Device } from '@/types/devices-types';
 interface RoomsState {
   rooms: Room[];
   viewDevices: string[];
-  viewSplat: string | null;
+  viewSplat: string;
   devices: Record<string, Device[]>;
   loading: boolean;
 
   fetchRooms: (homeId: string) => Promise<void>;
   createRoom: (homeId: string, roomData: { roomName: string }) => Promise<void>;
   deleteRoom: (homeId: string, roomId: string) => Promise<void>;
-  updateRoom: (homeId: string, roomId: string, roomData: UpdateRoomData) => Promise<void>;
+  updateRoom: (roomId: string, roomData: UpdateRoomData) => Promise<void>;
+  fetchRoom: (roomId: string) => Promise<void>;
 
   fetchDevicesOfRoom: (homeId: string, roomId: string) => Promise<void>;
   connectDevice: (homeId: string, roomId: string, deviceId: string) => Promise<void>;
@@ -23,7 +24,7 @@ interface RoomsState {
 export const useRoomStore = create<RoomsState>((set, get) => ({
   rooms: [],
   viewDevices: [],
-  viewSplat: null,
+  viewSplat: '',
   devices: {},
   loading: false,
 
@@ -49,7 +50,7 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
 
   deleteRoom: async (homeId: string, roomId: string) => {
     try {
-      await roomService.delete(homeId, roomId);
+      await roomService.deleteRoom(homeId, roomId);
       set((state) => ({
         rooms: state.rooms.filter((r) => r._id !== roomId),
         devices: { ...state.devices, [roomId]: [] },
@@ -88,12 +89,27 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
     }
   },
 
-  updateRoom: async (homeId: string, roomId: string, roomData: UpdateRoomData) => {
+  updateRoom: async (roomId: string, roomData: UpdateRoomData) => {
     try {
-      await roomService.update(homeId, roomId, roomData);
-      get().fetchRooms(homeId);
+      await roomService.updateRoom(roomId, roomData);
+      get().fetchRoom(roomId);
     } catch (err) {
       console.error(err);
+    }
+  },
+
+  fetchRoom: async (roomId: string) => {
+    try {
+      const response = await roomService.getRoom(roomId);
+      if (response.data.room.viewDevices) {
+        set({ viewDevices: response.data.room.viewDevices, loading: false });
+      }
+      if (response.data.room.viewSplat) {
+        set({ viewSplat: response.data.room.viewSplat, loading: false });
+      }
+    } catch (err) {
+      console.error(err);
+      set({ loading: false });
     }
   },
 }));

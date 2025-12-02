@@ -8,6 +8,8 @@ export interface Room {
   roomName: string;
   homeId: string;
   devices: Device[];
+  viewDevices: string[];
+  viewSplat: string;
   createdAt: string;
   updatedAt: string;
 }
