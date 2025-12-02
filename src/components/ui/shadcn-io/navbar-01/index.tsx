@@ -14,10 +14,13 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@/store/authStore';
+import { authService } from '@/services/authService';
 
 // Simple logo component for the navbar
 const Logo = (props: React.SVGAttributes<SVGElement>) => {
+
   return (
     <svg width='1em' height='1em' viewBox='0 0 324 323' fill='currentColor' xmlns='http://www.w3.org/2000/svg' {...props}>
       <rect
@@ -94,7 +97,7 @@ const defaultNavigationLinks: Navbar01NavLink[] = [
   { href: '/', label: 'Home', active: true },
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/pricing', label: 'Pricing' },
-  { href: '/about', label: 'About' },
+  { href: '/getting-started', label: 'Getting Started' },
   { href: '/immersiveView', label: 'ImmersiveView' },
 ];
 
@@ -115,6 +118,11 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
   ) => {
     const [isMobile, setIsMobile] = useState(false);
     const containerRef = useRef<HTMLElement>(null);
+    const navigate = useNavigate();
+
+    // Get auth state from Zustand
+    const isLoggedIn = authService.isAuthenticated();
+    const userName = useAuthStore((state) => state.userName);
 
     useEffect(() => {
       const checkWidth = () => {
@@ -145,6 +153,13 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
         (ref as React.MutableRefObject<HTMLElement | null>).current = node;
       }
     }, [ref]);
+
+    const handleLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      authService.logout();
+      alert('Logout successful');
+      navigate('/');
+    };
 
     return (
       <header
@@ -226,20 +241,43 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
               )}
             </div>
           </div>
-          {/* Right side */}
+          {/* Right side - Auth controls */}
           <div className='flex items-center gap-3'>
-            <Link
-              to={signInHref}
-              className='text-sm font-medium px-3 py-2 rounded-md hover:bg-accent hover:text-accent-foreground'
-            >
-              {signInText}
-            </Link>
-            <Link
-              to={ctaHref}
-              className='text-sm font-medium px-4 h-9 rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 flex items-center'
-            >
-              {ctaText}
-            </Link>
+            {isLoggedIn ? (
+              <>
+                {/* Optional greeting */}
+                {userName && (
+                  <span className='hidden text-sm text-foreground/70 md:block'>
+                    Hi, {userName}
+                  </span>
+                )}
+
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={handleLogout}
+                  className='text-sm font-medium'
+                >
+                  Log Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to={signInHref}
+                  className='text-sm font-medium px-3 py-2 rounded-md hover:bg-accent transition-colors'
+                >
+                  {signInText}
+                </Link>
+
+                <Link
+                  to={ctaHref}
+                  className='text-sm font-medium px-4 h-9 rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center'
+                >
+                  {ctaText}
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>

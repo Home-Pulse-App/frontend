@@ -9,7 +9,7 @@ export default function LoginPage() {
       <div
         className='fixed inset-0 w-full h-full -z-10'
         style={{
-          backgroundImage: 'url(/images/iotBackground_Gradient.png)',
+          backgroundImage: 'url(/images/iotBackground_Gradient2.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
