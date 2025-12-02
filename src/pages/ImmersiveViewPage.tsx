@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import FileUpload from '../components/FileUpload';
-import { mockServer } from '../services/localDBService';
 import '../immersiveStyle.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/blocks/footer/Footer';
@@ -12,29 +11,31 @@ function ImmersiveViewPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [splatExist, setSplatExist] = useState(false);
-  const { fetchRoom, viewSplatFileId, cleanSplat, loading: roomLoading } = useRoomStore();
+  const { fetchRoom, fetchRoomSplat, viewSplatFileId, cleanSplat, loading: roomLoading } = useRoomStore();
 
   const { roomId } = useParams<{ roomId: string }>();
 
   const handleLoadSession = async () => {
+    if (!roomId) return;
+
     setLoading(true);
     setError(null);
     try {
-      const userData = await mockServer.loadUserData();
-      if (userData.splatData) {
-        // Convert base64 to Blob
-        const response = await fetch(userData.splatData);
-        const blob = await response.blob();
-        const splatUrl = URL.createObjectURL(blob);
+      // Fetch the splat file for this specific room
+      await fetchRoomSplat(roomId);
 
+      // Get the updated viewSplat from the store
+      const { viewSplat } = useRoomStore.getState();
+
+      if (viewSplat) {
         navigate('/viewer', {
           state: {
-            file: { url: splatUrl, name: 'Restored Session', type: 'splat', size: blob.size },
-            devices: userData.devices,
+            file: { url: viewSplat, name: `Room ${roomId} Session`, type: 'splat', size: 0 },
+            devices: [], // You might want to pass the room's devices here
           },
         });
       } else {
-        setError('No saved session found.');
+        setError('No saved session found for this room.');
       }
     } catch (err) {
       console.error(err);
@@ -50,7 +51,7 @@ function ImmersiveViewPage() {
       cleanSplat();
       fetchRoom(roomId);
     }
-  }, [roomId, fetchRoom]);
+  }, [roomId, fetchRoom, cleanSplat]);
 
   // Update splatExist when viewSplatFileId changes
   useEffect(() => {
