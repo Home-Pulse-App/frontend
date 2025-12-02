@@ -242,21 +242,21 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
             </div>
           </div>
           {/* Right side - Auth controls */}
-          <div className="flex items-center gap-3">
+          <div className='flex items-center gap-3'>
             {isLoggedIn ? (
               <>
                 {/* Optional greeting */}
                 {userName && (
-                  <span className="hidden text-sm text-foreground/70 md:block">
+                  <span className='hidden text-sm text-foreground/70 md:block'>
                     Hi, {userName}
                   </span>
                 )}
 
                 <Button
-                  variant="ghost"
-                  size="sm"
+                  variant='ghost'
+                  size='sm'
                   onClick={handleLogout}
-                  className="text-sm font-medium"
+                  className='text-sm font-medium'
                 >
                   Log Out
                 </Button>
@@ -265,14 +265,14 @@ export const Navbar01 = React.forwardRef<HTMLElement, Navbar01Props>(
               <>
                 <Link
                   to={signInHref}
-                  className="text-sm font-medium px-3 py-2 rounded-md hover:bg-accent transition-colors"
+                  className='text-sm font-medium px-3 py-2 rounded-md hover:bg-accent transition-colors'
                 >
                   {signInText}
                 </Link>
 
                 <Link
                   to={ctaHref}
-                  className="text-sm font-medium px-4 h-9 rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center"
+                  className='text-sm font-medium px-4 h-9 rounded-md shadow-sm bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center'
                 >
                   {ctaText}
                 </Link>
