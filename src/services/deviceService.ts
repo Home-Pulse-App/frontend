@@ -1,5 +1,5 @@
-import type { Device } from '@/types';
-import type { CreateDeviceData } from '@/types/devices-types';
+
+import type { CreateDeviceData, Device } from '@/types/devices-types';
 import { apiClient } from './apiServices';
 
 export const deviceService = {

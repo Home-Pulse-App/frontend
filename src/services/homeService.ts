@@ -1,6 +1,5 @@
-import type { CreateHomeData } from '@/types/homes-types';
+import type { CreateHomeData, Home } from '@/types/homes-types';
 import { apiClient } from './apiServices';
-import type { Home } from '@/types';
 
 export const homeService = {
 
