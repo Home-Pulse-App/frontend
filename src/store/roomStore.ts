@@ -7,6 +7,7 @@ interface RoomsState {
   rooms: Room[];
   viewDevices: string[];
   viewSplat: string;
+  viewSplatFileId: string;
   devices: Record<string, Device[]>;
   loading: boolean;
 
@@ -15,16 +16,20 @@ interface RoomsState {
   deleteRoom: (homeId: string, roomId: string) => Promise<void>;
   updateRoom: (roomId: string, roomData: UpdateRoomData) => Promise<void>;
   fetchRoom: (roomId: string) => Promise<void>;
+  fetchRoomSplat: (roomId: string) => Promise<void>;
 
   fetchDevicesOfRoom: (homeId: string, roomId: string) => Promise<void>;
   connectDevice: (homeId: string, roomId: string, deviceId: string) => Promise<void>;
   disconnectDevice: (homeId: string, roomId: string, deviceId: string) => Promise<void>;
+
+  cleanSplat: () => void;
 }
 
 export const useRoomStore = create<RoomsState>((set, get) => ({
   rooms: [],
   viewDevices: [],
   viewSplat: '',
+  viewSplatFileId: '',
   devices: {},
   loading: false,
 
@@ -99,17 +104,40 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
   },
 
   fetchRoom: async (roomId: string) => {
+    set({ loading: true });
     try {
       const response = await roomService.getRoom(roomId);
-      if (response.data.room.viewDevices) {
-        set({ viewDevices: response.data.room.viewDevices, loading: false });
+      if (response.room.viewDevices) {
+        set({ viewDevices: response.room.viewDevices });
+      } else {
+        set({ viewDevices: [] });
       }
-      if (response.data.room.viewSplat) {
-        set({ viewSplat: response.data.room.viewSplat, loading: false });
+      if (response.room.viewSplatFileId) {
+        set({ viewSplatFileId: response.room.viewSplatFileId });
+      } else {
+        set({ viewSplatFileId: '' });
+      }
+      set({ loading: false });
+    } catch (err) {
+      console.error(err);
+      set({ loading: false });
+    }
+  },
+  fetchRoomSplat: async (roomId: string) => {
+    set({ loading: true });
+    try {
+      const response = await roomService.getRoomSplat(roomId);
+      if (response.splatUrl) {
+        set({ viewSplat: response.splatUrl, loading: false });
+      } else {
+        set({ viewSplat: '', loading: false });
       }
     } catch (err) {
       console.error(err);
       set({ loading: false });
     }
+  },
+  cleanSplat: () => {
+    set({ viewSplatFileId: '' });
   },
 }));

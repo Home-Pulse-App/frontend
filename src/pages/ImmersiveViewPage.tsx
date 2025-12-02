@@ -12,7 +12,8 @@ function ImmersiveViewPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [splatExist, setSplatExist] = useState(false);
-  const { fetchRoom, viewSplat } = useRoomStore();
+  const { fetchRoom, viewSplatFileId, cleanSplat, loading: roomLoading } = useRoomStore();
+
   const { roomId } = useParams<{ roomId: string }>();
 
   const handleLoadSession = async () => {
@@ -43,39 +44,26 @@ function ImmersiveViewPage() {
     }
   };
 
+  // Fetch room data when component mounts
   useEffect(() => {
     if (roomId) {
-      try {
-        fetchRoom(roomId);
-        if (viewSplat) {
-          setSplatExist(true);
-        } else {
-          setSplatExist(false);
-        }
-      } catch (err) {
-        console.error(err);
-      }
+      cleanSplat();
+      fetchRoom(roomId);
     }
-    else {
-      console.log('🚨 No roomId found in URL');
+  }, [roomId, fetchRoom]);
+
+  // Update splatExist when viewSplatFileId changes
+  useEffect(() => {
+    if (viewSplatFileId) {
+      console.log('Splat File ID:', viewSplatFileId);
+      setSplatExist(true);
+    } else {
+      console.log('No Splat File ID');
+      setSplatExist(false);
     }
-  }, []);
+  }, [viewSplatFileId]);
 
-  if (!roomId) {
-    return (
-      <div className='relative flex min-h-screen flex-col w-full'>
-        <Navbar />
-        <main className='flex-1 flex items-center justify-center px-4 py-12'>
-          <div className='flex flex-col items-center gap-6'>
-            <p className='text-red-400 text-lg font-semibold'>Error: No room ID provided in URL</p>
-            <p className='text-gray-400 text-sm'>Please navigate to this page with a valid roomId parameter</p>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
+  if (roomLoading) return <p>Loading room...</p>;
   return (
     <div className='relative flex min-h-screen flex-col w-full'>
       <Navbar />

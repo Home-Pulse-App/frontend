@@ -10,6 +10,7 @@ export interface Room {
   devices: Device[];
   viewDevices: string[];
   viewSplat: string;
+  viewSplatFileId: string;
   createdAt: string;
   updatedAt: string;
 }
