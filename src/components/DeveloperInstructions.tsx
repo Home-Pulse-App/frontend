@@ -6,90 +6,94 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
-import ScrollReveal from './ScrollReveal';
+import { FaDatabase, FaTv, FaHands } from 'react-icons/fa';
+import TextType from './TextType';
 
-export function DeveloperInstructions() {
+export default function DeveloperInstructions() {
   return (
-    <div className='w-full max-w-4xl mx-auto space-y-6 px-4 pb-12'>
-      <Card className='bg-background/95 backdrop-blur'>
-        <CardHeader>
-          <CardTitle className='text-2xl'>Getting Started with Home-Pulse</CardTitle>
-          <CardDescription>
-            <ScrollReveal>
-              Follow these instructions to set up and run the Home-Pulse IoT monitoring system
-            </ScrollReveal>
-          </CardDescription>
-        </CardHeader>
-        <CardContent className='space-y-8'>
-          {/* Backend Setup */}
-          <section className='space-y-4'>
-            <h3 className='text-xl font-semibold'>Backend Setup</h3>
+    <div className='w-full mt-10'>
+      {/* Header outside cards */}
+      <div className='text-center'>
+        <TextType
+          text='Getting Started with Home-Pulse'
+          typingSpeed={50}
+          deletingSpeed={30}
+          pauseDuration={5000}
+          loop
+          className='text-3xl font-bold text-white text-center'
+        />
+      </div>
 
-            <div className='space-y-3'>
-              <h4 className='text-lg font-medium'>1. Install and Configure MongoDB</h4>
-              <p className='text-muted-foreground'>
-                Home-Pulse uses MongoDB (accessed through Mongoose) to store users, houses, rooms and devices.
-                Make sure a MongoDB instance is running, either locally or in the cloud, and place the connection
-                string inside the backend .env file.
-              </p>
-            </div>
-
-            <div className='space-y-3'>
-              <h4 className='text-lg font-medium'>2. Prepare Your IoT Device</h4>
-              <p className='text-muted-foreground'>
-                Use an IoT board such as an ESP32 or a Raspberry Pi. Program the device to work with an MQTT
-                broker and publish sensor values to the topics expected by the backend.
-              </p>
-            </div>
-
-            <div className='space-y-3'>
-              <h4 className='text-lg font-medium'>3. Set Up Your MQTT Broker</h4>
-              <p className='text-muted-foreground'>
-                You can host the broker on your local PC or directly on a Raspberry Pi. Add the broker URL,
-                port and credentials to the backend .env file so that the server can subscribe to all required topics.
-              </p>
-            </div>
-
-            <div className='space-y-3'>
-              <h4 className='text-lg font-medium'>4. Launch the Backend</h4>
-              <p className='text-muted-foreground'>
-                Start the backend using the updated configuration. The server should automatically connect to
-                MongoDB, subscribe to the MQTT topics and expose its API to the frontend.
-              </p>
-            </div>
-          </section>
-
-          {/* Frontend Setup */}
-          <section className='space-y-4'>
-            <h3 className='text-xl font-semibold'>Frontend Setup</h3>
-            <p className='text-muted-foreground'>
-              Add the backend URL to the frontend configuration so the webapp can communicate with the API.
-              Start the frontend normally.
-            </p>
-          </section>
-
-          {/* Using the App */}
-          <section className='space-y-4'>
-            <h3 className='text-xl font-semibold'>Using the App for the First Time</h3>
-            <p className='text-muted-foreground'>
-              Once both backend and frontend are running:
-            </p>
-            <ol className='list-decimal list-inside space-y-2 text-muted-foreground ml-4'>
-              <li>Create a user account</li>
-              <li>Log in</li>
-              <li>Create a house</li>
-              <li>Create a room inside that house</li>
-              <li>Register a device</li>
-              <li>Assign the device to a room</li>
+      <main className='flex justify-between space-x-6 mt-10'>
+        {/* Backend Setup Card */}
+        <Card className='bg-background/95 backdrop-blur'>
+          <CardHeader>
+            <CardTitle className='text-2xl flex items-center gap-2'>Backend Setup <FaDatabase /></CardTitle>
+            <CardDescription>
+              Configure MongoDB, IoT devices, and MQTT broker for the backend
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-6'>
+            <ol className='list-decimal list-inside space-y-3 text-muted-foreground ml-4'>
+              <li>
+                <span className='text-black font-bold'>Set up a MongoDB instance</span>—local or cloud—and add its connection string to the backend
+                <code>.env</code> so the server can store users, houses, rooms, and devices.
+              </li>
+              <li>
+                <span className='text-black font-bold'>Prepare your IoT hardware</span> (ESP32, Raspberry Pi, etc.), program it to work with an MQTT broker,
+                and publish sensor values to the topics the backend expects.
+              </li>
+              <li>
+                <span className='text-black font-bold'>Install or host an MQTT broker</span> locally or on a Raspberry Pi, then place the broker URL, port, and
+                credentials into the backend <code>.env</code> file so the server can subscribe to all necessary topics.
+              </li>
+              <li>
+                <span className='text-black font-bold'>Start the backend</span> so it connects to MongoDB, listens to the configured MQTT topics, and exposes
+                its API to the frontend.
+              </li>
             </ol>
-            <p className='text-muted-foreground mt-4'>
-              The app will begin listening to the MQTT topics associated with that device. Live sensor values
-              will appear inside the 3D model of your room in real time, and the dashboard will display the
-              numeric data.
-            </p>
-          </section>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+
+        {/* Frontend Setup Card */}
+        <Card className='bg-background/95 backdrop-blur'>
+          <CardHeader>
+            <CardTitle className='text-2xl flex items-center gap-2'>Frontend Setup <FaTv /></CardTitle>
+            <CardDescription>
+              Configure and start the frontend application
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ol className='list-decimal list-inside space-y-3 text-muted-foreground ml-4'>
+              <li><span className='text-black font-bold'>Add the backend’s URL</span> to the frontend configuration to enable API communication.</li>
+              <li><span className='text-black font-bold'>Start the frontend normally</span> so it can interact with the backend and display real-time data.</li>
+            </ol>
+          </CardContent>
+        </Card>
+
+        {/* Using the App Card */}
+        <Card className='bg-background/95 backdrop-blur'>
+          <CardHeader>
+            <CardTitle className='text-2xl flex items-center gap-2'>Using the App for the First Time <FaHands /></CardTitle>
+            <CardDescription>
+              Steps to get started with your Home-Pulse system
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <ol className='list-decimal list-inside space-y-2 text-muted-foreground ml-4'>
+              <li><span className='text-black font-bold'>Create a user account</span>.</li>
+              <li><span className='text-black font-bold'>Log in to the app</span>.</li>
+              <li><span className='text-black font-bold'>Create a house and add at least one room</span>.</li>
+              <li><span className='text-black font-bold'>Register a device and assign it to a room</span>.</li>
+              <li>
+                The system will begin listening to that device’s MQTT topics, showing live sensor values in the 3D
+                room model and numerical data on the dashboard.
+              </li>
+            </ol>
+          </CardContent>
+        </Card>
+      </main>
     </div>
   );
 }
+
