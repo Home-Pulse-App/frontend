@@ -43,7 +43,6 @@ export const roomService = {
   },
 
   async updateRoom(roomId: string, roomData: UpdateRoomData): Promise<{ success: boolean; message: string }> {
-    console.log(roomData);
     return apiClient.put(`/room/${roomId}`, roomData);
   },
 

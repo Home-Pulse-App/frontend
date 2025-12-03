@@ -258,10 +258,11 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
         if (roomId) {
           fetchRoom(roomId);
           if (iotDevices.length > 0) {
-            deviceId = iotDevices[0]._id;
+            console.log('IoTDevices🔧:', iotDevices);
+            deviceId = iotDevices[0] as unknown as string;
           }
         }
-        // console.log('IoT🔧:', deviceId);
+        console.log('IoT🔧:', deviceId, roomId);
         await fetchLatestData(deviceId);
         //* Use the refs to get the latest state without causing re-renders
         // console.log('IoT🔧:', latestDataRef.current);
@@ -309,4 +310,3 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     </Suspense>
   );
 }
-
