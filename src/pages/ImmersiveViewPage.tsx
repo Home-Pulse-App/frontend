@@ -31,7 +31,7 @@ function ImmersiveViewPage() {
         navigate('/viewer', {
           state: {
             file: { url: viewSplat, name: `Room ${roomId} Session`, type: 'splat', size: 0 },
-            devices: [], // You might want to pass the room's devices here
+            roomId: roomId, //! changed to send roomId to viewer
           },
         });
       } else {

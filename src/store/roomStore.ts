@@ -2,13 +2,14 @@ import { create } from 'zustand';
 import { roomService } from '../services/roomService';
 import type { Room, UpdateRoomData } from '@/types/room-types';
 import type { Device } from '@/types/devices-types';
+import type { DeviceData } from '@/types/device';
 
 interface RoomsState {
   rooms: Room[];
-  viewDevices: string[];
+  viewDevices: DeviceData[];
   viewSplat: string;
   viewSplatFileId: string;
-  devices: Record<string, Device[]>;
+  devices: Device[];
   loading: boolean;
 
   fetchRooms: (homeId: string) => Promise<void>;
@@ -30,7 +31,7 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
   viewDevices: [],
   viewSplat: '',
   viewSplatFileId: '',
-  devices: {},
+  devices: [],
   loading: false,
 
   fetchRooms: async (homeId: string) => {
@@ -116,6 +117,11 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
         set({ viewSplatFileId: response.room.viewSplatFileId });
       } else {
         set({ viewSplatFileId: '' });
+      }
+      if (response.room.devices) {
+        set({ devices: response.room.devices });
+      } else {
+        set({ devices: [] });
       }
       set({ loading: false });
     } catch (err) {

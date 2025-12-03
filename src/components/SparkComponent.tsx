@@ -12,6 +12,7 @@ import SensorControlPanel from './ui/SensorControlPanel';
 import { useSnapshot } from 'valtio';
 import type { SensorData } from '@/types/sensorsDataTypes';
 import { Progress } from '@/components/ui/Progress';
+import { useRoomStore } from '@/store/roomStore';
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
@@ -31,6 +32,8 @@ function SparkComponent() {
   const [deviceToSpawn, setDeviceToSpawn] = useState<string | null>(null);
   const [initialDevices, setInitialDevices] = useState<DeviceData[]>([]);
   const [devices, setDevices] = useState<DeviceData[]>([]);
+  const { viewDevices: roomDevices, fetchRoom } = useRoomStore();
+  const roomId = location.state?.roomId;
 
   const snap = useSnapshot(deviceState);
 
@@ -42,8 +45,10 @@ function SparkComponent() {
     }
 
     //* Check for initial devices passed from Load Session
-    if (location.state?.devices) {
-      setInitialDevices(location.state.devices);
+    //! BIG TODO: Refactor to work with more than one device
+    if (roomId) {
+      fetchRoom(roomId);
+      setInitialDevices(roomDevices);
     }
   }, [location.state, navigate]);
 

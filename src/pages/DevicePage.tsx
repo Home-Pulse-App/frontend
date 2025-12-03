@@ -59,7 +59,7 @@ export default function DevicePage() {
                   <div>{device.roomId || '—'}</div>
 
                   <div>
-                    {device.state === 'on' ? (
+                    {device.state === 'ONLINE' ? (
                       <span className='text-green-600 font-medium'>Online</span>
                     ) : (
                       <span className='text-red-500 font-medium'>Offline</span>

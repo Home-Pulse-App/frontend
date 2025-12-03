@@ -26,7 +26,7 @@ export interface Device {
   _id: string;
   deviceName: string;
   type: string;
-  state: string;
+  state: 'ONLINE' | 'OFFLINE';
   sensors: SensorType[];
   roomId?: string | null;
   createdAt: string | null;
