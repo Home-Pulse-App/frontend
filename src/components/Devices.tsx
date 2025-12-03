@@ -205,7 +205,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   //* Handle Backspace
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log('Key pressed:', event.key, 'Current device:', deviceState.current);
+      // console.log('Key pressed:', event.key, 'Current device:', deviceState.current);
       if (event.key === 'Backspace' && deviceState.current) {
         const idToRemove = deviceState.current;
         const nameToRemove = deviceState.name;
@@ -245,6 +245,12 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     devicesRef.current = devices;
   }, [devices]);
 
+  //* Keep a ref to latestData to access latest sensor data inside interval without resetting it
+  const latestDataRef = useRef(latestData);
+  useEffect(() => {
+    latestDataRef.current = latestData;
+  }, [latestData]);
+
   useEffect(() => {
     const responseData = async () => {
       try {
@@ -257,10 +263,10 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
         }
         console.log('IoT🔧:', deviceId); //Todo remove console.log
         await fetchLatestData(deviceId);
-        //* Use the ref to get the latest devices list
-        console.log('IoT🔧:', latestData); //Todo remove console.log
+        //* Use the refs to get the latest state without causing re-renders
+        console.log('IoT🔧:', latestDataRef.current); //Todo remove console.log
         devicesRef.current.forEach(d => {
-          updateDeviceSensorData(d.id, latestData);
+          updateDeviceSensorData(d.id, latestDataRef.current);
         });
       } catch (error) {
         console.error('Error fetching device data:', error);
