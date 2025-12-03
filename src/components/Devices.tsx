@@ -257,7 +257,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
         let deviceId = 'iot1';
         if (roomId) {
           fetchRoom(roomId);
-          if (iotDevices.length > 0) {
+          if (iotDevices[0].length > 0) {
             console.log('IoTDevices🔧:', iotDevices);
             deviceId = iotDevices[0] as unknown as string;
           }
