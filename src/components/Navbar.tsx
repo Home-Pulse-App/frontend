@@ -12,7 +12,6 @@ export default function Navbar() {
           logoHref='/'
           navigationLinks={[
             { label: 'Dashboard', href: '/dashboard' },
-            { label: 'Immersive View', href: '/ImmersiveView' },
             { label: 'Homes', href: '/homes' },
             { label: 'Devices', href: '/devices' },
             { label: 'Getting Started', href: '/getting-started' },

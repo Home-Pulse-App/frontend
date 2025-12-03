@@ -3,9 +3,10 @@ import { useThree } from '@react-three/fiber';
 import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
-import { deviceDataService } from '@/services/deviceDataService';
 import type { SensorData } from '@/types/sensorsDataTypes';
 import type { DeviceData } from '@/types/device';
+import { useRoomStore } from '@/store/roomStore';
+import { useDeviceDataStore } from '@/store/sensorStore';
 
 const modes = ['translate', 'rotate', 'scale'] as const;
 
@@ -148,11 +149,14 @@ interface DevicesProps {
   initialDevices?: DeviceData[];
   onDevicesChange?: (devices: DeviceData[]) => void;
   onSensorDataUpdate?: (deviceId: string, sensorData: SensorData) => void;
+  roomId?: string;
 }
 
-export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [], onDevicesChange, onSensorDataUpdate }: DevicesProps) {
+export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [], onDevicesChange, onSensorDataUpdate, roomId }: DevicesProps) {
   const [devices, setDevices] = useState<DeviceData[]>(initialDevices);
   const camera = useThree((state) => state.camera);
+  const { devices: iotDevices, fetchRoom } = useRoomStore();
+  const { latestData, fetchLatestData } = useDeviceDataStore();
 
   //* Update internal state if initialDevices changes (e.g. loaded from server)
   useEffect(() => {
@@ -227,7 +231,6 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
 
   //* Expose updateDeviceSensorData to parent via callback
   useEffect(() => {
-
     if (onSensorDataUpdate) {
       (window as any).__updateDeviceSensorData = updateDeviceSensorData;
     }
@@ -245,11 +248,19 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   useEffect(() => {
     const responseData = async () => {
       try {
-        const deviceId = 'iot1';
-        const newData = await deviceDataService.getLatest(deviceId);
+        let deviceId = 'iot1';
+        if (roomId) {
+          fetchRoom(roomId);
+          if (iotDevices.length > 0) {
+            deviceId = iotDevices[0]._id;
+          }
+        };
+        console.log('IoT🔧:', deviceId); //Todo remove console.log
+        await fetchLatestData(deviceId);
         //* Use the ref to get the latest devices list
+        console.log('IoT🔧:', latestData); //Todo remove console.log
         devicesRef.current.forEach(d => {
-          updateDeviceSensorData(d.id, newData.data.latest.sensorsData);
+          updateDeviceSensorData(d.id, latestData);
         });
       } catch (error) {
         console.error('Error fetching device data:', error);

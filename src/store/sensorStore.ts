@@ -15,7 +15,7 @@ type Period =
 interface SensorState {
     paginatedData: DeviceReading[];
     statsData: DeviceStats[];
-    latestData: SensorData | null;
+    latestData: SensorData;
     loading: boolean;
     fetchPaginatedData: (deviceIdOrName: string, params?: PaginationParams) => Promise<void>;
     fetchStatsData: (deviceIdOrName: string, field: SensorType, period?: Period) => Promise<void>;
@@ -25,7 +25,15 @@ interface SensorState {
 export const useDeviceDataStore = create<SensorState>((set) => ({
     paginatedData: [],
     statsData: [],
-    latestData: null,
+    latestData: {
+        temperature: 0,
+        humidity: 0,
+        light: 0,
+        switch1: 0,
+        switch2: 0,
+        button1: 0,
+        button2: 0,
+    },
     loading: false,
 
     fetchPaginatedData: async (deviceIdOrName: string, params?: PaginationParams) => {

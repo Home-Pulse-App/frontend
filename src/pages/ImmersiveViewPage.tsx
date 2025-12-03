@@ -31,7 +31,7 @@ function ImmersiveViewPage() {
         navigate('/viewer', {
           state: {
             file: { url: viewSplat, name: `Room ${roomId} Session`, type: 'splat', size: 0 },
-            roomId: roomId, //! changed to send roomId to viewer
+            roomId: roomId,
           },
         });
       } else {
@@ -70,7 +70,7 @@ function ImmersiveViewPage() {
       <Navbar />
       <main className='flex-1 flex items-center justify-center px-4 py-12'>
         <div className='flex flex-col items-center gap-6'>
-          <FileUpload roomId={roomId} />
+          <FileUpload roomId={roomId!} />
           {splatExist && (
             <div className='flex flex-col items-center gap-2'>
               <button
