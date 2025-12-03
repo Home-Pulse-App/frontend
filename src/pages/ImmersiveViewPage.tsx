@@ -1,33 +1,42 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import FileUpload from '../components/FileUpload';
-import { mockServer } from '../services/localDBService';
 import '../immersiveStyle.css';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/blocks/footer/Footer';
+import { useRoomStore } from '@/store/roomStore';
 
 function ImmersiveViewPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [splatExist, setSplatExist] = useState(false);
+  const { fetchRoom, fetchRoomSplat, viewSplatFileId, cleanSplat, loading: roomLoading } = useRoomStore();
+
+  const { roomId } = useParams<{ roomId: string }>();
 
   const handleLoadSession = async () => {
+    if (!roomId) return;
+
     setLoading(true);
     setError(null);
     try {
-      const userData = await mockServer.loadUserData();
-      if (userData.splatData) {
-        // Convert base64 to Blob
-        const response = await fetch(userData.splatData);
-        const blob = await response.blob();
-        const splatUrl = URL.createObjectURL(blob);
+      // Fetch the splat file for this specific room
+      await fetchRoomSplat(roomId);
 
+      // Get the updated viewSplat from the store
+      const { viewSplat } = useRoomStore.getState();
+
+      if (viewSplat) {
         navigate('/viewer', {
           state: {
-            file: { url: splatUrl, name: 'Restored Session', type: 'splat', size: blob.size },
-            devices: userData.devices,
+            // file: { url: viewSplat, name: `Room ${roomId} Session`, type: 'splat', size: 0 }, //! Unnecessary extra data
+            file: { url: viewSplat },
+            roomId: roomId,
           },
         });
       } else {
-        setError('No saved session found.');
+        setError('No saved session found for this room.');
       }
     } catch (err) {
       console.error(err);
@@ -37,30 +46,48 @@ function ImmersiveViewPage() {
     }
   };
 
+  //* Fetch room data when component mounts
+  useEffect(() => {
+    if (roomId) {
+      cleanSplat();
+      fetchRoom(roomId);
+    }
+  }, [roomId, fetchRoom, cleanSplat]);
+
+  //* Update splatExist when viewSplatFileId changes
+  useEffect(() => {
+    if (viewSplatFileId) {
+      console.log('Splat File ID:', viewSplatFileId);
+      setSplatExist(true);
+    } else {
+      console.log('No Splat File ID');
+      setSplatExist(false);
+    }
+  }, [viewSplatFileId]);
+
+  if (roomLoading) return <p>Loading room...</p>;
   return (
-    <>
-      <div className='w-full h-screen min-h-[600px] fixed z-20 flex flex-col items-center justify-between py-[10vh] pointer-events-none'>
-
-        <div className='pointer-events-auto shrink-0 flex flex-col items-center gap-4'>
-          <FileUpload />
-
-          <div className='flex flex-col items-center gap-2'>
-            <button
-              onClick={handleLoadSession}
-              disabled={loading}
-              className='bg-white/10 hover:bg-white/20 text-white px-6 py-2 rounded-full backdrop-blur-md transition-all disabled:opacity-50'
-            >
-              {loading ? 'Loading...' : 'Load Previous Session'}
-            </button>
-            {error && <p className='text-red-400 text-sm'>{error}</p>}
-          </div>
+    <div className='relative flex min-h-screen flex-col w-full'>
+      <Navbar />
+      <main className='flex-1 flex items-center justify-center px-4 py-12'>
+        <div className='flex flex-col items-center gap-6'>
+          <FileUpload roomId={roomId!} />
+          {splatExist && (
+            <div className='flex flex-col items-center gap-2'>
+              <button
+                onClick={handleLoadSession}
+                disabled={loading}
+                className='bg-black hover:bg-[#2E2E2E] text-white font-semibold py-2 px-6 rounded-lg shadow-md transition disabled:opacity-50'
+              >
+                {loading ? 'Loading...' : 'Load Previous Session'}
+              </button>
+              {error && <p className='text-red-400 text-sm'>{error}</p>}
+            </div>
+          )}
         </div>
-      </div>
-
-      <div className='w-full h-screen fixed inset-0 z-0 bg-[rgb(43,41,40)]'>
-
-      </div>
-    </>
+      </main>
+      <Footer />
+    </div>
   );
 }
 

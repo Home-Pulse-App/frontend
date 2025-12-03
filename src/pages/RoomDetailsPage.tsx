@@ -69,7 +69,7 @@ export default function RoomDetailsPage() {
     setLocalDevices((prev) =>
       prev.map((d) =>
         d._id === deviceId
-          ? { ...d, state: d.state === 'ON' || d.state === 'ONLINE' ? 'OFFLINE' : 'ONLINE' }
+          ? { ...d, state: d.state === 'ONLINE' ? 'OFFLINE' : 'ONLINE' }
           : d,
       ),
     );
@@ -135,7 +135,7 @@ export default function RoomDetailsPage() {
                   <div>{device.deviceName}</div>
                   <div>{device.type}</div>
                   <div>
-                    {device.state === 'ON' || device.state === 'ONLINE' ? (
+                    {device.state === 'ONLINE' ? (
                       <span className='text-green-600 font-medium'>On</span>
                     ) : (
                       <span className='text-red-500 font-medium'>Off</span>
@@ -144,14 +144,10 @@ export default function RoomDetailsPage() {
 
                   <div className='text-right flex justify-end gap-2'>
                     <button
-                      className={`px-3 py-1 rounded-md font-medium ${
-                        device.state === 'ON' || device.state === 'ONLINE'
-                          ? 'bg-red-500 text-white'
-                          : 'bg-green-500 text-white'
-                      }`}
+                      className={`px-3 py-1 rounded-md font-medium ${device.state === 'ONLINE' ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
                       onClick={() => toggleDeviceState(device._id)}
                     >
-                      {device.state === 'ON' || device.state === 'ONLINE' ? 'Turn Off' : 'Turn On'}
+                      {device.state === 'ONLINE' ? 'Turn Off' : 'Turn On'}
                     </button>
 
                     <button

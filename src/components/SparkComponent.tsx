@@ -6,12 +6,12 @@ import Dock from './ui/Dock';
 import { FaHome, FaKeyboard, FaLightbulb, FaSun, FaThermometerHalf, FaWater } from 'react-icons/fa';
 import Instructions from './ui/Instructions/Instructions';
 import Devices, { deviceState } from './Devices';
-import { mockServer } from '../services/localDBService';
 import { type DeviceData } from '@/types/device';
 import SensorControlPanel from './ui/SensorControlPanel';
 import { useSnapshot } from 'valtio';
 import type { SensorData } from '@/types/sensorsDataTypes';
 import { Progress } from '@/components/ui/Progress';
+import { useRoomStore } from '@/store/roomStore';
 
 //* Export deviceState so other components can check transformation status
 export { deviceState };
@@ -31,6 +31,8 @@ function SparkComponent() {
   const [deviceToSpawn, setDeviceToSpawn] = useState<string | null>(null);
   const [initialDevices, setInitialDevices] = useState<DeviceData[]>([]);
   const [devices, setDevices] = useState<DeviceData[]>([]);
+  const { viewDevices, fetchRoom, updateRoom } = useRoomStore();
+  const roomId = location.state?.roomId;
 
   const snap = useSnapshot(deviceState);
 
@@ -42,8 +44,10 @@ function SparkComponent() {
     }
 
     //* Check for initial devices passed from Load Session
-    if (location.state?.devices) {
-      setInitialDevices(location.state.devices);
+    //! BIG TODO: Refactor to work with more than one device
+    if (roomId) {
+      fetchRoom(roomId);
+      setInitialDevices(viewDevices);
     }
   }, [location.state, navigate]);
 
@@ -76,8 +80,8 @@ function SparkComponent() {
 
   const handleDevicesChange = useCallback((devices: DeviceData[]) => {
     setDevices(devices);
-    //TODO: Manage real userID when connecting to the backend
-    mockServer.saveDevices('default-user', devices);
+    const updatedRoom = { viewDevices: devices };
+    updateRoom(roomId, updatedRoom);
   }, []);
 
   const handleSensorDataUpdate = useCallback(async (deviceId: string, sensorData: SensorData) => {
@@ -85,8 +89,8 @@ function SparkComponent() {
       const updatedDevices = prev.map(d =>
         d.id === deviceId ? { ...d, sensorData } : d,
       );
-      //TODO: Manage real userID when connecting to the backend
-      mockServer.saveDevices('default-user', updatedDevices);
+      const updatedRoom = { viewDevices: updatedDevices };
+      updateRoom(roomId, updatedRoom);
       return updatedDevices;
     });
   }, []);
@@ -186,6 +190,7 @@ function SparkComponent() {
               initialDevices={initialDevices}
               onDevicesChange={handleDevicesChange}
               onSensorDataUpdate={handleSensorDataUpdate}
+              roomId={roomId}
             />
           )}
         </Canvas>

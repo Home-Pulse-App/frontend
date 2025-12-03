@@ -42,6 +42,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export function RegisterForm() {
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,8 +54,6 @@ export function RegisterForm() {
 
   async function onSubmit(values: FormValues) {
     console.log(values);
-    const navigate = useNavigate();
-
     const user: CreateUserData = {
       userName: values.fullName,
       email: values.email,
@@ -62,6 +61,7 @@ export function RegisterForm() {
     };
     try {
       const response = await userService.create(user);
+      console.log(response);
       if (response.success === true) {
         alert(response.message);
         navigate('/login');

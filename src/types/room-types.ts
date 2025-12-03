@@ -1,3 +1,4 @@
+import type { DeviceData } from './device';
 import type { Device } from './devices-types';
 
 export interface CreateRoomData {
@@ -8,6 +9,13 @@ export interface Room {
   roomName: string;
   homeId: string;
   devices: Device[];
+  viewDevices: DeviceData[];
+  viewSplat: string;
+  viewSplatFileId: string;
   createdAt: string;
   updatedAt: string;
+}
+export interface UpdateRoomData {
+  viewDevices?: DeviceData[];
+  viewSplat?: string;
 }

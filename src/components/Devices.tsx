@@ -3,9 +3,10 @@ import { useThree } from '@react-three/fiber';
 import { TransformControls, useGLTF, useCursor, Outlines } from '@react-three/drei';
 import { proxy, useSnapshot } from 'valtio';
 import * as THREE from 'three';
-import { deviceDataService } from '@/services/deviceDataService';
 import type { SensorData } from '@/types/sensorsDataTypes';
 import type { DeviceData } from '@/types/device';
+import { useRoomStore } from '@/store/roomStore';
+import { useDeviceDataStore } from '@/store/sensorStore';
 
 const modes = ['translate', 'rotate', 'scale'] as const;
 
@@ -148,11 +149,14 @@ interface DevicesProps {
   initialDevices?: DeviceData[];
   onDevicesChange?: (devices: DeviceData[]) => void;
   onSensorDataUpdate?: (deviceId: string, sensorData: SensorData) => void;
+  roomId?: string;
 }
 
-export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [], onDevicesChange, onSensorDataUpdate }: DevicesProps) {
+export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [], onDevicesChange, onSensorDataUpdate, roomId }: DevicesProps) {
   const [devices, setDevices] = useState<DeviceData[]>(initialDevices);
   const camera = useThree((state) => state.camera);
+  const { devices: iotDevices, fetchRoom } = useRoomStore();
+  const { latestData, fetchLatestData } = useDeviceDataStore();
 
   //* Update internal state if initialDevices changes (e.g. loaded from server)
   useEffect(() => {
@@ -201,7 +205,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
   //* Handle Backspace
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log('Key pressed:', event.key, 'Current device:', deviceState.current);
+      // console.log('Key pressed:', event.key, 'Current device:', deviceState.current);
       if (event.key === 'Backspace' && deviceState.current) {
         const idToRemove = deviceState.current;
         const nameToRemove = deviceState.name;
@@ -220,14 +224,13 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     setDevices(prev => prev.map(d =>
       d.id === deviceId ? { ...d, sensorData } : d,
     ));
-    // console.log(devices); // Removed to avoid dependency on 'devices'
+    // console.log(devices);
     onSensorDataUpdate?.(deviceId, sensorData);
     console.log('📈', sensorData);
   }, [onSensorDataUpdate]);
 
   //* Expose updateDeviceSensorData to parent via callback
   useEffect(() => {
-
     if (onSensorDataUpdate) {
       (window as any).__updateDeviceSensorData = updateDeviceSensorData;
     }
@@ -242,14 +245,29 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     devicesRef.current = devices;
   }, [devices]);
 
+  //* Keep a ref to latestData to access latest sensor data inside interval without resetting it
+  const latestDataRef = useRef(latestData);
+  useEffect(() => {
+    latestDataRef.current = latestData;
+  }, [latestData]);
+
   useEffect(() => {
     const responseData = async () => {
       try {
-        const deviceId = 'iot1';
-        const newData = await deviceDataService.getLatest(deviceId);
-        //* Use the ref to get the latest devices list
+        let deviceId = 'iot1';
+        if (roomId) {
+          fetchRoom(roomId);
+          if (iotDevices[0].length > 0) {
+            console.log('IoTDevices🔧:', iotDevices);
+            deviceId = iotDevices[0] as unknown as string;
+          }
+        }
+        console.log('IoT🔧:', deviceId, roomId);
+        await fetchLatestData(deviceId);
+        //* Use the refs to get the latest state without causing re-renders
+        // console.log('IoT🔧:', latestDataRef.current);
         devicesRef.current.forEach(d => {
-          updateDeviceSensorData(d.id, newData.data.latest.sensorsData);
+          updateDeviceSensorData(d.id, latestDataRef.current);
         });
       } catch (error) {
         console.error('Error fetching device data:', error);
@@ -292,4 +310,3 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     </Suspense>
   );
 }
-

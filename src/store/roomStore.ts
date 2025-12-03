@@ -1,24 +1,36 @@
 import { create } from 'zustand';
 import { roomService } from '../services/roomService';
-import type { Room } from '@/types/room-types';
+import type { Room, UpdateRoomData } from '@/types/room-types';
 import type { Device } from '@/types/devices-types';
+import type { DeviceData } from '@/types/device';
 
 interface RoomsState {
   rooms: Room[];
+  viewDevices: DeviceData[];
+  viewSplat: string;
+  viewSplatFileId: string;
   devices: Record<string, Device[]>;
   loading: boolean;
 
   fetchRooms: (homeId: string) => Promise<void>;
   createRoom: (homeId: string, roomData: { roomName: string }) => Promise<void>;
   deleteRoom: (homeId: string, roomId: string) => Promise<void>;
+  updateRoom: (roomId: string, roomData: UpdateRoomData) => Promise<void>;
+  fetchRoom: (roomId: string) => Promise<void>;
+  fetchRoomSplat: (roomId: string) => Promise<void>;
 
   fetchDevicesOfRoom: (homeId: string, roomId: string) => Promise<void>;
   connectDevice: (homeId: string, roomId: string, deviceId: string) => Promise<void>;
   disconnectDevice: (homeId: string, roomId: string, deviceId: string) => Promise<void>;
+
+  cleanSplat: () => void;
 }
 
 export const useRoomStore = create<RoomsState>((set, get) => ({
   rooms: [],
+  viewDevices: [],
+  viewSplat: '',
+  viewSplatFileId: '',
   devices: {},
   loading: false,
 
@@ -44,7 +56,7 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
 
   deleteRoom: async (homeId: string, roomId: string) => {
     try {
-      await roomService.delete(homeId, roomId);
+      await roomService.deleteRoom(homeId, roomId);
       set((state) => ({
         rooms: state.rooms.filter((r) => r._id !== roomId),
         devices: { ...state.devices, [roomId]: [] },
@@ -81,5 +93,63 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
     } catch (err) {
       console.error(err);
     }
+  },
+
+  updateRoom: async (roomId: string, roomData: UpdateRoomData) => {
+    try {
+      await roomService.updateRoom(roomId, roomData);
+      get().fetchRoom(roomId);
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
+  fetchRoom: async (roomId: string) => {
+    set({ loading: true });
+    try {
+      const response = await roomService.getRoom(roomId);
+      if (response.room.viewDevices) {
+        set({ viewDevices: response.room.viewDevices });
+      } else {
+        set({ viewDevices: [] });
+      }
+      if (response.room.viewSplatFileId) {
+        set({ viewSplatFileId: response.room.viewSplatFileId });
+      } else {
+        set({ viewSplatFileId: '' });
+      }
+      if (response.room.devices) {
+        set((state) => ({ devices: { ...state.devices, [roomId]: response.room.devices } }));
+      } else {
+        set((state) => ({ devices: { ...state.devices, [roomId]: [] } }));
+      }
+      set({ loading: false });
+    } catch (err) {
+      console.error(err);
+      set({ loading: false });
+    }
+  },
+
+  fetchRoomSplat: async (roomId: string) => {
+    set({ loading: true });
+    try {
+      const response = await roomService.getRoomSplat(roomId);
+      if (response.splatUrl) {
+        set({ viewSplat: response.splatUrl, loading: false });
+      } else {
+        set({ viewSplat: '', loading: false });
+      }
+    } catch (err) {
+      console.error(err);
+      set({ loading: false });
+    }
+  },
+  cleanSplat: () => {
+    const currentSplatUrl = useRoomStore.getState().viewSplat;
+    if (currentSplatUrl) {
+      // Revoke the old blob URL to free up memory
+      URL.revokeObjectURL(currentSplatUrl);
+    }
+    set({ viewSplatFileId: '', viewSplat: '' });
   },
 }));

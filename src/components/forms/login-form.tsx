@@ -28,9 +28,6 @@ export function LoginForm({
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
 
-    //TODO remove console.log on production
-    console.log('Login attempt:', { email, password: '***' });
-
     try {
       const credentials: LoginCredentials = {
         email: email,
@@ -67,13 +64,20 @@ export function LoginForm({
                   type='email'
                   placeholder='email@example.com'
                   required
+                  autoComplete='Email'
                 />
               </Field>
               <Field>
                 <div className='flex items-center'>
                   <FieldLabel htmlFor='password'>Password</FieldLabel>
                 </div>
-                <Input id='password' name='password' type='password' required />
+                <Input
+                  id='password'
+                  name='password'
+                  type='password'
+                  required
+                  autoComplete='Password'
+                />
               </Field>
               <Field>
                 <Button type='submit'>Login</Button>

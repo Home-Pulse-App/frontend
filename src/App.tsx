@@ -26,6 +26,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/ImmersiveView' element={<ImmersiveViewPage />} />
+          <Route path='/ImmersiveView/:roomId' element={<ImmersiveViewPage />} />
           <Route path='/viewer' element={<SparkComponent />} />
           <Route path='/homes' element={<HomesPage />} />
           <Route path='/homes/:id' element={<HomeDetailsPage />} />

@@ -1,4 +1,3 @@
-import { Asterisk } from 'lucide-react';
 import React from 'react';
 import { FaEye, FaArrowRight, FaHome, FaPeopleCarry, FaLightbulb } from 'react-icons/fa';
 
@@ -49,7 +48,6 @@ const Process = () => {
             <div className='relative w-fit text-5xl font-semibold tracking-tight lg:text-7xl'>
               {' '}
               <h1 className='w-fit'>The Home Pulse Journey</h1>
-              <Asterisk className='absolute -right-2 -top-2 size-5 text-orange-500 md:size-10 lg:-right-14' />
             </div>
             <p className='text-foreground/50 text-base text-justify'>
               Home Pulse is the result of curiosity, collaboration,
