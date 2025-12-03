@@ -9,7 +9,7 @@ interface RoomsState {
   viewDevices: DeviceData[];
   viewSplat: string;
   viewSplatFileId: string;
-  devices: Device[];
+  devices: Record<string, Device[]>;
   loading: boolean;
 
   fetchRooms: (homeId: string) => Promise<void>;
@@ -31,7 +31,7 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
   viewDevices: [],
   viewSplat: '',
   viewSplatFileId: '',
-  devices: [],
+  devices: {},
   loading: false,
 
   fetchRooms: async (homeId: string) => {
@@ -119,9 +119,9 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
         set({ viewSplatFileId: '' });
       }
       if (response.room.devices) {
-        set({ devices: response.room.devices });
+        set((state) => ({ devices: { ...state.devices, [roomId]: response.room.devices } }));
       } else {
-        set({ devices: [] });
+        set((state) => ({ devices: { ...state.devices, [roomId]: [] } }));
       }
       set({ loading: false });
     } catch (err) {
@@ -129,6 +129,7 @@ export const useRoomStore = create<RoomsState>((set, get) => ({
       set({ loading: false });
     }
   },
+
   fetchRoomSplat: async (roomId: string) => {
     set({ loading: true });
     try {
