@@ -23,15 +23,15 @@ export const description = 'An interactive area chart';
 const chartConfig = {
   temperature: {
     label: 'Temperature',
-    color: '#4447efff',
+    color: '#ff0000',
   },
   humidity: {
     label: 'Humidity',
-    color: '#f6573bff',
+    color: '#00008b',
   },
   light: {
     label: 'Light',
-    color: '#fbbf24',
+    color: '#ffff00',
   },
 } satisfies ChartConfig;
 
