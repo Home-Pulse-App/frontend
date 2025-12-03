@@ -64,13 +64,20 @@ export function LoginForm({
                   type='email'
                   placeholder='email@example.com'
                   required
+                  autoComplete='Email'
                 />
               </Field>
               <Field>
                 <div className='flex items-center'>
                   <FieldLabel htmlFor='password'>Password</FieldLabel>
                 </div>
-                <Input id='password' name='password' type='password' required />
+                <Input
+                  id='password'
+                  name='password'
+                  type='password'
+                  required
+                  autoComplete='Password'
+                />
               </Field>
               <Field>
                 <Button type='submit'>Login</Button>
