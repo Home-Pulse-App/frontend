@@ -6,13 +6,21 @@ import { useHomeStore } from "@/store/homeStore"
 import { useRoomStore } from "@/store/roomStore"
 import { useDeviceStore } from "@/store/deviceStore"
 import { useDeviceDataStore } from "@/store/sensorStore"
-import { useEffect } from "react"
+import { mockDeviceReadings } from "@/store/mockDeviceData"
+// import { useEffect } from "react"
+import { SensorStatsCards } from "@/components/sensor-stats-cards"
+import { calculateSensorStats } from "@/lib/sensorStats"
+import { useEffect, useMemo } from "react"
 
 export default function DashboardPage() {
   const { homes, fetchHomes } = useHomeStore();
   const { rooms, fetchRooms } = useRoomStore();
   const { devices, fetchDevices } = useDeviceStore();
-  const { paginatedData, fetchPaginatedData } = useDeviceDataStore();
+  // const { paginatedData, fetchPaginatedData } = useDeviceDataStore();
+  const { fetchPaginatedData } = useDeviceDataStore();
+
+  // Calculate sensor stats from mock data
+  const sensorStats = useMemo(() => calculateSensorStats(mockDeviceReadings), []);
 
   useEffect(() => {
     fetchHomes();
@@ -46,8 +54,14 @@ export default function DashboardPage() {
           />
           <div className="px-4 lg:px-6">
             <DataTable data={devices} />
-            <ChartAreaInteractive data={paginatedData} />
+            {/* <ChartAreaInteractive data={paginatedData} /> */}
+            <ChartAreaInteractive data={mockDeviceReadings} />
           </div>
+          <SensorStatsCards
+            temperature={sensorStats.temperature}
+            humidity={sensorStats.humidity}
+            light={sensorStats.light}
+          />
         </div>
       </div>
     </div>
