@@ -2,23 +2,65 @@ import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
 import CreateModal from '@/components/CreateModal';
 import { useDeviceStore } from '@/store/deviceStore';
+import { useHomeStore } from '@/store/homeStore';
+import { roomService } from '@/services/roomService';
 import type { Device } from '@/types/devices-types';
 
 export default function DevicePage() {
   const { devices, fetchDevices, createDevice, deleteDevice, loading } = useDeviceStore();
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { homes, fetchHomes } = useHomeStore();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+
+  const [roomNamesMap, setRoomNamesMap] = useState<Record<string, string>>({});
 
   useEffect(() => {
     fetchDevices();
+    fetchHomes();
   }, []);
+
+  useEffect(() => {
+    const loadAllRooms = async () => {
+      if (!homes || homes.length === 0) return;
+
+      try {
+        const promises = homes.map((home) => roomService.getAll(home._id));
+        const results = await Promise.all(promises);
+
+        const newMap: Record<string, string> = {};
+
+        results.forEach((res) => {
+          if (res.rooms) {
+            res.rooms.forEach((room) => {
+              newMap[room._id] = room.roomName;
+            });
+          }
+        });
+
+        setRoomNamesMap(newMap);
+      } catch (error) {
+        console.error('Error loading room names:', error);
+      }
+    };
+
+    loadAllRooms();
+  }, [homes]);
 
   function onCreate(deviceName: string) {
     createDevice({ deviceName, type: 'esp32-generic', sensors: [] });
   }
 
-  if (loading) return <p>Loading devices...</p>;
+  const getRoomName = (device: Device) => {
+    const id = device.connectedToRoom || device.roomId;
+
+    if (!id) return '—';
+
+    return roomNamesMap[id] || 'Loading...';
+  };
+
+  if (loading) return <p className='mt-20 text-center'>Loading devices...</p>;
 
   return (
     <div className='relative flex min-h-screen flex-col w-full'>
@@ -54,9 +96,11 @@ export default function DevicePage() {
                   key={device._id}
                   className='relative grid grid-cols-4 px-2 py-4 items-center border-b last:border-none hover:bg-gray-50'
                 >
-                  <div>{device.deviceName}</div>
+                  <div className='font-medium'>{device.deviceName}</div>
 
-                  <div>{device.roomId || '—'}</div>
+                  <div className='text-gray-600 truncate pr-4' title={getRoomName(device)}>
+                    {getRoomName(device)}
+                  </div>
 
                   <div>
                     {device.state === 'ONLINE' ? (
@@ -68,8 +112,11 @@ export default function DevicePage() {
 
                   <div className='text-right relative'>
                     <button
-                      className='p-2 hover:bg-gray-200 rounded-full'
-                      onClick={() => setOpenMenuId(openMenuId === device._id ? null : device._id)}
+                      className='p-2 hover:bg-gray-200 rounded-full transition'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpenMenuId(openMenuId === device._id ? null : device._id);
+                      }}
                     >
                       ⋮
                     </button>

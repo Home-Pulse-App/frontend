@@ -2,38 +2,63 @@ import { useParams } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import { useRoomStore } from '@/store/roomStore';
 import { useHomeStore } from '@/store/homeStore';
+import { useDeviceStore } from '@/store/deviceStore';
 import { useEffect, useState } from 'react';
+
+import ConnectDeviceModal from '@/components/ConnectDeviceModal';
+
 import type { Home } from '@/types/homes-types';
 import type { Room } from '@/types/room-types';
 import type { Device } from '@/types/devices-types';
 
 export default function RoomDetailsPage() {
   const { homeId, roomId } = useParams<{ homeId: string; roomId: string }>();
-  const { rooms, fetchRooms, fetchDevicesOfRoom, devices } = useRoomStore();
+
+  const { rooms, fetchRooms, fetchDevicesOfRoom, devices, connectDevice, disconnectDevice } =
+    useRoomStore();
   const { getSingleHome } = useHomeStore();
+  const { devices: allDevices, fetchDevices } = useDeviceStore();
+
   const [home, setHome] = useState<Home | null>(null);
   const [room, setRoom] = useState<Room | null>(null);
   const [loading, setLoading] = useState(true);
   const [localDevices, setLocalDevices] = useState<Device[]>([]);
+  const [isConnectModalOpen, setIsConnectModalOpen] = useState(false);
 
   useEffect(() => {
-    if (homeId) getSingleHome(homeId).then((res) => setHome(res || null));
+    if (homeId) {
+      getSingleHome(homeId).then((res) => setHome(res || null));
+    }
   }, [homeId, getSingleHome]);
 
   useEffect(() => {
-    if (home) {
+    fetchDevices();
+  }, [fetchDevices]);
+
+  useEffect(() => {
+    if (home?._id) {
       fetchRooms(home._id).then(() => {
-        const foundRoom = rooms.find((r) => r._id === roomId) || null;
-        setRoom(foundRoom);
-        if (foundRoom) {
-          fetchDevicesOfRoom(home._id, foundRoom._id).then(() => {
-            setLocalDevices(devices[foundRoom._id] || []);
-          });
-        }
         setLoading(false);
       });
     }
-  }, [home, rooms, roomId, fetchRooms, fetchDevicesOfRoom, devices]);
+  }, [home?._id, fetchRooms]);
+
+  useEffect(() => {
+    if (rooms.length > 0 && roomId && home?._id) {
+      const foundRoom = rooms.find((r) => r._id === roomId) || null;
+      setRoom(foundRoom);
+
+      if (foundRoom) {
+        fetchDevicesOfRoom(home._id, foundRoom._id);
+      }
+    }
+  }, [rooms, roomId, home?._id, fetchRooms, fetchDevicesOfRoom]);
+
+  useEffect(() => {
+    if (roomId && devices[roomId]) {
+      setLocalDevices(devices[roomId]);
+    }
+  }, [devices, roomId]);
 
   if (loading) return <p className='mt-20'>Loading room...</p>;
   if (!home || !room) return <p className='mt-20'>Room not found</p>;
@@ -50,6 +75,28 @@ export default function RoomDetailsPage() {
     );
   };
 
+  const handleConnectDevice = async (deviceId: string) => {
+    if (!home || !room) return;
+
+    await connectDevice(home._id, room._id, deviceId);
+
+    await fetchDevices();
+
+    setIsConnectModalOpen(false);
+  };
+
+  const handleDisconnectDevice = async (deviceId: string) => {
+    if (!home || !room) return;
+
+    try {
+      await disconnectDevice(home._id, room._id, deviceId);
+
+      await fetchDevices();
+    } catch (error) {
+      console.error('Failed to disconnect device:', error);
+    }
+  };
+
   return (
     <div className='relative flex min-h-screen flex-col w-full'>
       <Navbar />
@@ -57,9 +104,10 @@ export default function RoomDetailsPage() {
       <div className='w-7xl mx-auto pt-20'>
         <div className='flex items-center justify-between pt-10 py-4 border-b'>
           <h2 className='text-2xl font-semibold'>{room.roomName}</h2>
+
           <button
             className='bg-black hover:bg-[#2E2E2E] text-white font-semibold py-2 px-6 rounded-lg shadow-md transition'
-            onClick={() => alert('Connect Device modal!')}
+            onClick={() => setIsConnectModalOpen(true)}
           >
             Connect Device
           </button>
@@ -108,7 +156,7 @@ export default function RoomDetailsPage() {
 
                     <button
                       className='px-3 py-1 rounded-md font-medium bg-gray-200 hover:bg-gray-300 text-gray-700'
-                      onClick={() => alert('Disconnect endpoint will go here')}
+                      onClick={() => handleDisconnectDevice(device._id)}
                     >
                       Disconnect
                     </button>
@@ -119,6 +167,13 @@ export default function RoomDetailsPage() {
           )}
         </div>
       </div>
+
+      <ConnectDeviceModal
+        isOpen={isConnectModalOpen}
+        onClose={() => setIsConnectModalOpen(false)}
+        devices={allDevices}
+        onConnect={handleConnectDevice}
+      />
     </div>
   );
 }
