@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import * as React from 'react';
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 import {
   Card,
@@ -9,21 +9,21 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import type { DeviceReading } from "@/types/sensorsDataTypes"
+} from '@/components/ui/chart';
+import type { DeviceReading } from '@/types/sensorsDataTypes';
 
 const chartConfig = {
   light: {
-    label: "Light Level",
-    color: "#fbbf24", // Amber-400 (sun-like color)
+    label: 'Light Level',
+    color: '#fbbf24', // Amber-400 (sun-like color)
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 interface LightLevelChartProps {
   data: DeviceReading[];
@@ -73,64 +73,64 @@ export function LightLevelChart({ data }: LightLevelChartProps) {
   }, [formattedData, timeRange]);
 
   return (
-    <Card className="@container/card">
-      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-0.5 px-4 py-3 sm:px-6 sm:py-3">
+    <Card className='@container/card'>
+      <CardHeader className='flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row'>
+        <div className='flex flex-1 flex-col justify-center gap-0.5 px-4 py-3 sm:px-6 sm:py-3'>
           <CardTitle>Light Level</CardTitle>
           <CardDescription>
             Day/Night Pattern
           </CardDescription>
         </div>
-        <div className="flex">
+        <div className='flex'>
           {(['1h', '24h', '7d', '30d', 'all'] as TimeRange[]).map((range) => (
             <button
               key={range}
               data-active={timeRange === range}
-              className="relative z-30 flex flex-1 flex-col justify-center gap-0.5 border-t px-2 py-2 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-3 sm:py-3"
+              className='relative z-30 flex flex-1 flex-col justify-center gap-0.5 border-t px-2 py-2 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-3 sm:py-3'
               onClick={() => setTimeRange(range)}
             >
-              <span className="text-xs text-muted-foreground">
+              <span className='text-xs text-muted-foreground'>
                 {timeRangeLabels[range]}
               </span>
             </button>
           ))}
         </div>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+      <CardContent className='px-2 pt-4 sm:px-6 sm:pt-6'>
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[200px] w-full"
+          className='aspect-auto h-[200px] w-full'
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillLight" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id='fillLight' x1='0' y1='0' x2='0' y2='1'>
                 <stop
-                  offset="5%"
-                  stopColor="var(--color-light)"
+                  offset='5%'
+                  stopColor='var(--color-light)'
                   stopOpacity={0.8}
                 />
                 <stop
-                  offset="95%"
-                  stopColor="var(--color-light)"
+                  offset='95%'
+                  stopColor='var(--color-light)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="date"
+              dataKey='date'
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  hour: "numeric",
-                  minute: "numeric"
-                })
+                const date = new Date(value);
+                return date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                });
               }}
             />
             <YAxis
@@ -144,27 +144,27 @@ export function LightLevelChart({ data }: LightLevelChartProps) {
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "numeric",
-                      minute: "numeric"
-                    })
+                    return new Date(value).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                    });
                   }}
-                  indicator="dot"
+                  indicator='dot'
                   valueFormatter={(value) => `${value}`}
                 />
               }
             />
             <Area
-              dataKey="light"
-              type="natural"
-              fill="url(#fillLight)"
-              stroke="var(--color-light)"
+              dataKey='light'
+              type='natural'
+              fill='url(#fillLight)'
+              stroke='var(--color-light)'
             />
           </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -10,9 +10,9 @@ const generateMockData = (): DeviceReading[] => {
   // - Older: every hour (up to 7 days)
 
   const intervals = [
-    { count: 12, intervalMs: 5 * 60 * 1000 },      // Last hour: 5 min intervals
-    { count: 46, intervalMs: 30 * 60 * 1000 },     // Next 23 hours: 30 min intervals
-    { count: 144, intervalMs: 60 * 60 * 1000 },    // Next 6 days: 1 hour intervals
+    { count: 12, intervalMs: 5 * 60 * 1000 }, // Last hour: 5 min intervals
+    { count: 46, intervalMs: 30 * 60 * 1000 }, // Next 23 hours: 30 min intervals
+    { count: 144, intervalMs: 60 * 60 * 1000 }, // Next 6 days: 1 hour intervals
   ];
 
   let currentTime = now;
@@ -49,10 +49,10 @@ const generateMockData = (): DeviceReading[] => {
           switch1: Math.random() > 0.9 ? 1 : 0,
           switch2: 0,
           button1: 0,
-          button2: 0
+          button2: 0,
         },
         createdAt: date.toISOString(),
-        updatedAt: date.toISOString()
+        updatedAt: date.toISOString(),
       });
 
       currentTime -= intervalMs;

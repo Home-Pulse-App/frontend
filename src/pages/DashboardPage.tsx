@@ -1,14 +1,14 @@
 import Navbar from '@/components/Navbar';
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import { useHomeStore } from "@/store/homeStore"
-import { useRoomStore } from "@/store/roomStore"
-import { useDeviceStore } from "@/store/deviceStore"
-import { useDeviceDataStore } from "@/store/sensorStore"
-import { SensorStatsCards } from "@/components/sensor-stats-cards"
-import { useEffect } from "react"
-import { mockDeviceReadings } from "@/store/mockDeviceData"
+import { ChartAreaInteractive } from '@/components/chart-area-interactive';
+import { DataTable } from '@/components/data-table';
+import { SectionCards } from '@/components/section-cards';
+import { useHomeStore } from '@/store/homeStore';
+import { useRoomStore } from '@/store/roomStore';
+import { useDeviceStore } from '@/store/deviceStore';
+import { useDeviceDataStore } from '@/store/sensorStore';
+import { SensorStatsCards } from '@/components/sensor-stats-cards';
+import { useEffect } from 'react';
+import { mockDeviceReadings } from '@/store/mockDeviceData';
 
 export default function DashboardPage() {
   const { homes, fetchHomes } = useHomeStore();

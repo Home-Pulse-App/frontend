@@ -22,16 +22,16 @@ export const description = 'An interactive area chart';
 
 const chartConfig = {
   temperature: {
-    label: "Temperature",
-    color: "#4447efff",
+    label: 'Temperature',
+    color: '#4447efff',
   },
   humidity: {
-    label: "Humidity",
-    color: "#f6573bff",
+    label: 'Humidity',
+    color: '#f6573bff',
   },
   light: {
-    label: "Light",
-    color: "#fbbf24",
+    label: 'Light',
+    color: '#fbbf24',
   },
 } satisfies ChartConfig;
 
@@ -106,38 +106,38 @@ export function ChartAreaInteractive({ data }: ChartAreaInteractiveProps) {
   }, [formattedData, timeRange]);
 
   return (
-    <Card className="@container/card">
-      <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-        <div className="flex flex-1 flex-col justify-center gap-0.5 px-4 py-3 sm:px-6 sm:py-3">
+    <Card className='@container/card'>
+      <CardHeader className='flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row'>
+        <div className='flex flex-1 flex-col justify-center gap-0.5 px-4 py-3 sm:px-6 sm:py-3'>
           <CardTitle>Sensor Data</CardTitle>
           <CardDescription>
-            <div className="flex gap-3 mt-1">
+            <div className='flex gap-3 mt-1'>
               {(['temperature', 'humidity', 'light'] as SensorType[]).map((sensor) => (
                 <button
                   key={sensor}
                   onClick={() => toggleSensor(sensor)}
-                  className="flex items-center gap-1.5 text-xs transition-opacity hover:opacity-80"
+                  className='flex items-center gap-1.5 text-xs transition-opacity hover:opacity-80'
                   style={{ opacity: visibleSensors[sensor] ? 1 : 0.4 }}
                 >
                   <div
-                    className="h-2 w-2 rounded-full"
+                    className='h-2 w-2 rounded-full'
                     style={{ backgroundColor: chartConfig[sensor].color }}
                   />
-                  <span className="capitalize">{sensor}</span>
+                  <span className='capitalize'>{sensor}</span>
                 </button>
               ))}
             </div>
           </CardDescription>
         </div>
-        <div className="flex">
+        <div className='flex'>
           {(['1h', '24h', '7d', '30d', 'all'] as TimeRange[]).map((range) => (
             <button
               key={range}
               data-active={timeRange === range}
-              className="relative z-30 flex flex-1 flex-col justify-center gap-0.5 border-t px-2 py-2 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-3 sm:py-3"
+              className='relative z-30 flex flex-1 flex-col justify-center gap-0.5 border-t px-2 py-2 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-3 sm:py-3'
               onClick={() => setTimeRange(range)}
             >
-              <span className="text-xs text-muted-foreground">
+              <span className='text-xs text-muted-foreground'>
                 {timeRangeLabels[range]}
               </span>
             </button>
@@ -151,39 +151,39 @@ export function ChartAreaInteractive({ data }: ChartAreaInteractiveProps) {
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillTemperature" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id='fillTemperature' x1='0' y1='0' x2='0' y2='1'>
                 <stop
-                  offset="5%"
-                  stopColor="var(--color-temperature)"
+                  offset='5%'
+                  stopColor='var(--color-temperature)'
                   stopOpacity={0.8}
                 />
                 <stop
-                  offset="95%"
-                  stopColor="var(--color-temperature)"
+                  offset='95%'
+                  stopColor='var(--color-temperature)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id="fillHumidity" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id='fillHumidity' x1='0' y1='0' x2='0' y2='1'>
                 <stop
-                  offset="5%"
-                  stopColor="var(--color-humidity)"
+                  offset='5%'
+                  stopColor='var(--color-humidity)'
                   stopOpacity={0.8}
                 />
                 <stop
-                  offset="95%"
-                  stopColor="var(--color-humidity)"
+                  offset='95%'
+                  stopColor='var(--color-humidity)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id="fillLight" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id='fillLight' x1='0' y1='0' x2='0' y2='1'>
                 <stop
-                  offset="5%"
-                  stopColor="var(--color-light)"
+                  offset='5%'
+                  stopColor='var(--color-light)'
                   stopOpacity={0.8}
                 />
                 <stop
-                  offset="95%"
-                  stopColor="var(--color-light)"
+                  offset='95%'
+                  stopColor='var(--color-light)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
@@ -217,38 +217,38 @@ export function ChartAreaInteractive({ data }: ChartAreaInteractiveProps) {
                       minute: 'numeric',
                     });
                   }}
-                  indicator="dot"
+                  indicator='dot'
                   valueFormatter={(value, item) => {
-                    if (item.dataKey === "temperature") return `${value}°C`
-                    if (item.dataKey === "humidity") return `${value}%`
-                    if (item.dataKey === "light") return `${value}`
-                    return value
+                    if (item.dataKey === 'temperature') return `${value}°C`;
+                    if (item.dataKey === 'humidity') return `${value}%`;
+                    if (item.dataKey === 'light') return `${value}`;
+                    return value;
                   }}
                 />
               }
             />
             {visibleSensors.temperature && (
               <Area
-                dataKey="temperature"
-                type="natural"
-                fill="url(#fillTemperature)"
-                stroke="var(--color-temperature)"
+                dataKey='temperature'
+                type='natural'
+                fill='url(#fillTemperature)'
+                stroke='var(--color-temperature)'
               />
             )}
             {visibleSensors.humidity && (
               <Area
-                dataKey="humidity"
-                type="natural"
-                fill="url(#fillHumidity)"
-                stroke="var(--color-humidity)"
+                dataKey='humidity'
+                type='natural'
+                fill='url(#fillHumidity)'
+                stroke='var(--color-humidity)'
               />
             )}
             {visibleSensors.light && (
               <Area
-                dataKey="light"
-                type="natural"
-                fill="url(#fillLight)"
-                stroke="var(--color-light)"
+                dataKey='light'
+                type='natural'
+                fill='url(#fillLight)'
+                stroke='var(--color-light)'
               />
             )}
           </AreaChart>

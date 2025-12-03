@@ -233,7 +233,7 @@ export function DataTable({ data, onRowClick }: DataTableProps) {
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   onClick={() => onRowClick?.(row.original)}
-                  className="cursor-pointer hover:bg-muted/50"
+                  className='cursor-pointer hover:bg-muted/50'
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

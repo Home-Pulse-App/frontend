@@ -18,7 +18,7 @@ export function SectionCards({ totalHomes, totalRooms, totalDevices }: SectionCa
   return (
     <div className='text-center items-center *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-3'>
       <Card className='@container/card'>
-        <CardHeader className="text-center items-center">
+        <CardHeader className='text-center items-center'>
           <CardDescription>Total Homes</CardDescription>
           <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
             {totalHomes}
@@ -31,7 +31,7 @@ export function SectionCards({ totalHomes, totalRooms, totalDevices }: SectionCa
         </CardFooter>
       </Card>
       <Card className='@container/card'>
-        <CardHeader className="text-center items-center">
+        <CardHeader className='text-center items-center'>
           <CardDescription>Total Rooms</CardDescription>
           <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
             {totalRooms}
@@ -44,7 +44,7 @@ export function SectionCards({ totalHomes, totalRooms, totalDevices }: SectionCa
         </CardFooter>
       </Card>
       <Card className='@container/card'>
-        <CardHeader className="text-center items-center">
+        <CardHeader className='text-center items-center'>
           <CardDescription>Total Devices</CardDescription>
           <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
             {totalDevices}
