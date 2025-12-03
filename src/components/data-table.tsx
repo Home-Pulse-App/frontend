@@ -137,9 +137,10 @@ export const columns: ColumnDef<Device>[] = [
 
 interface DataTableProps {
   data: Device[];
+  onRowClick?: (device: Device) => void;
 }
 
-export function DataTable({ data }: DataTableProps) {
+export function DataTable({ data, onRowClick }: DataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -231,6 +232,8 @@ export function DataTable({ data }: DataTableProps) {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  onClick={() => onRowClick?.(row.original)}
+                  className="cursor-pointer hover:bg-muted/50"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

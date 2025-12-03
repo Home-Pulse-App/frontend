@@ -5,23 +5,26 @@ import { deviceDataService } from '@/services/deviceDataService';
 import type { SensorType } from '@/types/devices-types';
 
 type Period =
-    | 'hour'
-    | 'day'
-    | 'week'
-    | 'month'
-    | undefined;
+  | 'hour'
+  | 'day'
+  | 'week'
+  | 'month'
+  | undefined;
 
 interface SensorState {
   paginatedData: DeviceReading[];
   statsData: DeviceStats[];
   latestData: SensorData;
+  selectedDeviceId: string | null;
   loading: boolean;
   fetchPaginatedData: (deviceIdOrName: string, params?: PaginationParams) => Promise<void>;
   fetchStatsData: (deviceIdOrName: string, field: SensorType, period?: Period) => Promise<void>;
   fetchLatestData: (deviceIdOrName: string) => Promise<void>;
+  clearPaginatedData: () => void;
+  setSelectedDevice: (deviceId: string) => void;
 }
 
-export const useDeviceDataStore = create<SensorState>((set) => ({
+export const useDeviceDataStore = create<SensorState>((set, get) => ({
   paginatedData: [],
   statsData: [],
   latestData: {
@@ -33,7 +36,19 @@ export const useDeviceDataStore = create<SensorState>((set) => ({
     button1: 0,
     button2: 0,
   },
+  selectedDeviceId: null,
   loading: false,
+
+  clearPaginatedData: () => {
+    set({ paginatedData: [] });
+  },
+
+  setSelectedDevice: (deviceId: string) => {
+    const currentDeviceId = get().selectedDeviceId;
+    if (currentDeviceId !== deviceId) {
+      set({ selectedDeviceId: deviceId, paginatedData: [] });
+    }
+  },
 
   fetchPaginatedData: async (deviceIdOrName: string, params?: PaginationParams) => {
     set({ loading: true });
