@@ -30,7 +30,8 @@ function ImmersiveViewPage() {
       if (viewSplat) {
         navigate('/viewer', {
           state: {
-            file: { url: viewSplat, name: `Room ${roomId} Session`, type: 'splat', size: 0 },
+            // file: { url: viewSplat, name: `Room ${roomId} Session`, type: 'splat', size: 0 }, //! Unnecessary extra data
+            file: { url: viewSplat },
             roomId: roomId,
           },
         });

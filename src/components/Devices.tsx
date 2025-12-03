@@ -224,7 +224,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
     setDevices(prev => prev.map(d =>
       d.id === deviceId ? { ...d, sensorData } : d,
     ));
-    // console.log(devices); // Removed to avoid dependency on 'devices'
+    // console.log(devices);
     onSensorDataUpdate?.(deviceId, sensorData);
     console.log('📈', sensorData);
   }, [onSensorDataUpdate]);
@@ -261,10 +261,10 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
             deviceId = iotDevices[0]._id;
           }
         }
-        console.log('IoT🔧:', deviceId); //Todo remove console.log
+        // console.log('IoT🔧:', deviceId);
         await fetchLatestData(deviceId);
         //* Use the refs to get the latest state without causing re-renders
-        console.log('IoT🔧:', latestDataRef.current); //Todo remove console.log
+        // console.log('IoT🔧:', latestDataRef.current);
         devicesRef.current.forEach(d => {
           updateDeviceSensorData(d.id, latestDataRef.current);
         });
