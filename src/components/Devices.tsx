@@ -254,7 +254,7 @@ export default function Devices({ deviceToSpawn, onSpawned, initialDevices = [],
           if (iotDevices.length > 0) {
             deviceId = iotDevices[0]._id;
           }
-        };
+        }
         console.log('IoT🔧:', deviceId); //Todo remove console.log
         await fetchLatestData(deviceId);
         //* Use the ref to get the latest devices list

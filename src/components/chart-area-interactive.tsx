@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import * as React from 'react';
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
   Card,
@@ -9,27 +9,27 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import type { DeviceReading } from "@/types/sensorsDataTypes"
+} from '@/components/ui/chart';
+import type { DeviceReading } from '@/types/sensorsDataTypes';
 
-export const description = "An interactive area chart"
+export const description = 'An interactive area chart';
 
 const chartConfig = {
   temperature: {
-    label: "Temperature",
-    color: "hsl(var(--chart-1))",
+    label: 'Temperature',
+    color: 'hsl(var(--chart-1))',
   },
   humidity: {
-    label: "Humidity",
-    color: "hsl(var(--chart-2))",
+    label: 'Humidity',
+    color: 'hsl(var(--chart-2))',
   },
-} satisfies ChartConfig
+} satisfies ChartConfig;
 
 interface ChartAreaInteractiveProps {
   data: DeviceReading[];
@@ -47,60 +47,60 @@ export function ChartAreaInteractive({ data }: ChartAreaInteractiveProps) {
   const filteredData = formattedData;
 
   return (
-    <Card className="@container/card">
+    <Card className='@container/card'>
       <CardHeader>
         <CardTitle>Sensor Data</CardTitle>
         <CardDescription>
           Temperature & Humidity
         </CardDescription>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+      <CardContent className='px-2 pt-4 sm:px-6 sm:pt-6'>
         <ChartContainer
           config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
+          className='aspect-auto h-[250px] w-full'
         >
           <AreaChart data={filteredData}>
             <defs>
-              <linearGradient id="fillTemperature" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id='fillTemperature' x1='0' y1='0' x2='0' y2='1'>
                 <stop
-                  offset="5%"
-                  stopColor="var(--color-temperature)"
+                  offset='5%'
+                  stopColor='var(--color-temperature)'
                   stopOpacity={0.8}
                 />
                 <stop
-                  offset="95%"
-                  stopColor="var(--color-temperature)"
+                  offset='95%'
+                  stopColor='var(--color-temperature)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
-              <linearGradient id="fillHumidity" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient id='fillHumidity' x1='0' y1='0' x2='0' y2='1'>
                 <stop
-                  offset="5%"
-                  stopColor="var(--color-humidity)"
+                  offset='5%'
+                  stopColor='var(--color-humidity)'
                   stopOpacity={0.8}
                 />
                 <stop
-                  offset="95%"
-                  stopColor="var(--color-humidity)"
+                  offset='95%'
+                  stopColor='var(--color-humidity)'
                   stopOpacity={0.1}
                 />
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="date"
+              dataKey='date'
               tickLine={false}
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
               tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  hour: "numeric",
-                  minute: "numeric"
-                })
+                const date = new Date(value);
+                return date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                });
               }}
             />
             <ChartTooltip
@@ -108,34 +108,34 @@ export function ChartAreaInteractive({ data }: ChartAreaInteractiveProps) {
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "numeric",
-                      minute: "numeric"
-                    })
+                    return new Date(value).toLocaleDateString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                    });
                   }}
-                  indicator="dot"
+                  indicator='dot'
                 />
               }
             />
             <Area
-              dataKey="humidity"
-              type="natural"
-              fill="url(#fillHumidity)"
-              stroke="var(--color-humidity)"
-              stackId="a"
+              dataKey='humidity'
+              type='natural'
+              fill='url(#fillHumidity)'
+              stroke='var(--color-humidity)'
+              stackId='a'
             />
             <Area
-              dataKey="temperature"
-              type="natural"
-              fill="url(#fillTemperature)"
-              stroke="var(--color-temperature)"
-              stackId="a"
+              dataKey='temperature'
+              type='natural'
+              fill='url(#fillTemperature)'
+              stroke='var(--color-temperature)'
+              stackId='a'
             />
           </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>
-  )
+  );
 }
