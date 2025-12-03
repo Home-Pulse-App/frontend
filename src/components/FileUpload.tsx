@@ -88,7 +88,7 @@ function FileUpload({ onFileUpload, roomId }: FileUploadProps) {
       console.log(response);
       console.log('[FileUpload] Save complete, navigating...');
       //* Navigate ONLY after saving is complete
-      navigate('/viewer', { state: { file: fileData } });
+      navigate('/viewer', { state: { file: fileData, roomId } });
     };
     reader.onerror = (error) => {
       console.error('[FileUpload] FileReader error:', error);

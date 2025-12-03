@@ -45,7 +45,7 @@ function ImmersiveViewPage() {
     }
   };
 
-  // Fetch room data when component mounts
+  //* Fetch room data when component mounts
   useEffect(() => {
     if (roomId) {
       cleanSplat();
@@ -53,7 +53,7 @@ function ImmersiveViewPage() {
     }
   }, [roomId, fetchRoom, cleanSplat]);
 
-  // Update splatExist when viewSplatFileId changes
+  //* Update splatExist when viewSplatFileId changes
   useEffect(() => {
     if (viewSplatFileId) {
       console.log('Splat File ID:', viewSplatFileId);
