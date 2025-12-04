@@ -1,62 +1,66 @@
 # 🎨 HomePulse Frontend (React + TypeScript + 3D Viewer)
 
-HomePulse Frontend is the user interface for the smart-home ecosystem.  
+HomePulse Frontend is the user interface for the smart-home ecosystem.
+
 It includes dashboards, device views, home/room management, and a fully interactive 3D immersive room viewer based on Gaussian Splats.
 
 ---
 
 ## ✨ Features
 
-- Modern UI built with React + TypeScript  
-- Live device updates via WebSockets  
-- Create/manage homes and rooms  
-- Upload 3D splat models of rooms  
-- Immersive 3D room viewer with device overlays  
-- Real-time MQTT values shown inside 3D space  
-- Login & protected routes  
-- Zustand state management  
-- Tailwind + shadCN components  
+- Modern UI built with React + TypeScript
+- Live device updates
+- Create/manage homes and rooms
+- Upload 3D splat models of rooms
+- Immersive 3D room viewer with device overlays
+- Real-time MQTT values shown inside 3D space
+- Login & protected routes
+- Zustand state management
+- Tailwind + shadCN + React Bits components
 
 ---
 
 ## 🗂 Project Structure
 
 ```
-client/
- ├── assets/
- ├── components/
- ├── lib/
- ├── pages/
- ├── services/
- ├── store/
- ├── types/
- ├── App.tsx
- ├── main.tsx
- ├── protectedRoute.tsx
- ├── immersiveStyle.css
- ├── main.css
- └── svg.d.ts
+frontend/
+ └── src/
+      ├── assets/
+      ├── components/
+      ├── lib/
+      ├── pages/
+      ├── services/
+      ├── store/
+      ├── types/
+      ├── App.tsx
+      ├── main.tsx
+      ├── protectedRoute.tsx
+      ├── immersiveStyle.css
+      ├── main.css
+      └── svg.d.ts
 ```
 
 Key elements:
-- **pages** – UI pages  
-- **components** – reusable interface blocks  
-- **services** – API calls  
-- **store** – Zustand state  
-- **types** – TypeScript interfaces  
-- **lib** – helper libraries  
+
+- **pages** – UI pages
+- **components** – reusable interface blocks
+- **services** – API calls
+- **store** – Zustand state
+- **types** – TypeScript interfaces
+- **lib** – helper libraries
 
 ---
 
-## 📌 User Flow (Frontend)
+## 📌 User Flow
 
 After login, the UI offers:
-- Home overview  
-- List of homes/rooms/devices  
-- Add/delete homes  
-- Add rooms with 3D model uploads  
-- Device lists with real-time values  
-- Full dashboard  
+
+- Home overview
+- List of homes/rooms/devices
+- Add/delete homes
+- Add rooms with 3D model uploads
+- Device lists with real-time values
+- Full dashboard
 
 ---
 
@@ -65,10 +69,11 @@ After login, the UI offers:
 This feature is **fully implemented**.
 
 When clicking **Immersive View** inside a room:
-- A 3D Gaussian Splat model loads  
-- All devices appear at correct spatial positions  
-- Clicking a device shows **live MQTT data**  
-- UI updates in real-time via WebSockets  
+
+- A 3D Gaussian Splat model loads
+- All devices appear at correct spatial positions
+- Clicking a device shows and sets **live MQTT data**
+- UI updates in real-time
 
 This builds a spatial digital twin of the room.
 
@@ -77,11 +82,12 @@ This builds a spatial digital twin of the room.
 ## 🎛 Dashboard
 
 The dashboard shows:
-- Homes  
-- Rooms  
-- Devices  
-- MQTT live data  
-- Online/offline statuses  
+
+- Homes
+- Rooms
+- Devices
+- MQTT live data
+- Online/offline status
 
 Simple, clean UI for full smart-home visibility.
 
@@ -90,45 +96,51 @@ Simple, clean UI for full smart-home visibility.
 ## 🔐 Authentication
 
 Includes:
-- Login  
-- Registration  
-- Protected routes  
-- JWT stored securely  
+
+- Login
+- Registration
+- Protected routes
+- JWT stored securely
 
 ---
 
 ## 🛠 Tech Stack (Frontend)
 
-- React  
-- TypeScript  
-- Vite  
-- Tailwind CSS  
-- shadCN UI  
-- Zustand  
-- WebSockets  
+- React
+- R3F
+- Three.js
+- Sparkjs.dev
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadCN UI
+- Zustand
+- React Bits
 
 ---
 
 ## 💻 Installation & Setup
 
-### 1. Clone repo
+### 🧬 Clone repo
+
 ```bash
-git clone <repo-url>
-cd HomePulse
+git clone https://github.com/Home-Pulse-App/frontend.git
+cd frontend
 ```
 
-### 2. Frontend setup
+### 🧱 Frontend setup
+
 ```bash
-cd client
 npm install
 npm run dev
 ```
 
-Open in browser:
-`http://localhost:5173`
+### 🌐 Open in browser
+
+🔗 : `http://localhost:5173`
 
 ---
 
 ## 📄 License
 
-Private project – internal development only.
+Private project, internal development only.
