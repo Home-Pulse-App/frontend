@@ -1,4 +1,3 @@
-```md
 # 🎨 HomePulse Frontend (React + TypeScript + 3D Viewer)
 
 HomePulse Frontend is the user interface for the smart-home ecosystem.  
@@ -22,7 +21,7 @@ It includes dashboards, device views, home/room management, and a fully interact
 
 ## 🗂 Project Structure
 
-
+```
 client/
  ├── assets/
  ├── components/
@@ -37,6 +36,7 @@ client/
  ├── immersiveStyle.css
  ├── main.css
  └── svg.d.ts
+```
 
 Key elements:
 - **pages** – UI pages  
@@ -115,15 +115,20 @@ Includes:
 ```bash
 git clone <repo-url>
 cd HomePulse
+```
 
-2. Frontend setup
+### 2. Frontend setup
+```bash
 cd client
 npm install
 npm run dev
+```
 
 Open in browser:
-http://localhost:5173
+`http://localhost:5173`
 
+---
 
-📄 License
+## 📄 License
+
 Private project – internal development only.
