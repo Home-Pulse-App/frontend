@@ -24,7 +24,7 @@ It includes dashboards, device views, home/room management, and a fully interact
 
 ```
 frontend/
- └── src/
+  └── src/
       ├── assets/
       ├── components/
       ├── lib/
