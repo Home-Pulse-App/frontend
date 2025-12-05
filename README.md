@@ -4,7 +4,6 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D16-green)](#)
 [![TypeScript](https://img.shields.io/badge/typescript-4.x-blue)](#)
 [![React](https://img.shields.io/badge/react-18-blue)](#)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Home-Pulse-App/frontend/ci.yml?branch=main)](https://github.com/Home-Pulse-App/frontend/actions)
 [![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-green)](#)
 
 HomePulse Frontend is the user interface for the smart-home ecosystem.
