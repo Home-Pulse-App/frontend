@@ -36,7 +36,7 @@ const Process = () => {
       title: 'A Foundation for Future Innovation',
       icon: <FaLightbulb />,
       description:
-        'Home Pulse is more than a thesis project, it’s a reflection of our shared curiosity and a foundation we hope others can build upon. The platform continues to evolve, driven by our commitment to creating technology that connects, informs, and empowers users.',
+        'Home Pulse is a reflection of our shared curiosity and a foundation we hope others can build upon. The platform continues to evolve, driven by our commitment to creating technology that connects, informs, and empowers users.',
     },
   ];
 
