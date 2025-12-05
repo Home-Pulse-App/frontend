@@ -8,7 +8,7 @@ const Process = () => {
       title: 'A Shared Vision',
       icon: <FaEye />,
       description:
-        'Home Pulse began as the final thesis project for four Codeworks students: Adam Koep, Artak Navoyan, Miguel Ángel Torrubia Moya, and Alfredo Chávez Romero. Early in the program, we discovered that we shared a passion for bridging the digital and physical worlds in meaningful, interactive ways.',
+        'Home Pulse began as a shared vision from four developers: Adam Koep, Artak Navoyan, Miguel Ángel Torrubia Moya, and Alfredo Chávez Romero. We discovered that we shared a passion for bridging the digital and physical worlds in meaningful, interactive ways.',
     },
     {
       step: '02',
@@ -54,7 +54,7 @@ const Process = () => {
               and a shared fascination with connecting the digital and physical worlds.
               <br />
               <br />
-              What started as a final thesis project for four Codeworks students quickly evolved into an open-source smart home platform,
+              What started as a shared vision from four developers, quickly evolved into an open-source smart home platform,
               combining real-time data, IoT devices, and immersive 3D visualizations.
               <br />
               <br />

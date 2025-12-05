@@ -13,7 +13,7 @@ export default function Footer() {
       <div className='container mx-auto px-4'>
         <div className='flex flex-row flex-wrap items-center justify-center gap-x-10 gap-y-2 md:justify-between'>
           <p className='text-foreground text-center text-sm font-medium'>
-            Home Pulse. Codeworks. {YEAR}
+            Home Pulse. {YEAR}
           </p>
           <div className='flex gap-1'>
             <Button asChild variant='ghost' size='icon' className='h-8 w-8'>
