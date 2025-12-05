@@ -1,5 +1,14 @@
 # 🎨 HomePulse Frontend (React + TypeScript + 3D Viewer)
 
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D16-green)](#)
+[![TypeScript](https://img.shields.io/badge/typescript-4.x-blue)](#)
+[![React](https://img.shields.io/badge/react-18-blue)](#)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Home-Pulse-App/frontend/ci.yml?branch=main)](https://github.com/Home-Pulse-App/frontend/actions)
+[![Coverage Status](https://img.shields.io/badge/coverage-%%25-brightgreen)](#)
+[![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-green)](#)
+![splat-viewer](https://img.shields.io/badge/splat-viewer-supported-blue?style=flat)
+
 HomePulse Frontend is the user interface for the smart-home ecosystem.
 
 It includes dashboards, device views, home/room management, and a fully interactive 3D immersive room viewer based on Gaussian Splats.
@@ -138,9 +147,3 @@ npm run dev
 ### 🌐 Open in browser
 
 🔗 : `http://localhost:5173`
-
----
-
-## 📄 License
-
-Private project, internal development only.
